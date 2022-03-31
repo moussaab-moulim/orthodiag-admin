@@ -29,11 +29,13 @@ export interface Email {
   }[];
 }
 
+export type LabelType = 'system' | 'custom';
+
 export interface Label {
   id: string;
   color?: string;
   name: string;
   totalCount?: number;
-  type: string;
+  type: LabelType;
   unreadCount?: number;
 }
