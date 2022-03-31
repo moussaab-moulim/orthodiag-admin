@@ -1,4 +1,4 @@
-export const fileToBase64 = (file: File): Promise<ArrayBuffer | string> => new Promise((
+export const fileToBase64 = (file: Blob): Promise<ArrayBuffer | string | null> => new Promise((
   resolve,
   reject
 ) => {

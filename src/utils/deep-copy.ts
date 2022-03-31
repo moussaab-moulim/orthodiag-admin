@@ -1,5 +1,5 @@
 // eslint-disable-next-line consistent-return
-export const deepCopy = (obj) => {
+export const deepCopy = (obj: any): any => {
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
@@ -16,7 +16,7 @@ export const deepCopy = (obj) => {
   }
 
   if (obj instanceof Object) {
-    return Object.keys(obj).reduce((newObj, key) => {
+    return Object.keys(obj).reduce((newObj: any, key) => {
       newObj[key] = deepCopy(obj[key]);
       return newObj;
     }, {});
