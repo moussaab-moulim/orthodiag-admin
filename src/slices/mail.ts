@@ -70,9 +70,7 @@ export const getLabels = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(slice.actions.getLabels(data));
 };
 
-export const getEmails = ({
-  label
-}: { label: string }): AppThunk => async (dispatch): Promise<void> => {
+export const getEmails = ({ label }: { label?: string; }): AppThunk => async (dispatch): Promise<void> => {
   const data = await mailApi.getEmails({ label });
 
   dispatch(slice.actions.getEmails(data));

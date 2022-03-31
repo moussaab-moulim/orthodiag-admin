@@ -206,6 +206,10 @@ const slice = createSlice({
       const card = state.cards.byId[cardId];
       const checklist = card.checklists.find((_checklist) => _checklist.id === checklistId);
 
+      if (!checklist) {
+        return;
+      }
+
       checklist.checkItems.push(checkItem);
     },
     updateCheckItem(
@@ -219,6 +223,10 @@ const slice = createSlice({
       } = action.payload;
       const card = state.cards.byId[cardId];
       const checklist = card.checklists.find((_checklist) => _checklist.id === checklistId);
+
+      if (!checklist) {
+        return;
+      }
 
       checklist.checkItems = checklist.checkItems.map((_checkItem) => {
         if (_checkItem.id === checkItem.id) {
@@ -235,6 +243,10 @@ const slice = createSlice({
       const { cardId, checklistId, checkItemId } = action.payload;
       const card = state.cards.byId[cardId];
       const checklist = card.checklists.find((_checklist) => _checklist.id === checklistId);
+
+      if (!checklist) {
+        return;
+      }
 
       checklist.checkItems = (
         checklist.checkItems.filter((checkItem) => checkItem.id !== checkItemId)
@@ -259,7 +271,7 @@ export const createColumn = (name: string): AppThunk => async (dispatch): Promis
 
 export const updateColumn = (
   columnId: string,
-  update: any
+  update: { name: string; }
 ): AppThunk => async (dispatch): Promise<void> => {
   const data = await kanbanApi.updateColumn({ columnId, update });
 
@@ -289,7 +301,12 @@ export const createCard = (
 
 export const updateCard = (
   cardId: string,
-  update: any
+  update: {
+    name?: string;
+    description?: string;
+    isSubscribed?: boolean;
+    labels?: string[];
+  }
 ): AppThunk => async (dispatch): Promise<void> => {
   const data = await kanbanApi.updateCard({ cardId, update });
 
@@ -340,7 +357,7 @@ export const addChecklist = (
 export const updateChecklist = (
   cardId: string,
   checklistId: string,
-  update: any
+  update: { name: string; }
 ): AppThunk => async (dispatch): Promise<void> => {
   const data = await kanbanApi.updateChecklist({ cardId, checklistId, update });
 
@@ -380,7 +397,10 @@ export const updateCheckItem = (
   cardId: string,
   checklistId: string,
   checkItemId: string,
-  update: any
+  update: {
+    name?: string;
+    state?: 'complete' | 'incomplete';
+  }
 ): AppThunk => async (dispatch): Promise<void> => {
   const data = await kanbanApi.updateCheckItem({ cardId, checklistId, checkItemId, update });
 

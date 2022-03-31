@@ -18,7 +18,7 @@ interface ChatState {
 }
 
 const initialState: ChatState = {
-  activeThreadId: null,
+  activeThreadId: undefined,
   contacts: {
     byId: {},
     allIds: []
@@ -49,10 +49,10 @@ const slice = createSlice({
       const thread = action.payload;
 
       if (thread) {
-        state.threads.byId[thread.id] = thread;
+        state.threads.byId[thread.id!] = thread;
 
-        if (!state.threads.allIds.includes(thread.id)) {
-          state.threads.allIds.unshift(thread.id);
+        if (!state.threads.allIds.includes(thread.id!)) {
+          state.threads.allIds.unshift(thread.id!);
         }
       }
     },
@@ -64,7 +64,7 @@ const slice = createSlice({
         thread.unreadCount = 0;
       }
     },
-    setActiveThread(state: ChatState, action: PayloadAction<string>): void {
+    setActiveThread(state: ChatState, action: PayloadAction<string | undefined>): void {
       state.activeThreadId = action.payload;
     },
     addMessage(state: ChatState,
@@ -93,7 +93,7 @@ export const getThreads = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(slice.actions.getThreads(data));
 };
 
-export const getThread = (threadKey: string): AppThunk => async (dispatch): Promise<string> => {
+export const getThread = (threadKey: string): AppThunk => async (dispatch): Promise<string | undefined> => {
   const data = await chatApi.getThread(threadKey);
 
   dispatch(slice.actions.getThread(data));
@@ -115,7 +115,7 @@ export const addMessage = ({
   threadId,
   recipientIds,
   body
-}: { threadId?: string, recipientIds?: string[], body: string }): AppThunk => async (dispatch): Promise<string> => {
+}: { threadId?: string; recipientIds?: string[]; body: string; }): AppThunk => async (dispatch): Promise<string> => {
   const data = await chatApi.addMessage({
     threadId,
     recipientIds,

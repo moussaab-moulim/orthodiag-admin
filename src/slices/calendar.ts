@@ -59,7 +59,7 @@ export const getEvents = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(slice.actions.getEvents(data));
 };
 
-export const createEvent = (createData): AppThunk => async (dispatch): Promise<void> => {
+export const createEvent = (createData: { allDay: boolean, description: string, end: number, start: number, title: string }): AppThunk => async (dispatch): Promise<void> => {
   const data = await calendarApi.createEvent(createData);
 
   dispatch(slice.actions.createEvent(data));
@@ -67,7 +67,7 @@ export const createEvent = (createData): AppThunk => async (dispatch): Promise<v
 
 export const updateEvent = (
   eventId: string,
-  update: any
+  update: { allDay?: boolean, description?: string, end?: number, start?: number, title?: string }
 ): AppThunk => async (dispatch): Promise<void> => {
   const data = await calendarApi.updateEvent({
     eventId,
