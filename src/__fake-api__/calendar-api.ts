@@ -76,7 +76,7 @@ class CalendarApi {
     return Promise.resolve(deepCopy(events));
   }
 
-  createEvent(data): Promise<CalendarEvent> {
+  createEvent(data: { allDay: boolean, description: string, end: number, start: number, title: string }): Promise<CalendarEvent> {
     return new Promise((resolve, reject) => {
       try {
         const {
@@ -114,7 +114,19 @@ class CalendarApi {
     });
   }
 
-  updateEvent({ eventId, update }): Promise<CalendarEvent> {
+  updateEvent({
+    eventId,
+    update
+  }: {
+    eventId: string;
+    update: {
+      allDay?: boolean;
+      description?: string;
+      end?: number;
+      start?: number;
+      title?: string;
+    }
+  }): Promise<CalendarEvent> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy

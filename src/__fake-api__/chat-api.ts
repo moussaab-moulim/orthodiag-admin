@@ -183,13 +183,11 @@ let threads: Thread[] = [
   }
 ];
 
-const findThreadById = (threadId: string): Thread | null => {
-  const thread = threads.find((_threadId) => _threadId.id === threadId);
-
-  return thread || null;
+const findThreadById = (threadId: string): Thread | undefined => {
+  return threads.find((_threadId) => _threadId.id === threadId);
 };
 
-const findThreadByParticipantIds = (participantIds: string[]): Thread | null => {
+const findThreadByParticipantIds = (participantIds: string[]): Thread | undefined => {
   const thread = threads.find((_thread) => {
     if (_thread.participantIds.length !== participantIds.length) {
       return false;
@@ -206,7 +204,7 @@ const findThreadByParticipantIds = (participantIds: string[]): Thread | null => 
     return foundParticipantIds.size === participantIds.length;
   });
 
-  return thread || null;
+  return thread;
 };
 
 class ChatApi {
@@ -276,7 +274,7 @@ class ChatApi {
           name: 'Anika Visser'
         };
 
-        let thread: Thread;
+        let thread: Thread | undefined;
 
         // Thread key might be a contact ID
         const contact = contacts.find((contact) => contact.id === threadKey);
@@ -300,7 +298,7 @@ class ChatApi {
         const participants: Participant[] = [user];
 
         contacts.forEach((contact) => {
-          if (thread.participantIds.includes(contact.id)) {
+          if (thread!.participantIds.includes(contact.id)) {
             participants.push({
               id: contact.id,
               avatar: contact.avatar,
@@ -357,7 +355,7 @@ class ChatApi {
 
         if (thread) {
           contacts.forEach((contact) => {
-            if (thread.participantIds.includes(contact.id)) {
+            if (thread!.participantIds.includes(contact.id)) {
               participants.push({
                 id: contact.id,
                 avatar: contact.avatar,
@@ -391,7 +389,11 @@ class ChatApi {
     });
   }
 
-  addMessage({ threadId, recipientIds, body }): Promise<{ message: Message, threadId: string }> {
+  addMessage({
+    threadId,
+    recipientIds,
+    body
+  }: { threadId?: string; recipientIds?: string[]; body: string; }): Promise<{ message: Message, threadId: string }> {
     return new Promise((resolve, reject) => {
       try {
         if (!(threadId || recipientIds)) {
@@ -404,7 +406,7 @@ class ChatApi {
           id: '5e86809283e28b96d2d38537'
         };
 
-        let thread;
+        let thread: Thread | undefined;
 
         // Try to find the thread
         if (threadId) {
@@ -417,7 +419,7 @@ class ChatApi {
             return;
           }
         } else {
-          const participantIds = [user.id, ...recipientIds];
+          const participantIds = [user.id, ...(recipientIds || [])];
           thread = findThreadByParticipantIds(participantIds);
         }
 
@@ -425,7 +427,7 @@ class ChatApi {
         // For recipient Ids it may or may not exist. If it doesn't, create a new one.
 
         if (!thread) {
-          const participantIds = [user.id, ...recipientIds];
+          const participantIds = [user.id, ...(recipientIds || [])];
 
           thread = {
             id: createResourceId(),
@@ -451,7 +453,7 @@ class ChatApi {
         thread.messages.push(message);
 
         resolve({
-          threadId: thread.id,
+          threadId: thread.id!,
           message
         });
       } catch (err) {

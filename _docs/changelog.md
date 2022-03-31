@@ -2,6 +2,18 @@
 title: Changelog
 ---
 
+## v5.1.0
+
+###### Feb 9, 2022
+
+- Activate Typescript Strict mode
+- Update Firebase to v9
+- Replace Auth0 Popup with Redirect
+- Fix dependencies security issues
+- Update types and interfaces
+- Update dependencies
+- Update Sketch files to v5
+
 ## v5.0.2
 
 ###### Nov 4, 2021

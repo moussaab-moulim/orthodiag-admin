@@ -175,7 +175,7 @@ class KanbanApi {
     return Promise.resolve(deepCopy(board));
   }
 
-  createColumn({ name }): Promise<Column> {
+  createColumn({ name }: { name: string }): Promise<Column> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
@@ -201,11 +201,14 @@ class KanbanApi {
     });
   }
 
-  updateColumn({ columnId, update }): Promise<Column> {
+  updateColumn({
+    columnId,
+    update
+  }: { columnId: string; update: { name: string; }; }): Promise<Column> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the column to clear
         const column = clonedBoard.columns.find((_column) => _column.id === columnId);
@@ -224,11 +227,11 @@ class KanbanApi {
     });
   }
 
-  clearColumn(columnId): Promise<true> {
+  clearColumn(columnId: string): Promise<true> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the column to clear
         const column = clonedBoard.columns.find((_column) => _column.id === columnId);
@@ -255,11 +258,11 @@ class KanbanApi {
     });
   }
 
-  deleteColumn(columnId): Promise<true> {
+  deleteColumn(columnId: string): Promise<true> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the column to remove
         const column = clonedBoard.columns.find((_column) => _column.id === columnId);
@@ -286,11 +289,14 @@ class KanbanApi {
     });
   }
 
-  createCard({ columnId, name }): Promise<Card> {
+  createCard({
+    columnId,
+    name
+  }: { columnId: string; name: string; }): Promise<Card> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the column where the new card will be added
         const column = clonedBoard.columns.find((_column) => _column.id === columnId);
@@ -333,11 +339,19 @@ class KanbanApi {
     });
   }
 
-  updateCard({ cardId, update }): Promise<Card> {
+  updateCard({ cardId, update }: {
+    cardId: string;
+    update: {
+      name?: string;
+      description?: string;
+      isSubscribed?: boolean;
+      labels?: string[];
+    }
+  }): Promise<Card> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card that will be updated
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -361,11 +375,15 @@ class KanbanApi {
     });
   }
 
-  moveCard({ cardId, position, columnId }): Promise<true> {
+  moveCard({
+    cardId,
+    position,
+    columnId
+  }: { cardId: string; position: number; columnId?: string; }): Promise<true> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card that will be moved
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -416,11 +434,11 @@ class KanbanApi {
     });
   }
 
-  deleteCard(cardId): Promise<true> {
+  deleteCard(cardId: string): Promise<true> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card that will be removed
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -452,11 +470,11 @@ class KanbanApi {
     });
   }
 
-  addComment({ cardId, message }): Promise<Comment> {
+  addComment({ cardId, message }: { cardId: string; message: string; }): Promise<Comment> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card where the comment will be added
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -490,11 +508,11 @@ class KanbanApi {
     });
   }
 
-  addChecklist({ cardId, name }): Promise<Checklist> {
+  addChecklist({ cardId, name }: { cardId: string; name: string; }): Promise<Checklist> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card where the checklist will be added
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -525,11 +543,15 @@ class KanbanApi {
     });
   }
 
-  updateChecklist({ cardId, checklistId, update }): Promise<Checklist> {
+  updateChecklist({
+    cardId,
+    checklistId,
+    update
+  }: { cardId: string; checklistId: string; update: { name: string }; }): Promise<Checklist> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card that contains the checklist that will be updated
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -561,11 +583,14 @@ class KanbanApi {
     });
   }
 
-  deleteChecklist({ cardId, checklistId }): Promise<true> {
+  deleteChecklist({
+    cardId,
+    checklistId
+  }: { cardId: string; checklistId: string; }): Promise<true> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card that contains the checklist that will be removed
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -589,11 +614,15 @@ class KanbanApi {
     });
   }
 
-  addCheckItem({ cardId, checklistId, name }): Promise<CheckItem> {
+  addCheckItem({
+    cardId,
+    checklistId,
+    name
+  }: { cardId: string; checklistId: string; name: string; }): Promise<CheckItem> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card where the checklist will be added
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -633,11 +662,24 @@ class KanbanApi {
     });
   }
 
-  updateCheckItem({ cardId, checklistId, checkItemId, update }): Promise<CheckItem> {
+  updateCheckItem({
+    cardId,
+    checklistId,
+    checkItemId,
+    update
+  }: {
+    cardId: string;
+    checklistId: string;
+    checkItemId: string;
+    update: {
+      name?: string;
+      state?: 'complete' | 'incomplete';
+    };
+  }): Promise<CheckItem> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card where the checklist will be added
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);
@@ -677,11 +719,19 @@ class KanbanApi {
     });
   }
 
-  deleteCheckItem({ cardId, checklistId, checkItemId }): Promise<true> {
+  deleteCheckItem({
+    cardId,
+    checklistId,
+    checkItemId
+  }: {
+    cardId: string;
+    checklistId: string;
+    checkItemId: string;
+  }): Promise<true> {
     return new Promise((resolve, reject) => {
       try {
         // Make a deep copy
-        const clonedBoard = deepCopy(board);
+        const clonedBoard: Board = deepCopy(board);
 
         // Find the card that contains the checklist that contains the check item that will be removed
         const card = clonedBoard.cards.find((_card) => _card.id === cardId);

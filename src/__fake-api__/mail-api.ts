@@ -224,16 +224,16 @@ class MailApi {
     return Promise.resolve(deepCopy(labels));
   }
 
-  getEmails({ label }): Promise<Email[]> {
+  getEmails({ label }: { label?: string; }): Promise<Email[]> {
     return new Promise((resolve, reject) => {
       try {
         // Initially we make a copy of all emails.
         // On a real server this will be different since there will be a real DB query.
-        let filteredEmails = [];
+        let filteredEmails: Email[] = [];
 
         // Get all user custom labels
         const customLabels = labels.reduce(
-          (acc, label) => {
+          (acc: string[], label) => {
             if (label.type === 'custom') {
               acc.push(label.id);
             }
@@ -243,8 +243,8 @@ class MailApi {
           []
         );
 
-        if (customLabels.includes(label)) {
-          filteredEmails = emails.filter((email) => email.labelIds.includes(label));
+        if (label && customLabels.includes(label!)) {
+          filteredEmails = emails.filter((email) => email.labelIds.includes(label!));
         } else {
           switch (label) {
             case undefined:
@@ -264,8 +264,6 @@ class MailApi {
             case 'important':
               filteredEmails = emails.filter((email) => email.isImportant);
               break;
-            default:
-              break;
           }
         }
 
@@ -277,7 +275,7 @@ class MailApi {
     });
   }
 
-  getEmail(emailId): Promise<Email> {
+  getEmail(emailId: string): Promise<Email> {
     return new Promise((resolve, reject) => {
       try {
         // Find the mail

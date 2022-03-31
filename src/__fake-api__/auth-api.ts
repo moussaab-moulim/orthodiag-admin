@@ -3,7 +3,7 @@ import { createResourceId } from '../utils/create-resource-id';
 import { sign, decode, JWT_SECRET, JWT_EXPIRES_IN } from '../utils/jwt';
 import { wait } from '../utils/wait';
 
-const users = [
+const users: User[] = [
   {
     id: '5e86809283e28b96d2d38537',
     avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
@@ -15,7 +15,7 @@ const users = [
 ];
 
 class AuthApi {
-  async login({ email, password }): Promise<string> {
+  async login({ email, password }: { email: string; password: string; }): Promise<string> {
     await wait(500);
 
     return new Promise((resolve, reject) => {
@@ -43,7 +43,11 @@ class AuthApi {
     });
   }
 
-  async register({ email, name, password }): Promise<string> {
+  async register({
+    email,
+    name,
+    password
+  }: { email: string; name: string; password: string; }): Promise<string> {
     await wait(1000);
 
     return new Promise((resolve, reject) => {
@@ -58,7 +62,7 @@ class AuthApi {
 
         user = {
           id: createResourceId(),
-          avatar: null,
+          avatar: undefined,
           email,
           name,
           password,
@@ -81,7 +85,7 @@ class AuthApi {
     });
   }
 
-  me(accessToken): Promise<User> {
+  me(accessToken: string): Promise<User> {
     return new Promise((resolve, reject) => {
       try {
         // Decode access token
