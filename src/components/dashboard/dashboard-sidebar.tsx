@@ -5,7 +5,15 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'react-i18next';
-import { Box, Button, Chip, Divider, Drawer, Typography, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  Drawer,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import type { Theme } from '@mui/material';
 import { Calendar as CalendarIcon } from '../../icons/calendar';
 import { Cash as CashIcon } from '../../icons/cash';
@@ -53,7 +61,7 @@ interface Section {
 }
 
 const getSections = (t: TFunction): Section[] => [
-  {
+  /*  {
     title: t('General'),
     items: [
       {
@@ -96,11 +104,11 @@ const getSections = (t: TFunction): Section[] => [
         icon: <UserCircleIcon fontSize="small" />
       }
     ]
-  },
+  }, */
   {
     title: t('Management'),
     items: [
-      {
+      /*     {
         title: t('Customers'),
         path: '/dashboard/customers',
         icon: <UsersIcon fontSize="small" />,
@@ -133,23 +141,23 @@ const getSections = (t: TFunction): Section[] => [
             path: '/dashboard/products/new'
           }
         ]
-      },
+      }, */
       {
-        title: t('Orders'),
-        icon: <ShoppingCartIcon fontSize="small" />,
-        path: '/dashboard/orders',
+        title: t('dashboard-sidebar-appointments'),
+        icon: <CalendarIcon fontSize='small' />,
+        path: '/dashboard/appointments',
         children: [
           {
             title: t('List'),
-            path: '/dashboard/orders'
+            path: '/dashboard/appointments',
           },
-          {
+          /* {
             title: t('Details'),
             path: '/dashboard/orders/1'
-          }
-        ]
+          } */
+        ],
       },
-      {
+      /*    {
         title: t('Invoices'),
         path: '/dashboard/invoices',
         icon: <ReceiptTaxIcon fontSize="small" />,
@@ -163,10 +171,35 @@ const getSections = (t: TFunction): Section[] => [
             path: '/dashboard/invoices/1'
           }
         ]
-      }
-    ]
+      } */
+    ],
   },
   {
+    title: t('Apps'),
+    items: [
+      /* {
+        title: t('Kanban'),
+        path: '/dashboard/kanban',
+        icon: <ClipboardListIcon fontSize="small" />
+      },
+      {
+        title: t('Mail'),
+        path: '/dashboard/mail',
+        icon: <MailIcon fontSize="small" />
+      },
+      {
+        title: t('Chat'),
+        path: '/dashboard/chat',
+        icon: <ChatAlt2Icon fontSize="small" />
+      }, */
+      {
+        title: t('Calendar'),
+        path: '/dashboard/calendar',
+        icon: <CalendarIcon fontSize='small' />,
+      },
+    ],
+  },
+  /*   {
     title: t('Platforms'),
     items: [
       {
@@ -302,22 +335,20 @@ const getSections = (t: TFunction): Section[] => [
         ]
       }
     ]
-  }
+  } */
 ];
 
 export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   const { onClose, open } = props;
   const router = useRouter();
   const { t } = useTranslation();
-  const lgUp = useMediaQuery(
-    (theme: Theme) => theme.breakpoints.up('lg'),
-    {
-      noSsr: true
-    }
-  );
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'), {
+    noSsr: true,
+  });
   const sections = useMemo(() => getSections(t), [t]);
   const organizationsRef = useRef<HTMLButtonElement | null>(null);
-  const [openOrganizationsPopover, setOpenOrganizationsPopover] = useState<boolean>(false);
+  const [openOrganizationsPopover, setOpenOrganizationsPopover] =
+    useState<boolean>(false);
 
   const handlePathChange = () => {
     if (!router.isReady) {
@@ -349,28 +380,25 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         sx={{
           height: '100%',
           '& .simplebar-content': {
-            height: '100%'
-          }
+            height: '100%',
+          },
         }}
       >
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            height: '100%'
+            height: '100%',
           }}
         >
           <div>
             <Box sx={{ p: 3 }}>
-              <NextLink
-                href="/"
-                passHref
-              >
+              <NextLink href='/' passHref>
                 <a>
                   <Logo
                     sx={{
                       height: 42,
-                      width: 42
+                      width: 42,
                     }}
                   />
                 </a>
@@ -388,30 +416,22 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                   justifyContent: 'space-between',
                   px: 3,
                   py: '11px',
-                  borderRadius: 1
+                  borderRadius: 1,
                 }}
               >
                 <div>
-                  <Typography
-                    color="inherit"
-                    variant="subtitle1"
-                  >
-                    Acme Inc
+                  <Typography color='inherit' variant='subtitle1'>
+                    OrthoGier Neuchâtel
                   </Typography>
-                  <Typography
-                    color="neutral.400"
-                    variant="body2"
-                  >
-                    {t('Your tier')}
-                    {' '}
-                    : Premium
+                  <Typography color='neutral.400' variant='body2'>
+                    {t('Your tier')} : Premium
                   </Typography>
                 </div>
                 <SelectorIcon
                   sx={{
                     color: 'neutral.500',
                     width: 14,
-                    height: 14
+                    height: 14,
                   }}
                 />
               </Box>
@@ -420,7 +440,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
           <Divider
             sx={{
               borderColor: '#2D3748', // dark divider
-              my: 3
+              my: 3,
             }}
           />
           <Box sx={{ flexGrow: 1 }}>
@@ -431,14 +451,14 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                 sx={{
                   mt: 2,
                   '& + &': {
-                    mt: 2
-                  }
+                    mt: 2,
+                  },
                 }}
                 {...section}
               />
             ))}
           </Box>
-          <Divider
+          {/*    <Divider
             sx={{
               borderColor: '#2D3748'  // dark divider
             }}
@@ -470,7 +490,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                 {t('Documentation')}
               </Button>
             </NextLink>
-          </Box>
+          </Box> */}
         </Box>
       </Scrollbar>
       <OrganizationPopover
@@ -484,19 +504,20 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   if (lgUp) {
     return (
       <Drawer
-        anchor="left"
+        anchor='left'
         open
         PaperProps={{
           sx: {
             backgroundColor: 'neutral.900',
             borderRightColor: 'divider',
             borderRightStyle: 'solid',
-            borderRightWidth: (theme) => theme.palette.mode === 'dark' ? 1 : 0,
+            borderRightWidth: (theme) =>
+              theme.palette.mode === 'dark' ? 1 : 0,
             color: '#FFFFFF',
-            width: 280
-          }
+            width: 280,
+          },
         }}
-        variant="permanent"
+        variant='permanent'
       >
         {content}
       </Drawer>
@@ -505,18 +526,18 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
 
   return (
     <Drawer
-      anchor="left"
+      anchor='left'
       onClose={onClose}
       open={open}
       PaperProps={{
         sx: {
           backgroundColor: 'neutral.900',
           color: '#FFFFFF',
-          width: 280
-        }
+          width: 280,
+        },
       }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-      variant="temporary"
+      variant='temporary'
     >
       {content}
     </Drawer>
@@ -525,5 +546,5 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
 
 DashboardSidebar.propTypes = {
   onClose: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool,
 };

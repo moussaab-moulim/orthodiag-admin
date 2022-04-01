@@ -7,10 +7,7 @@ interface OrganizationPopoverProps {
   open?: boolean;
 }
 
-const organizations = [
-  'Acme Inc',
-  'Division Inc'
-];
+const organizations = ['OrthoGrier Neuchâtel', 'OrthoGrier Lausanne'];
 
 export const OrganizationPopover: FC<OrganizationPopoverProps> = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
@@ -24,7 +21,7 @@ export const OrganizationPopover: FC<OrganizationPopoverProps> = (props) => {
       anchorEl={anchorEl}
       anchorOrigin={{
         horizontal: 'left',
-        vertical: 'bottom'
+        vertical: 'bottom',
       }}
       keepMounted
       onClose={onClose}
@@ -34,10 +31,7 @@ export const OrganizationPopover: FC<OrganizationPopoverProps> = (props) => {
       {...other}
     >
       {organizations.map((organization) => (
-        <MenuItem
-          key={organization}
-          onClick={() => handleChange(organization)}
-        >
+        <MenuItem key={organization} onClick={() => handleChange(organization)}>
           {organization}
         </MenuItem>
       ))}

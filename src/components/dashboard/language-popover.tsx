@@ -2,7 +2,14 @@ import type { FC } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { Box, ListItemIcon, ListItemText, MenuItem, Popover, Typography } from '@mui/material';
+import {
+  Box,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Popover,
+  Typography,
+} from '@mui/material';
 
 interface LanguagePopoverProps {
   anchorEl: null | Element;
@@ -10,28 +17,32 @@ interface LanguagePopoverProps {
   open?: boolean;
 }
 
-type Language = 'en' | 'de' | 'es';
+type Language = 'en' | 'de' | 'es' | 'fr';
 
 type LanguageOptions = {
   [key in Language]: {
     icon: string;
     label: string;
   };
-}
+};
 
 const languageOptions: LanguageOptions = {
   en: {
     icon: '/static/icons/uk_flag.svg',
-    label: 'English'
+    label: 'English',
   },
   de: {
     icon: '/static/icons/de_flag.svg',
-    label: 'German'
+    label: 'German',
   },
   es: {
     icon: '/static/icons/es_flag.svg',
-    label: 'Spanish'
-  }
+    label: 'Spanish',
+  },
+  fr: {
+    icon: '/static/icons/fr_flag.svg',
+    label: 'Français',
+  },
 };
 
 export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
@@ -49,7 +60,7 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
       anchorEl={anchorEl}
       anchorOrigin={{
         horizontal: 'center',
-        vertical: 'bottom'
+        vertical: 'bottom',
       }}
       keepMounted
       onClose={onClose}
@@ -59,10 +70,7 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
       {...other}
     >
       {(Object.keys(languageOptions) as Language[]).map((language) => (
-        <MenuItem
-          onClick={() => handleChange(language)}
-          key={language}
-        >
+        <MenuItem onClick={() => handleChange(language)} key={language}>
           <ListItemIcon>
             <Box
               sx={{
@@ -70,8 +78,8 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
                 height: 20,
                 width: 20,
                 '& img': {
-                  width: '100%'
-                }
+                  width: '100%',
+                },
               }}
             >
               <img
@@ -81,11 +89,11 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
             </Box>
           </ListItemIcon>
           <ListItemText
-            primary={(
-              <Typography variant="subtitle2">
+            primary={
+              <Typography variant='subtitle2'>
                 {languageOptions[language].label}
               </Typography>
-            )}
+            }
           />
         </MenuItem>
       ))}
@@ -96,5 +104,5 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
 LanguagePopover.propTypes = {
   anchorEl: PropTypes.any,
   onClose: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool,
 };
