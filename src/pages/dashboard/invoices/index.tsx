@@ -38,7 +38,7 @@ const applyFilters = (
     }
   }
 
-  if (filters.startDate) {
+  if (filters.startDate && invoice.issueDate) {
     // Convert the filter start date to timestamp to be able to compare with the
     // timestamp from the invoice
     const startDateMatched = endOfDay(invoice.issueDate) >= startOfDay(filters.startDate.getTime());
@@ -48,7 +48,7 @@ const applyFilters = (
     }
   }
 
-  if (filters.endDate) {
+  if (filters.endDate && invoice.issueDate) {
     // Convert the filter end date to timestamp to be able to compare with the
     // timestamp from the invoice
     const endDateMatched = startOfDay(invoice.issueDate) <= endOfDay(filters.endDate.getTime());
@@ -58,7 +58,7 @@ const applyFilters = (
     }
   }
 
-  if (filters.customer?.length > 0) {
+  if (filters.customer && filters.customer.length > 0) {
     const customerMatched = filters.customer.includes(invoice.customer.name);
 
     if (!customerMatched) {

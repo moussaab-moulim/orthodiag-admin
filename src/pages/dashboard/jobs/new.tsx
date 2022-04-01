@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { FC } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -30,10 +30,12 @@ const StepIcon: FC<StepIconProps> = (props) => {
   return (
     <Avatar
       sx={{
-        backgroundColor: highlight && 'secondary.main',
-        color: highlight && 'secondary.contrastText',
         height: 40,
-        width: 40
+        width: 40,
+        ...(highlight && {
+          backgroundColor: 'secondary.main',
+          color: 'secondary.contrastText'
+        })
       }}
       variant="rounded"
     >
@@ -170,10 +172,12 @@ const JobCreate: NextPage = () => {
                           </StepLabel>
                           <StepContent
                             sx={{
-                              py: (activeStep === index) && 4,
                               ml: '20px',
                               borderLeftColor: 'divider',
-                              borderLeftWidth: 2
+                              borderLeftWidth: 2,
+                              ...(activeStep === index && {
+                                py: 4
+                              })
                             }}
                           >
                             {step.content}

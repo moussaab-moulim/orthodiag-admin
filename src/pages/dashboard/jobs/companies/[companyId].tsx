@@ -54,7 +54,6 @@ const CompanyDetails: NextPage = () => {
       const data = await jobApi.getCompany();
 
       if (isMounted()) {
-        // @ts-ignore
         setCompany(data);
       }
     } catch (err) {
@@ -176,15 +175,15 @@ const CompanyDetails: NextPage = () => {
                   {currentTab === 'overview' && <CompanyOverview company={company} />}
                   {currentTab === 'reviews' && (
                     <CompanyReviews
-                      reviews={company.reviews}
+                      reviews={company.reviews || []}
                       averageRating={company.averageRating}
                     />
                   )}
                   {currentTab === 'activity' && (
-                    <CompanyActivity activities={company.activities} />
+                    <CompanyActivity activities={company.activities || []} />
                   )}
-                  {currentTab === 'team' && <CompanyTeam members={company.members} />}
-                  {currentTab === 'assets' && <CompanyAssets assets={company.assets} />}
+                  {currentTab === 'team' && <CompanyTeam members={company.members || []} />}
+                  {currentTab === 'assets' && <CompanyAssets assets={company.assets || []} />}
                 </CardContent>
               </Card>
             </Grid>
