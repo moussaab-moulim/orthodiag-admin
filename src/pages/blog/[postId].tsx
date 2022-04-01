@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { format, subHours } from 'date-fns';
-import Markdown from 'react-markdown/with-html';
+import Markdown from 'react-markdown';
 import { Avatar, Box, Button, Card, Chip, Container, Divider, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { blogApi } from '../../__fake-api__/blog-api';
@@ -15,7 +15,18 @@ import { useMounted } from '../../hooks/use-mounted';
 import { gtm } from '../../lib/gtm';
 import type { Post } from '../../types/blog';
 
-const comments = [
+interface Comment {
+  id: string;
+  authorAvatar: string;
+  authorName: string;
+  authorRole: string;
+  content: string;
+  createdAt: number;
+  isLiked: boolean;
+  likes: number;
+}
+
+const comments: Comment[] = [
   {
     id: 'd0ab3d02ef737fa6b007e35d',
     authorAvatar: '/static/mock-images/avatars/avatar-alcides_antonio.png',
@@ -207,7 +218,9 @@ const BlogPostDetails: NextPage = () => {
           />
           <Box sx={{ py: 3 }}>
             <MarkdownWrapper>
-              <Markdown source={post.content} />
+              {post.content && (
+                <Markdown children={post.content} />
+              )}
             </MarkdownWrapper>
           </Box>
           <Divider sx={{ my: 3 }} />

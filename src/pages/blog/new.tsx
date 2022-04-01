@@ -14,6 +14,7 @@ import {
   Typography
 } from '@mui/material';
 import { FileDropzone } from '../../components/file-dropzone';
+import type { File } from '../../components/file-dropzone';
 import { QuillEditor } from '../../components/quill-editor';
 import { ArrowLeft as ArrowLeftIcon } from '../../icons/arrow-left';
 import { DotsVertical as DotsHorizontalIcon } from '../../icons/dots-vertical';
@@ -21,7 +22,7 @@ import { gtm } from '../../lib/gtm';
 import { fileToBase64 } from '../../utils/file-to-base64';
 
 const BlogPostCreate: NextPage = () => {
-  const [cover, setCover] = useState<string>('/static/mock-images/covers/cover_4.jpeg');
+  const [cover, setCover] = useState<string | null>('/static/mock-images/covers/cover_4.jpeg');
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });

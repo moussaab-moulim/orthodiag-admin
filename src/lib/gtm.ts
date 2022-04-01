@@ -1,8 +1,8 @@
 interface GTMConfig {
-  containerId: string;
+  containerId?: string;
 }
 
-const warn = (...args) => {
+const warn = (...args: unknown[]) => {
   if (process.env.NODE_ENV !== 'development') {
     return;
   }
@@ -11,15 +11,20 @@ const warn = (...args) => {
 };
 
 class GTM {
-  CONTAINER_ID = null;
+  CONTAINER_ID?: string;
 
   initialized = false;
 
   configure(config: GTMConfig) {
+    if (!config.containerId) {
+      warn('GTM requires a GTM ID to be loaded.');
+      return;
+    }
+
     this.CONTAINER_ID = config.containerId;
   }
 
-  initialize(config) {
+  initialize(config: GTMConfig) {
     if (this.initialized) {
       warn('GTM can only be initialized once.');
       return;
@@ -35,12 +40,11 @@ class GTM {
       return;
     }
 
-    if (!config.containerId) {
-      warn('GTM requires a GTM ID to be loaded.');
+    this.configure(config);
+
+    if (!this.CONTAINER_ID) {
       return;
     }
-
-    this.configure(config);
 
     const script = document.createElement('script');
     const noscript = document.createElement('noscript');
@@ -61,7 +65,7 @@ class GTM {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  push(...args) {
+  push(...args: any[]) {
     if (!window) {
       warn('GTM push works only on client side.');
       return;

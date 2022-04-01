@@ -10,7 +10,9 @@ import { Logo } from '../../components/logo';
 import { useAuth } from '../../hooks/use-auth';
 import { gtm } from '../../lib/gtm';
 
-const platformIcons = {
+type Platform = 'Amplify' | 'Auth0' | 'Firebase' | 'JWT';
+
+const platformIcons: { [key in Platform]: string; } = {
   Amplify: '/static/icons/amplify.svg',
   Auth0: '/static/icons/auth0.svg',
   Firebase: '/static/icons/firebase.svg',
@@ -18,7 +20,7 @@ const platformIcons = {
 };
 
 const PasswordRecovery: NextPage = () => {
-  const { platform } = useAuth() as any;
+  const { platform }: { platform: Platform } = useAuth();
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
