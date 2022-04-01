@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 
-interface Settings {
+export interface Settings {
   direction?: 'ltr' | 'rtl';
   responsiveFontSizes?: boolean;
   theme: 'light' | 'dark';
@@ -27,7 +27,7 @@ export const restoreSettings = (): Settings | null => {
   let settings = null;
 
   try {
-    const storedData: string | null = window.localStorage.getItem('settings');
+    const storedData: string | null = globalThis.localStorage.getItem('settings');
 
     if (storedData) {
       settings = JSON.parse(storedData);
@@ -35,7 +35,7 @@ export const restoreSettings = (): Settings | null => {
       settings = {
         direction: 'ltr',
         responsiveFontSizes: true,
-        theme: window.matchMedia('(prefers-color-scheme: dark)').matches
+        theme: globalThis.matchMedia('(prefers-color-scheme: dark)').matches
           ? 'dark'
           : 'light'
       };
@@ -50,7 +50,7 @@ export const restoreSettings = (): Settings | null => {
 };
 
 export const storeSettings = (settings: Settings): void => {
-  window.localStorage.setItem('settings', JSON.stringify(settings));
+  globalThis.localStorage.setItem('settings', JSON.stringify(settings));
 };
 
 export const SettingsContext = createContext<SettingsContextValue>({

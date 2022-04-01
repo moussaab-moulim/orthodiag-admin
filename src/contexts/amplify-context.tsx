@@ -13,7 +13,7 @@ interface State {
   user: User | null;
 }
 
-interface AuthContextValue extends State {
+export interface AuthContextValue extends State {
   platform: 'Amplify';
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -32,8 +32,14 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+enum ActionType {
+  INITIALIZE = 'INITIALIZE',
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
+}
+
 type InitializeAction = {
-  type: 'INITIALIZE';
+  type: ActionType.INITIALIZE;
   payload: {
     isAuthenticated: boolean;
     user: User | null;
@@ -41,45 +47,22 @@ type InitializeAction = {
 };
 
 type LoginAction = {
-  type: 'LOGIN';
+  type: ActionType.LOGIN;
   payload: {
     user: User;
   };
 };
 
 type LogoutAction = {
-  type: 'LOGOUT';
-};
-
-type RegisterAction = {
-  type: 'REGISTER';
-};
-
-type VerifyCodeAction = {
-  type: 'VERIFY_CODE';
-};
-
-type ResendCodeAction = {
-  type: 'RESEND_CODE';
+  type: ActionType.LOGOUT;
 }
-  ;
-type PasswordRecoveryAction = {
-  type: 'PASSWORD_RECOVERY';
-};
-
-type PasswordResetAction = {
-  type: 'PASSWORD_RESET';
-};
 
 type Action =
   | InitializeAction
   | LoginAction
-  | LogoutAction
-  | RegisterAction
-  | VerifyCodeAction
-  | ResendCodeAction
-  | PasswordRecoveryAction
-  | PasswordResetAction;
+  | LogoutAction;
+
+type Handler = (state: State, action: any) => State;
 
 const initialState: State = {
   isAuthenticated: false,
@@ -87,7 +70,7 @@ const initialState: State = {
   user: null
 };
 
-const handlers: Record<string, (state: State, action: Action) => State> = {
+const handlers: Record<ActionType, Handler> = {
   INITIALIZE: (state: State, action: InitializeAction): State => {
     const { isAuthenticated, user } = action.payload;
 
@@ -111,12 +94,7 @@ const handlers: Record<string, (state: State, action: Action) => State> = {
     ...state,
     isAuthenticated: false,
     user: null
-  }),
-  REGISTER: (state: State): State => ({ ...state }),
-  VERIFY_CODE: (state: State): State => ({ ...state }),
-  RESEND_CODE: (state: State): State => ({ ...state }),
-  PASSWORD_RECOVERY: (state: State): State => ({ ...state }),
-  PASSWORD_RESET: (state: State): State => ({ ...state })
+  })
 };
 
 const reducer = (state: State, action: Action): State => (
@@ -149,7 +127,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         // The auth state only provides basic information.
 
         dispatch({
-          type: 'INITIALIZE',
+          type: ActionType.INITIALIZE,
           payload: {
             isAuthenticated: true,
             user: {
@@ -163,7 +141,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         });
       } catch (error) {
         dispatch({
-          type: 'INITIALIZE',
+          type: ActionType.INITIALIZE,
           payload: {
             isAuthenticated: false,
             user: null
@@ -184,7 +162,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     }
 
     dispatch({
-      type: 'LOGIN',
+      type: ActionType.LOGIN,
       payload: {
         user: {
           id: user.attributes.sub,
@@ -200,7 +178,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const logout = async (): Promise<void> => {
     await Auth.signOut();
     dispatch({
-      type: 'LOGOUT'
+      type: ActionType.LOGOUT
     });
   };
 
@@ -210,30 +188,18 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       password,
       attributes: { email }
     });
-    dispatch({
-      type: 'REGISTER'
-    });
   };
 
   const verifyCode = async (username: string, code: string): Promise<void> => {
     await Auth.confirmSignUp(username, code);
-    dispatch({
-      type: 'VERIFY_CODE'
-    });
   };
 
   const resendCode = async (username: string): Promise<void> => {
     await Auth.resendSignUp(username);
-    dispatch({
-      type: 'RESEND_CODE'
-    });
   };
 
   const passwordRecovery = async (username: string): Promise<void> => {
     await Auth.forgotPassword(username);
-    dispatch({
-      type: 'PASSWORD_RECOVERY'
-    });
   };
 
   const passwordReset = async (
@@ -242,9 +208,6 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     newPassword: string
   ): Promise<void> => {
     await Auth.forgotPasswordSubmit(username, code, newPassword);
-    dispatch({
-      type: 'PASSWORD_RESET'
-    });
   };
 
   return (

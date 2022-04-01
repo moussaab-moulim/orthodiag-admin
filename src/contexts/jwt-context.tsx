@@ -10,7 +10,7 @@ interface State {
   user: User | null;
 }
 
-interface AuthContextValue extends State {
+export interface AuthContextValue extends State {
   platform: 'JWT';
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -21,8 +21,15 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+enum ActionType {
+  INITIALIZE = 'INITIALIZE',
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
+  REGISTER = 'REGISTER',
+}
+
 type InitializeAction = {
-  type: 'INITIALIZE';
+  type: ActionType.INITIALIZE;
   payload: {
     isAuthenticated: boolean;
     user: User | null;
@@ -30,18 +37,18 @@ type InitializeAction = {
 };
 
 type LoginAction = {
-  type: 'LOGIN';
+  type: ActionType.LOGIN;
   payload: {
     user: User;
   };
 };
 
 type LogoutAction = {
-  type: 'LOGOUT';
+  type: ActionType.LOGOUT;
 };
 
 type RegisterAction = {
-  type: 'REGISTER';
+  type: ActionType.REGISTER;
   payload: {
     user: User;
   };
@@ -53,13 +60,15 @@ type Action =
   | LogoutAction
   | RegisterAction;
 
+type Handler = (state: State, action: any) => State;
+
 const initialState: State = {
   isAuthenticated: false,
   isInitialized: false,
   user: null
 };
 
-const handlers: Record<string, (state: State, action: Action) => State> = {
+const handlers: Record<ActionType, Handler> = {
   INITIALIZE: (state: State, action: InitializeAction): State => {
     const { isAuthenticated, user } = action.payload;
 
@@ -114,13 +123,13 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   useEffect(() => {
     const initialize = async (): Promise<void> => {
       try {
-        const accessToken = window.localStorage.getItem('accessToken');
+        const accessToken = globalThis.localStorage.getItem('accessToken');
 
         if (accessToken) {
           const user = await authApi.me(accessToken);
 
           dispatch({
-            type: 'INITIALIZE',
+            type: ActionType.INITIALIZE,
             payload: {
               isAuthenticated: true,
               user
@@ -128,7 +137,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           });
         } else {
           dispatch({
-            type: 'INITIALIZE',
+            type: ActionType.INITIALIZE,
             payload: {
               isAuthenticated: false,
               user: null
@@ -138,7 +147,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       } catch (err) {
         console.error(err);
         dispatch({
-          type: 'INITIALIZE',
+          type: ActionType.INITIALIZE,
           payload: {
             isAuthenticated: false,
             user: null
@@ -157,7 +166,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     localStorage.setItem('accessToken', accessToken);
 
     dispatch({
-      type: 'LOGIN',
+      type: ActionType.LOGIN,
       payload: {
         user
       }
@@ -166,7 +175,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 
   const logout = async (): Promise<void> => {
     localStorage.removeItem('accessToken');
-    dispatch({ type: 'LOGOUT' });
+    dispatch({ type: ActionType.LOGOUT });
   };
 
   const register = async (
@@ -180,7 +189,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     localStorage.setItem('accessToken', accessToken);
 
     dispatch({
-      type: 'REGISTER',
+      type: ActionType.REGISTER,
       payload: {
         user
       }

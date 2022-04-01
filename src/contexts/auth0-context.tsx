@@ -7,6 +7,10 @@ import type { User } from '../types/user';
 
 let auth0Client: Auth0Client | null = null;
 
+type AppState = {
+  returnUrl?: string;
+};
+
 interface State {
   isInitialized: boolean;
   isAuthenticated: boolean;
@@ -15,16 +19,23 @@ interface State {
 
 export interface AuthContextValue extends State {
   platform: 'Auth0';
-  loginWithPopup: (options?: any) => Promise<void>;
-  logout: () => void;
+  loginWithRedirect: (appState?: AppState) => Promise<void>;
+  handleRedirectCallback: () => Promise<AppState | undefined>;
+  logout: () => Promise<void>;
 }
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
+enum ActionType {
+  INITIALIZE = 'INITIALIZE',
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
+}
+
 type InitializeAction = {
-  type: 'INITIALIZE';
+  type: ActionType.INITIALIZE;
   payload: {
     isAuthenticated: boolean;
     user: User | null;
@@ -32,25 +43,22 @@ type InitializeAction = {
 };
 
 type LoginAction = {
-  type: 'LOGIN';
+  type: ActionType.LOGIN;
   payload: {
     user: User;
   };
 };
 
 type LogoutAction = {
-  type: 'LOGOUT';
-};
-
-type RegisterAction = {
-  type: 'REGISTER';
-};
+  type: ActionType.LOGOUT;
+}
 
 type Action =
   | InitializeAction
   | LoginAction
-  | LogoutAction
-  | RegisterAction;
+  | LogoutAction;
+
+type Handler = (state: State, action: any) => State;
 
 const initialState: State = {
   isAuthenticated: false,
@@ -58,7 +66,7 @@ const initialState: State = {
   user: null
 };
 
-const handlers: Record<string, (state: State, action: Action) => State> = {
+const handlers: Record<ActionType, Handler> = {
   INITIALIZE: (state: State, action: InitializeAction): State => {
     const { isAuthenticated, user } = action.payload;
 
@@ -92,7 +100,8 @@ const reducer = (state: State, action: Action): State => (
 export const AuthContext = createContext<AuthContextValue>({
   ...initialState,
   platform: 'Auth0',
-  loginWithPopup: () => Promise.resolve(),
+  loginWithRedirect: () => Promise.resolve(),
+  handleRedirectCallback: () => Promise.resolve(undefined),
   logout: () => Promise.resolve()
 });
 
@@ -104,8 +113,10 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     const initialize = async (): Promise<void> => {
       try {
         auth0Client = new Auth0Client({
-          redirect_uri: window.location.origin,
-          ...auth0Config
+          redirect_uri: window.location.origin + '/authentication/authorize',
+          domain: auth0Config.domain!,
+          client_id: auth0Config.client_id!,
+          cacheLocation: 'localstorage'
         });
 
         await auth0Client.checkSession();
@@ -120,13 +131,13 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           // The auth state only provides basic information.
 
           dispatch({
-            type: 'INITIALIZE',
+            type: ActionType.INITIALIZE,
             payload: {
               isAuthenticated,
               user: {
-                id: user.sub,
-                avatar: user.picture,
-                email: user.email,
+                id: user!.sub as string,
+                avatar: user!.picture,
+                email: user!.email as string,
                 name: 'Anika Visser',
                 plan: 'Premium'
               }
@@ -134,7 +145,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           });
         } else {
           dispatch({
-            type: 'INITIALIZE',
+            type: ActionType.INITIALIZE,
             payload: {
               isAuthenticated,
               user: null
@@ -144,7 +155,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       } catch (err) {
         console.error(err);
         dispatch({
-          type: 'INITIALIZE',
+          type: ActionType.INITIALIZE,
           payload: {
             isAuthenticated: false,
             user: null
@@ -156,36 +167,39 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     initialize();
   }, []);
 
-  const loginWithPopup = async (options): Promise<void> => {
-    await auth0Client.loginWithPopup(options);
-
-    const isAuthenticated = await auth0Client.isAuthenticated();
-
-    if (isAuthenticated) {
-      const user = await auth0Client.getUser();
-
-      // Here you should extract the complete user profile to make it available in your entire app.
-      // The auth state only provides basic information.
-
-      dispatch({
-        type: 'LOGIN',
-        payload: {
-          user: {
-            id: user.sub,
-            avatar: user.picture,
-            email: user.email,
-            name: 'Anika Visser',
-            plan: 'Premium'
-          }
-        }
-      });
-    }
+  const loginWithRedirect = async (appState?: AppState): Promise<void> => {
+    await auth0Client!.loginWithRedirect({
+      appState
+    });
   };
 
-  const logout = (): void => {
-    auth0Client.logout();
+  const handleRedirectCallback = async (): Promise<AppState | undefined> => {
+    const result = await auth0Client!.handleRedirectCallback();
+    const user = await auth0Client!.getUser();
+
+    // Here you should extract the complete user profile to make it available in your entire app.
+    // The auth state only provides basic information.
+
     dispatch({
-      type: 'LOGOUT'
+      type: ActionType.LOGIN,
+      payload: {
+        user: {
+          id: user!.sub as string,
+          avatar: user!.picture,
+          email: user!.email as string,
+          name: 'Anika Visser',
+          plan: 'Premium'
+        }
+      }
+    });
+
+    return result.appState;
+  };
+
+  const logout = async (): Promise<void> => {
+    await auth0Client!.logout();
+    dispatch({
+      type: ActionType.LOGOUT
     });
   };
 
@@ -194,7 +208,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       value={{
         ...state,
         platform: 'Auth0',
-        loginWithPopup,
+        loginWithRedirect,
+        handleRedirectCallback,
         logout
       }}
     >

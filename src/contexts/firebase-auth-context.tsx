@@ -1,8 +1,19 @@
 import { createContext, useEffect, useReducer } from 'react';
 import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import firebase from '../lib/firebase';
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut
+} from 'firebase/auth';
+import { firebaseApp } from '../lib/firebase';
 import type { User } from '../types/user';
+
+const auth = getAuth(firebaseApp);
 
 interface State {
   isInitialized: boolean;
@@ -10,7 +21,7 @@ interface State {
   user: User | null;
 }
 
-interface AuthContextValue extends State {
+export interface AuthContextValue extends State {
   platform: 'Firebase';
   createUserWithEmailAndPassword: (
     email: string,
@@ -25,8 +36,12 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+enum ActionType {
+  AUTH_STATE_CHANGED = 'AUTH_STATE_CHANGED'
+}
+
 type AuthStateChangedAction = {
-  type: 'AUTH_STATE_CHANGED';
+  type: ActionType.AUTH_STATE_CHANGED;
   payload: {
     isAuthenticated: boolean;
     user: User | null;
@@ -69,18 +84,18 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => firebase.auth().onAuthStateChanged((user) => {
+  useEffect(() => onAuthStateChanged(auth, (user) => {
     if (user) {
       // Here you should extract the complete user profile to make it available in your entire app.
       // The auth state only provides basic information.
       dispatch({
-        type: 'AUTH_STATE_CHANGED',
+        type: ActionType.AUTH_STATE_CHANGED,
         payload: {
           isAuthenticated: true,
           user: {
             id: user.uid,
-            avatar: user.photoURL,
-            email: user.email,
+            avatar: user.photoURL || undefined,
+            email: user.email || 'anika.visser@devias.io',
             name: 'Anika Visser',
             plan: 'Premium'
           }
@@ -88,7 +103,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       });
     } else {
       dispatch({
-        type: 'AUTH_STATE_CHANGED',
+        type: ActionType.AUTH_STATE_CHANGED,
         payload: {
           isAuthenticated: false,
           user: null
@@ -97,24 +112,22 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     }
   }), [dispatch]);
 
-  const signInWithEmailAndPassword = (
-    email: string,
-    password: string
-  ): Promise<any> => firebase.auth().signInWithEmailAndPassword(email, password);
-
-  const signInWithGoogle = (): Promise<any> => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    return firebase.auth().signInWithPopup(provider);
+  const _signInWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
+    await signInWithEmailAndPassword(auth, email, password);
   };
 
-  const createUserWithEmailAndPassword = async (
-    email: string,
-    password: string
-  ): Promise<any> => firebase.auth().createUserWithEmailAndPassword(email, password);
+  const signInWithGoogle = async (): Promise<void> => {
+    const provider = new GoogleAuthProvider();
+
+    await signInWithPopup(auth, provider);
+  };
+
+  const _createUserWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
+    await createUserWithEmailAndPassword(auth, email, password);
+  }
 
   const logout = async (): Promise<void> => {
-    await firebase.auth().signOut();
+    await signOut(auth);
   };
 
   return (
@@ -122,8 +135,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       value={{
         ...state,
         platform: 'Firebase',
-        createUserWithEmailAndPassword,
-        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword: _createUserWithEmailAndPassword,
+        signInWithEmailAndPassword: _signInWithEmailAndPassword,
         signInWithGoogle,
         logout
       }}
