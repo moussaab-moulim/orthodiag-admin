@@ -9,7 +9,7 @@ import { useMounted } from '../../hooks/use-mounted';
 export const JWTLogin: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { login } = useAuth() as any;
+  const { login } = useAuth();
   const formik = useFormik({
     initialValues: {
       email: 'demo@devias.io',
@@ -32,8 +32,8 @@ export const JWTLogin: FC = (props) => {
         await login(values.email, values.password);
 
         if (isMounted()) {
-          const returnUrl = (router.query.returnUrl as string) || '/dashboard';
-          router.push(returnUrl);
+          const returnUrl = (router.query.returnUrl as string | undefined) || '/dashboard';
+          router.push(returnUrl).catch(console.error);
         }
       } catch (err) {
         console.error(err);

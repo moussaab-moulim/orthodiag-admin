@@ -8,7 +8,10 @@ import type { Theme } from '@mui/material';
 import type { SxProps } from '@mui/system';
 
 const Editor = dynamic(
-  () => import('react-draft-wysiwyg').then((m) => m.Editor),
+  async () => {
+    const m = await import('react-draft-wysiwyg');
+    return m.Editor;
+  },
   { ssr: false }
 );
 

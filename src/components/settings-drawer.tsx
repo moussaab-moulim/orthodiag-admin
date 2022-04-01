@@ -9,6 +9,7 @@ import {
   IconButton,
   Typography
 } from '@mui/material';
+import type { Settings } from '../contexts/settings-context';
 import { useSettings } from '../hooks/use-settings';
 import { X as XIcon } from '../icons/x';
 // @ts-ignore
@@ -35,7 +36,7 @@ const themes = [
   }
 ];
 
-const getValues = (settings) => ({
+const getValues = (settings: Settings) => ({
   direction: settings.direction,
   responsiveFontSizes: settings.responsiveFontSizes,
   theme: settings.theme
@@ -44,13 +45,13 @@ const getValues = (settings) => ({
 export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
   const { open, onClose, ...other } = props;
   const { settings, saveSettings } = useSettings();
-  const [values, setValues] = useState(getValues(settings));
+  const [values, setValues] = useState<Settings>(getValues(settings));
 
   useEffect(() => {
     setValues(getValues(settings));
   }, [settings]);
 
-  const handleChange = (field, value): void => {
+  const handleChange = (field: string, value: unknown): void => {
     setValues({
       ...values,
       [field]: value

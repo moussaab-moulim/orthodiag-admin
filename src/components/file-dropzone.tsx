@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
-import type { DropzoneOptions } from 'react-dropzone';
+import type { FileWithPath, DropzoneOptions } from 'react-dropzone';
 import {
   Box,
   Button,
@@ -18,9 +18,11 @@ import { Duplicate as DuplicateIcon } from '../icons/duplicate';
 import { X as XIcon } from '../icons/x';
 import { bytesToSize } from '../utils/bytes-to-size';
 
+export type File = FileWithPath;
+
 interface FileDropzoneProps extends DropzoneOptions {
-  files?: any[];
-  onRemove?: (file: any) => void;
+  files?: File[];
+  onRemove?: (file: File) => void;
   onRemoveAll?: () => void;
   onUpload?: () => void;
 }
@@ -29,7 +31,7 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
   const {
     accept,
     disabled,
-    files,
+    files = [],
     getFilesFromEvent,
     maxFiles,
     maxSize,
@@ -150,7 +152,7 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
                 <Tooltip title="Remove">
                   <IconButton
                     edge="end"
-                    onClick={() => onRemove && onRemove(file)}
+                    onClick={() => onRemove?.(file)}
                   >
                     <XIcon fontSize="small" />
                   </IconButton>
@@ -191,7 +193,7 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
 FileDropzone.propTypes = {
   accept: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string)
+    PropTypes.arrayOf(PropTypes.string.isRequired)
   ]),
   disabled: PropTypes.bool,
   files: PropTypes.array,
@@ -211,8 +213,4 @@ FileDropzone.propTypes = {
   onRemoveAll: PropTypes.func,
   onUpload: PropTypes.func,
   preventDropOnDocument: PropTypes.bool
-};
-
-FileDropzone.defaultProps = {
-  files: []
 };

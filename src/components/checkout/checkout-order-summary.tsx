@@ -101,7 +101,7 @@ export const CheckoutOrderSummary: FC<CheckoutOrderSummaryProps> = (props) => {
               >
                 <Select
                   value={product.quantity}
-                  onChange={(event) => onQuantityChange(event, product.id)}
+                  onChange={(event) => onQuantityChange?.(event, product.id)}
                 >
                   <MenuItem value={1}>
                     1
@@ -186,8 +186,16 @@ export const CheckoutOrderSummary: FC<CheckoutOrderSummaryProps> = (props) => {
 
 CheckoutOrderSummary.propTypes = {
   onQuantityChange: PropTypes.func,
+  // @ts-ignore
   products: PropTypes.array,
-  shippingTax: PropTypes.number,
-  subtotal: PropTypes.number,
-  total: PropTypes.number
+  shippingTax: PropTypes.number.isRequired,
+  subtotal: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired
+};
+
+CheckoutOrderSummary.defaultProps = {
+  products: [],
+  shippingTax: 0,
+  subtotal: 0,
+  total: 0
 };

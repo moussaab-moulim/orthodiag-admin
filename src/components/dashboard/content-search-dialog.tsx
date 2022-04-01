@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
-import type { FC } from 'react';
+import type { FC, SyntheticEvent } from 'react';
+import PropTypes from 'prop-types';
 import {
   Badge,
   Box,
@@ -16,14 +17,19 @@ import { Search as SearchIcon } from '../../icons/search';
 import { wait } from '../../utils/wait';
 import { X as XIcon } from '../../icons/x';
 import { Tip } from '../tip';
-import PropTypes from 'prop-types';
 
 interface ContentSearchProps {
   onClose?: () => void;
   open?: boolean;
 }
 
-const results = {
+type Article = {
+  description: string;
+  title: string;
+  path: string;
+};
+
+const results: Record<string, Article[]> = {
   Platform: [
     {
       description: 'Provide your users with the content they need, exactly when they need it, by building a next-level site search experience using our AI-powered search API.',
@@ -56,7 +62,7 @@ export const ContentSearchDialog: FC<ContentSearchProps> = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showResults, setShowResults] = useState<boolean>(false);
 
-  const handleSubmit = async (event): Promise<void> => {
+  const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
     setShowResults(false);
     setIsLoading(true);
@@ -71,7 +77,7 @@ export const ContentSearchDialog: FC<ContentSearchProps> = (props) => {
       fullWidth
       maxWidth="sm"
       onClose={onClose}
-      open={open}
+      open={!!open}
       {...other}
     >
       <Box

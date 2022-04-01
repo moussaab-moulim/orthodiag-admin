@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { FC } from 'react';
+import type { ClipboardEvent, FC, KeyboardEvent } from 'react';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -10,8 +10,8 @@ import { useMounted } from '../../hooks/use-mounted';
 export const AmplifyVerifyCode: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { verifyCode } = useAuth() as any;
-  const itemsRef = useRef([]);
+  const { verifyCode } = useAuth();
+  const itemsRef = useRef<HTMLInputElement[]>([]);
   const [username, setUsername] = useState('');
   const formik = useFormik({
     initialValues: {
@@ -34,10 +34,11 @@ export const AmplifyVerifyCode: FC = (props) => {
         await verifyCode(values.email, values.code.join(''));
 
         if (isMounted()) {
-          router.push('/authentication/login');
+          router.push('/authentication/login').catch(console.error);
         }
       } catch (err) {
         console.error(err);
+
         if (isMounted()) {
           helpers.setStatus({ success: false });
           helpers.setErrors({ submit: err.message });
@@ -56,6 +57,51 @@ export const AmplifyVerifyCode: FC = (props) => {
       setUsername(storedUsername);
     }
   }, []);
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>, index: number): void => {
+    if (event.code === 'Enter') {
+      if (formik.values.code[index]) {
+        formik.setFieldValue(`code[${index}]`, '');
+        return;
+      }
+
+      if (index > 0) {
+        formik.setFieldValue(`code[${index}]`, '');
+        itemsRef.current[index - 1].focus();
+        return;
+      }
+    }
+
+    if (Number.isInteger(parseInt(event.key, 10))) {
+      formik.setFieldValue(`code[${index}]`, event.key);
+
+      if (index < 5) {
+        itemsRef.current[index + 1].focus();
+      }
+    }
+  };
+
+  const handlePaste = (event: ClipboardEvent): void => {
+    const paste = event.clipboardData.getData('text');
+    const pasteArray = paste.split('');
+
+    if (pasteArray.length !== 6) {
+      return;
+    }
+
+    let valid = true;
+
+    pasteArray.forEach((x) => {
+      if (!Number.isInteger(parseInt(x, 10))) {
+        valid = false;
+      }
+    });
+
+    if (valid) {
+      formik.setFieldValue('code', pasteArray);
+      itemsRef.current[5].focus();
+    }
+  };
 
   return (
     <form
@@ -107,7 +153,7 @@ export const AmplifyVerifyCode: FC = (props) => {
           pt: 1
         }}
       >
-        {[1, 2, 3, 4, 5, 6].map((ref, i) => (
+        {[1, 2, 3, 4, 5, 6].map((ref, index) => (
           <TextField
             error={Boolean(
               Array.isArray(formik.touched.code)
@@ -115,55 +161,14 @@ export const AmplifyVerifyCode: FC = (props) => {
               && formik.errors.code
             )}
             fullWidth
-            inputRef={(el) => itemsRef.current[i] = el}
+            inputRef={(el) => itemsRef.current[index] = el}
             // eslint-disable-next-line react/no-array-index-key
-            key={`code-${i}`}
-            name={`code[${i}]`}
+            key={`code-${index}`}
+            name={`code[${index}]`}
             onBlur={formik.handleBlur}
-            onKeyDown={(event) => {
-              if (event.code === 'Enter') {
-                if (formik.values.code[i]) {
-                  formik.setFieldValue(`code[${i}]`, '');
-                  return;
-                }
-
-                if (i > 0) {
-                  formik.setFieldValue(`code[${i}]`, '');
-                  itemsRef.current[i - 1].focus();
-                  return;
-                }
-              }
-
-              if (Number.isInteger(parseInt(event.key, 10))) {
-                formik.setFieldValue(`code[${i}]`, event.key);
-
-                if (i < 5) {
-                  itemsRef.current[i + 1].focus();
-                }
-              }
-            }}
-            onPaste={(event) => {
-              const paste = event.clipboardData.getData('text');
-              const pasteArray = paste.split('');
-
-              if (pasteArray.length !== 6) {
-                return;
-              }
-
-              let valid = true;
-
-              pasteArray.forEach((x) => {
-                if (!Number.isInteger(parseInt(x, 10))) {
-                  valid = false;
-                }
-              });
-
-              if (valid) {
-                formik.setFieldValue('code', pasteArray);
-                itemsRef.current[5].focus();
-              }
-            }}
-            value={formik.values.code[i]}
+            onKeyDown={(event) => handleKeyDown(event, index)}
+            onPaste={handlePaste}
+            value={formik.values.code[index]}
             sx={{
               display: 'inline-block',
               textAlign: 'center',

@@ -44,7 +44,7 @@ export const ContactsPopover: FC<ContactsPopoverProps> = (props) => {
         vertical: 'bottom'
       }}
       onClose={onClose}
-      open={open}
+      open={!!open}
       PaperProps={{
         sx: {
           p: 2,
@@ -95,7 +95,7 @@ export const ContactsPopover: FC<ContactsPopoverProps> = (props) => {
                         status="online"
                       />
                     )
-                    : (
+                    : contact.lastActivity && (
                       <Typography
                         color="textSecondary"
                         noWrap

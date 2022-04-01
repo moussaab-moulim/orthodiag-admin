@@ -40,7 +40,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
     try {
       onClose?.();
       await logout();
-      router.push('/');
+      router.push('/').catch(console.error);
     } catch (err) {
       console.error(err);
       toast.error('Unable to logout.');
@@ -56,7 +56,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
       }}
       keepMounted
       onClose={onClose}
-      open={open}
+      open={!!open}
       PaperProps={{ sx: { width: 300 } }}
       transitionDuration={0}
       {...other}

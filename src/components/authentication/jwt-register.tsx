@@ -9,7 +9,7 @@ import { useMounted } from '../../hooks/use-mounted';
 export const JWTRegister: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { register } = useAuth() as any;
+  const { register } = useAuth();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -42,8 +42,8 @@ export const JWTRegister: FC = (props) => {
         await register(values.email, values.name, values.password);
 
         if (isMounted()) {
-          const returnUrl = (router.query.returnUrl as string) || '/dashboard';
-          router.push(returnUrl);
+          const returnUrl = (router.query.returnUrl as string | undefined) || '/dashboard';
+          router.push(returnUrl).catch(console.error);
         }
       } catch (err) {
         console.error(err);

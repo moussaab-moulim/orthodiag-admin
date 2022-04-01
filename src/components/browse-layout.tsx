@@ -7,7 +7,7 @@ import { ArrowLeft as ArrowLeftIcon } from '../icons/arrow-left';
 
 const getTitle = (pathname: string): string => pathname
   .split('/')
-  .pop()
+  .pop()!
   .split('-')
   .map((word) => word[0].toUpperCase() + word.slice(1))
   .join(' ');

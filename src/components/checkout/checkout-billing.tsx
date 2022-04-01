@@ -13,7 +13,7 @@ import {
 
 interface CheckoutBillingProps {
   billing: Record<string, any>;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface PaymentMethod {
@@ -322,6 +322,7 @@ export const CheckoutBilling: FC<CheckoutBillingProps> = (props) => {
 };
 
 CheckoutBilling.propTypes = {
+  // @ts-ignore
   billing: PropTypes.object,
   onChange: PropTypes.func
 };

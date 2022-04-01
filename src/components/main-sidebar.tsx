@@ -8,8 +8,8 @@ import type { Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 interface MainSidebarProps {
-  onClose: () => void;
-  open: boolean;
+  onClose?: () => void;
+  open?: boolean;
 }
 
 const MainSidebarLink = styled(Link)(

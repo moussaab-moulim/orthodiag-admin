@@ -9,7 +9,7 @@ import { useMounted } from '../../hooks/use-mounted';
 export const AmplifyLogin: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { login } = useAuth() as any;
+  const { login } = useAuth();
   const formik = useFormik({
     initialValues: {
       email: 'demo@devias.io',
@@ -28,8 +28,8 @@ export const AmplifyLogin: FC = (props) => {
         await login(values.email, values.password);
 
         if (isMounted()) {
-          const returnUrl = (router.query.returnUrl as string) || '/dashboard';
-          router.push(returnUrl);
+          const returnUrl = (router.query.returnUrl as string | undefined) || '/dashboard';
+          router.push(returnUrl).catch(console.error);
         }
       } catch (err) {
         console.error(err);
@@ -37,7 +37,7 @@ export const AmplifyLogin: FC = (props) => {
         if (isMounted()) {
           if (err.code === 'UserNotConfirmedException') {
             sessionStorage.setItem('username', values.email);
-            router.push('/authentication/verify-code');
+            router.push('/authentication/verify-code').catch(console.error);
             return;
           }
 

@@ -1,13 +1,25 @@
+import type { VoidFunctionComponent } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { styled } from '@mui/material/styles';
+import type { SxProps } from '@mui/system';
+import type { Theme } from '@mui/material';
+import PropTypes from 'prop-types';
+import { useRef } from 'react';
+
+interface QuillEditorProps {
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  sx?: SxProps<Theme>;
+  value?: string;
+}
 
 const Quill = dynamic(
   () => import('react-quill'),
   { ssr: false }
 );
 
-const QuillEditorRoot = styled(Quill)(
+const QuillEditorRoot = styled('div')(
   ({ theme }) => ({
     border: 1,
     borderColor: theme.palette.divider,
@@ -15,6 +27,13 @@ const QuillEditorRoot = styled(Quill)(
     borderStyle: 'solid',
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'hidden',
+    '& .quill': {
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+      overflow: 'hidden'
+    },
     '& .ql-snow.ql-toolbar': {
       borderColor: theme.palette.divider,
       borderLeft: 'none',
@@ -68,12 +87,18 @@ const QuillEditorRoot = styled(Quill)(
       borderColor: theme.palette.divider,
       borderLeft: 'none',
       borderRight: 'none',
-      flexGrow: 1,
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+      height: 'auto',
       overflow: 'hidden',
       '& .ql-editor': {
         color: theme.palette.text.primary,
+        flex: 1,
         fontFamily: theme.typography.body1.fontFamily,
         fontSize: theme.typography.body1.fontSize,
+        height: 'auto',
+        overflowY: 'auto',
         padding: theme.spacing(2),
         '&.ql-blank::before': {
           color: theme.palette.text.secondary,
@@ -85,6 +110,29 @@ const QuillEditorRoot = styled(Quill)(
   })
 );
 
-export const QuillEditor = (props) => (
-  <QuillEditorRoot {...props} />
-);
+export const QuillEditor: VoidFunctionComponent<QuillEditorProps> = (props) => {
+  const { sx, onChange, placeholder, value, ...other } = props;
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  return (
+    <QuillEditorRoot
+      sx={sx}
+      ref={ref}
+      {...other}
+    >
+      <Quill
+        onChange={onChange}
+        placeholder={placeholder}
+        value={value}
+        bounds={ref.current || undefined}
+      />
+    </QuillEditorRoot>
+  );
+};
+
+QuillEditor.propTypes = {
+  onChange: PropTypes.func,
+  placeholder: PropTypes.string,
+  sx: PropTypes.object,
+  value: PropTypes.string
+};

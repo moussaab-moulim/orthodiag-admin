@@ -5,9 +5,11 @@ import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import stylisRTLPlugin from 'stylis-plugin-rtl';
 
+type Direction = 'ltr' | 'rtl';
+
 interface RTLProps {
   children: ReactNode;
-  direction: 'ltr' | 'rtl';
+  direction?: Direction;
 }
 
 const styleCache = () => createCache({
@@ -17,7 +19,7 @@ const styleCache = () => createCache({
 });
 
 export const RTL: FC<RTLProps> = (props) => {
-  const { children, direction } = props;
+  const { children, direction = 'ltr' } = props;
 
   useEffect(() => {
     document.dir = direction;
@@ -36,5 +38,5 @@ export const RTL: FC<RTLProps> = (props) => {
 
 RTL.propTypes = {
   children: PropTypes.node.isRequired,
-  direction: PropTypes.oneOf(['ltr', 'rtl'])
+  direction: PropTypes.oneOf<Direction>(['ltr', 'rtl'])
 };

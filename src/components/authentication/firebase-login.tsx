@@ -17,7 +17,7 @@ import { useMounted } from "../../hooks/use-mounted";
 export const FirebaseLogin: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { signInWithEmailAndPassword, signInWithGoogle } = useAuth() as any;
+  const { signInWithEmailAndPassword, signInWithGoogle } = useAuth();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -36,8 +36,9 @@ export const FirebaseLogin: FC = (props) => {
         await signInWithEmailAndPassword(values.email, values.password);
 
         if (isMounted()) {
-          const returnUrl = (router.query.returnUrl as string) || "/dashboard";
-          router.push(returnUrl);
+          const returnUrl =
+            (router.query.returnUrl as string | undefined) || "/dashboard";
+          router.push(returnUrl).catch(console.error);
         }
       } catch (err) {
         console.error(err);
@@ -54,6 +55,12 @@ export const FirebaseLogin: FC = (props) => {
   const handleGoogleClick = async (): Promise<void> => {
     try {
       await signInWithGoogle();
+
+      if (isMounted()) {
+        const returnUrl =
+          (router.query.returnUrl as string | undefined) || "/dashboard";
+        router.push(returnUrl).catch(console.error);
+      }
     } catch (err) {
       console.error(err);
     }

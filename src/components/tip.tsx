@@ -11,8 +11,8 @@ interface TipProps {
 const TipRoot = styled('div')(
   (({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark'
-      ? theme.palette.neutral[800]
-      : theme.palette.neutral[100],
+      ? theme.palette.neutral![800]
+      : theme.palette.neutral![100],
     borderRadius: theme.shape.borderRadius,
     display: 'flex',
     padding: theme.spacing(1)

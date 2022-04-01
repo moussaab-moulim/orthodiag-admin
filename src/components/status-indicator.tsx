@@ -2,15 +2,19 @@ import type { FC } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 
+type Size = 'small' | 'medium' | 'large';
+
+type Status = 'online' | 'offline' | 'away' | 'busy';
+
 interface StatusIndicatorProps {
-  size?: 'small' | 'medium' | 'large';
-  status?: 'online' | 'offline' | 'away' | 'busy';
+  size?: Size;
+  status?: Status;
 }
 
 interface StatusIndicatorRootProps {
   ownerState: {
-    size: 'small' | 'medium' | 'large';
-    status: 'online' | 'offline' | 'away' | 'busy';
+    size: Size;
+    status: Status;
   };
 }
 
@@ -45,7 +49,7 @@ const StatusIndicatorRoot = styled('span')<StatusIndicatorRootProps>(
 );
 
 export const StatusIndicator: FC<StatusIndicatorProps> = (props) => {
-  const { size, status, ...other } = props;
+  const { size = 'medium', status = 'offline', ...other } = props;
 
   const ownerState = { size, status };
 
@@ -58,11 +62,6 @@ export const StatusIndicator: FC<StatusIndicatorProps> = (props) => {
 };
 
 StatusIndicator.propTypes = {
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  status: PropTypes.oneOf(['online', 'offline', 'away', 'busy'])
-};
-
-StatusIndicator.defaultProps = {
-  size: 'medium',
-  status: 'offline'
+  size: PropTypes.oneOf<Size>(['small', 'medium', 'large']),
+  status: PropTypes.oneOf<Status>(['online', 'offline', 'away', 'busy'])
 };

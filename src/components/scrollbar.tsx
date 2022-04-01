@@ -16,6 +16,7 @@ const ScrollbarRoot = styled(SimpleBar)``;
 export const Scrollbar = forwardRef<MutableRefObject<SimpleBar>, ScrollbarProps>((props, ref) => {
   return (
     <ScrollbarRoot
+      // @ts-ignore
       ref={ref}
       {...props}
     />

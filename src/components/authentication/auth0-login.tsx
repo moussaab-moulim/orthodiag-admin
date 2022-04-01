@@ -8,17 +8,14 @@ import { useMounted } from '../../hooks/use-mounted';
 export const Auth0Login: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { loginWithPopup } = useAuth() as any;
+  const { loginWithRedirect } = useAuth();
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (): Promise<void> => {
     try {
-      await loginWithPopup();
-
-      if (isMounted()) {
-        const returnUrl = (router.query.returnUrl as string) || '/dashboard';
-        router.push(returnUrl);
-      }
+      await loginWithRedirect({
+        returnUrl: (router.query.returnUrl as string | undefined) || '/dashboard'
+      });
     } catch (err) {
       console.error(err);
 

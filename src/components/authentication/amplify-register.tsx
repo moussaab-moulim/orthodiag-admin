@@ -9,7 +9,7 @@ import { useMounted } from '../../hooks/use-mounted';
 export const AmplifyRegister: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { register } = useAuth() as any;
+  const { register } = useAuth();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -37,7 +37,7 @@ export const AmplifyRegister: FC = (props) => {
         await register(values.email, values.password);
 
         if (isMounted()) {
-          router.push('/authentication/verify-code');
+          router.push('/authentication/verify-code').catch(console.error);
         }
       } catch (err) {
         console.error(err);

@@ -8,7 +8,7 @@ import { useMounted } from '../../hooks/use-mounted';
 
 export const AmplifyPasswordRecovery: FC = (props) => {
   const isMounted = useMounted();
-  const { passwordRecovery } = useAuth() as any;
+  const { passwordRecovery } = useAuth();
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -28,7 +28,7 @@ export const AmplifyPasswordRecovery: FC = (props) => {
 
         if (isMounted()) {
           sessionStorage.setItem('username', values.email);
-          router.push('/authentication/password-reset');
+          router.push('/authentication/password-reset').catch(console.error);
         }
       } catch (err) {
         console.error(err);

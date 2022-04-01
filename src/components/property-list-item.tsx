@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { Box, ListItem, ListItemText, Typography } from '@mui/material';
 import type { ListItemProps } from '@mui/material';
 
+type Direction = 'horizontal' | 'vertical';
+
 interface PropertyListItemProps extends ListItemProps {
-  align?: 'horizontal' | 'vertical';
+  align?: Direction;
   label: string;
   value?: string;
 }
@@ -62,7 +64,7 @@ PropertyListItem.defaultProps = {
 };
 
 PropertyListItem.propTypes = {
-  align: PropTypes.oneOf(['horizontal', 'vertical']),
+  align: PropTypes.oneOf<Direction>(['horizontal', 'vertical']),
   children: PropTypes.node,
   disableGutters: PropTypes.bool,
   label: PropTypes.string.isRequired,

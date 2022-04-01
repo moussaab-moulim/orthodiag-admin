@@ -18,7 +18,7 @@ import { useMounted } from '../../hooks/use-mounted';
 export const FirebaseRegister: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { createUserWithEmailAndPassword, signInWithGoogle } = useAuth() as any;
+  const { createUserWithEmailAndPassword, signInWithGoogle } = useAuth();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -46,8 +46,8 @@ export const FirebaseRegister: FC = (props) => {
         await createUserWithEmailAndPassword(values.email, values.password);
 
         if (isMounted()) {
-          const returnUrl = (router.query.returnUrl as string) || '/dashboard';
-          router.push(returnUrl);
+          const returnUrl = (router.query.returnUrl as string | undefined) || '/dashboard';
+          router.push(returnUrl).catch(console.error);
         }
       } catch (err) {
         console.error(err);

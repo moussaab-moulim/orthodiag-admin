@@ -6,9 +6,9 @@ import { ChevronDown as ChevronDownIcon } from '../icons/chevron-down';
 
 interface MultiSelectProps {
   label: string;
-  onChange?: (value: unknown[]) => void;
+  onChange?: (value: any[]) => void; // Same as type as the value received above
   options: { label: string; value: unknown; }[];
-  value: unknown[];
+  value: any[]; // This should accept string[], number[] or boolean[]
 }
 
 export const MultiSelect: FC<MultiSelectProps> = (props) => {

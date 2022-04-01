@@ -13,7 +13,7 @@ export const GuestGuard: FC<GuestGuardProps> = (props) => {
   const auth = useAuth();
   const router = useRouter();
   const [checked, setChecked] = useState(false);
-  const disableGuard = router.query.disableGuard as string;
+  const disableGuard = router.query.disableGuard as string | undefined;
 
   useEffect(
     () => {
@@ -23,7 +23,7 @@ export const GuestGuard: FC<GuestGuardProps> = (props) => {
 
       // You should remove the "disableGuard" check, because it's meant to be used only in the demo.
       if (auth.isAuthenticated && disableGuard !== 'true') {
-        router.push('/dashboard');
+        router.push('/dashboard').catch(console.error);
       } else {
         setChecked(true);
       }
