@@ -30,7 +30,21 @@ interface Filters {
   status?: OrderStatus;
 }
 
-const tabs = [
+type SortDir = 'asc' | 'desc';
+
+interface SortOption {
+  label: string;
+  value: SortDir;
+}
+
+type TabValue = 'all' | 'canceled' | 'complete' | 'pending' | 'rejected';
+
+interface Tab {
+  label: string;
+  value: TabValue;
+}
+
+const tabs: Tab[] = [
   {
     label: 'All',
     value: 'all'
@@ -53,7 +67,7 @@ const tabs = [
   }
 ];
 
-const sortOptions = [
+const sortOptions: SortOption[] = [
   {
     label: 'Newest',
     value: 'desc'
@@ -71,7 +85,7 @@ const applyFilters = (
   if (filters.query) {
     // Checks only the order number, but can be extended to support other fields, such as customer
     // name, email, etc.
-    const containsQuery = order.number.toLowerCase().includes(filters.query.toLowerCase());
+    const containsQuery = (order.number || '').toLowerCase().includes(filters.query.toLowerCase());
 
     if (!containsQuery) {
       return false;
@@ -89,10 +103,10 @@ const applyFilters = (
   return true;
 });
 
-const applySort = (orders: Order[], order: 'asc' | 'desc') => orders.sort((a, b) => {
+const applySort = (orders: Order[], sortDir: SortDir): Order[] => orders.sort((a, b) => {
   const comparator = a.createdAt > b.createdAt ? -1 : 1;
 
-  return order === 'desc' ? comparator : -comparator;
+  return sortDir === 'desc' ? comparator : -comparator;
 });
 
 const applyPagination = (
@@ -134,8 +148,8 @@ const OrderList: NextPage = () => {
   const isMounted = useMounted();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const queryRef = useRef<HTMLInputElement | null>(null);
-  const [currentTab, setCurrentTab] = useState<string>('all');
-  const [sort, setSort] = useState<'asc' | 'desc'>('desc');
+  const [currentTab, setCurrentTab] = useState<TabValue>('all');
+  const [sort, setSort] = useState<SortDir>('desc');
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -145,7 +159,7 @@ const OrderList: NextPage = () => {
   });
   const [drawer, setDrawer] = useState<{ isOpen: boolean; orderId?: string; }>({
     isOpen: false,
-    orderId: null
+    orderId: undefined
   });
 
   useEffect(() => {
@@ -172,11 +186,11 @@ const OrderList: NextPage = () => {
     []
   );
 
-  const handleTabsChange = (event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (event: ChangeEvent<{}>, value: TabValue): void => {
     setCurrentTab(value);
     setFilters((prevState) => ({
       ...prevState,
-      status: value === 'all' ? undefined : value as OrderStatus
+      status: value === 'all' ? undefined : value
     }));
   };
 
@@ -211,7 +225,7 @@ const OrderList: NextPage = () => {
   const handleCloseDrawer = () => {
     setDrawer({
       isOpen: false,
-      orderId: null
+      orderId: undefined
     });
   };
 

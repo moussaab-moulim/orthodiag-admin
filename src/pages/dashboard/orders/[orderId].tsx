@@ -149,7 +149,7 @@ const OrderDetails: NextPage = () => {
           </Box>
           <OrderSummary order={order} />
           <Box sx={{ mt: 4 }}>
-            <OrderItems orderItems={order.items} />
+            <OrderItems orderItems={order.items || []} />
           </Box>
           <Box sx={{ mt: 4 }}>
             <OrderLogs order={order} />

@@ -72,7 +72,7 @@ export const SocialProfile: NextPage = () => {
     ));
   };
 
-  const handleTabsChange = (event: ChangeEvent, value: string): void => {
+  const handleTabsChange = (event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
 
