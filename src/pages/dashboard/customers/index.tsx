@@ -34,18 +34,29 @@ interface Filters {
   isReturning?: boolean;
 }
 
+type SortField = 'updatedAt' | 'totalOrders';
+
+type SortDir = 'asc' | 'desc';
+
 type Sort =
   | 'updatedAt|desc'
   | 'updatedAt|asc'
-  | 'orders|desc'
-  | 'orders|asc';
+  | 'totalOrders|desc'
+  | 'totalOrders|asc';
 
 interface SortOption {
-  value: Sort;
   label: string;
+  value: Sort;
 }
 
-const tabs = [
+type TabValue = 'all' | 'hasAcceptedMarketing' | 'isProspect' | 'isReturning';
+
+interface Tab {
+  label: string;
+  value: TabValue;
+}
+
+const tabs: Tab[] = [
   {
     label: 'All',
     value: 'all'
@@ -75,11 +86,11 @@ const sortOptions: SortOption[] = [
   },
   {
     label: 'Total orders (highest)',
-    value: 'orders|desc'
+    value: 'totalOrders|desc'
   },
   {
     label: 'Total orders (lowest)',
-    value: 'orders|asc'
+    value: 'totalOrders|asc'
   }
 ];
 
@@ -89,10 +100,10 @@ const applyFilters = (
 ): Customer[] => customers.filter((customer) => {
   if (filters.query) {
     let queryMatched = false;
-    const properties = ['email', 'name'];
+    const properties: ('email' | 'name')[] = ['email', 'name'];
 
     properties.forEach((property) => {
-      if (customer[property].toLowerCase().includes(filters.query.toLowerCase())) {
+      if ((customer[property]).toLowerCase().includes(filters.query!.toLowerCase())) {
         queryMatched = true;
       }
     });
@@ -117,31 +128,30 @@ const applyFilters = (
   return true;
 });
 
-const descendingComparator = (
-  a: Customer,
-  b: Customer,
-  orderBy: string
-): number => {
-  if (b[orderBy] < a[orderBy]) {
+const descendingComparator = (a: Customer, b: Customer, sortBy: SortField): number => {
+  // When compared to something undefined, always returns false.
+  // This means that if a field does not exist from either element ('a' or 'b') the return will be 0.
+
+  if (b[sortBy]! < a[sortBy]!) {
     return -1;
   }
 
-  if (b[orderBy] > a[orderBy]) {
+  if (b[sortBy]! > a[sortBy]!) {
     return 1;
   }
 
   return 0;
 };
 
-const getComparator = (order: 'asc' | 'desc', orderBy: string) => (
-  order === 'desc'
-    ? (a: Customer, b: Customer) => descendingComparator(a, b, orderBy)
-    : (a: Customer, b: Customer) => -descendingComparator(a, b, orderBy)
+const getComparator = (sortDir: SortDir, sortBy: SortField) => (
+  sortDir === 'desc'
+    ? (a: Customer, b: Customer) => descendingComparator(a, b, sortBy)
+    : (a: Customer, b: Customer) => -descendingComparator(a, b, sortBy)
 );
 
 const applySort = (customers: Customer[], sort: Sort): Customer[] => {
-  const [orderBy, order] = sort.split('|') as [string, 'asc' | 'desc'];
-  const comparator = getComparator(order, orderBy);
+  const [sortBy, sortDir] = sort.split('|') as [SortField, SortDir];
+  const comparator = getComparator(sortDir, sortBy);
   const stabilizedThis = customers.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -170,15 +180,15 @@ const CustomerList: NextPage = () => {
   const isMounted = useMounted();
   const queryRef = useRef<HTMLInputElement | null>(null);
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [currentTab, setCurrentTab] = useState<string>('all');
+  const [currentTab, setCurrentTab] = useState<TabValue>('all');
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [sort, setSort] = useState<Sort>(sortOptions[0].value);
   const [filters, setFilters] = useState<Filters>({
     query: '',
-    hasAcceptedMarketing: null,
-    isProspect: null,
-    isReturning: null
+    hasAcceptedMarketing: undefined,
+    isProspect: undefined,
+    isReturning: undefined
   });
 
   useEffect(() => {
@@ -205,12 +215,12 @@ const CustomerList: NextPage = () => {
     []
   );
 
-  const handleTabsChange = (event: ChangeEvent<{}>, value: string): void => {
-    const updatedFilters = {
+  const handleTabsChange = (event: ChangeEvent<{}>, value: TabValue): void => {
+    const updatedFilters: Filters = {
       ...filters,
-      hasAcceptedMarketing: null,
-      isProspect: null,
-      isReturning: null
+      hasAcceptedMarketing: undefined,
+      isProspect: undefined,
+      isReturning: undefined
     };
 
     if (value !== 'all') {

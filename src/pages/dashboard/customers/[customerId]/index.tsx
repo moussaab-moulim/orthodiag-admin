@@ -219,7 +219,7 @@ const CustomerDetails: NextPage = () => {
                     address2={customer.address2}
                     country={customer.country}
                     email={customer.email}
-                    isVerified={customer.isVerified}
+                    isVerified={!!customer.isVerified}
                     phone={customer.phone}
                     state={customer.state}
                   />
