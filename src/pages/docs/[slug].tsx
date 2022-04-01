@@ -30,7 +30,7 @@ export const getStaticPaths = () => {
   };
 };
 
-export const getStaticProps = ({ params }) => {
+export const getStaticProps = ({ params }: { params: { slug: string }}) => {
   const article = getArticleBySlug(
     params.slug,
     ['content', 'slug', 'title']
@@ -59,14 +59,14 @@ const Article: NextPage<{ article?: Article; }> = (props) => {
     <>
       <Head>
         <title>
-          {`Docs: ${article.title} | Material Kit Pro`}
+          {`Docs: ${article!.title} | Material Kit Pro`}
         </title>
       </Head>
       <Container
         maxWidth="lg"
         sx={{ pb: '120px' }}
       >
-        <DocsContent content={article.content} />
+        <DocsContent content={article!.content} />
       </Container>
     </>
   );
