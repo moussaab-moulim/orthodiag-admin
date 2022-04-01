@@ -128,5 +128,6 @@ CompanyAssets.defaultProps = {
 };
 
 CompanyAssets.propTypes = {
+  // @ts-ignore
   assets: PropTypes.array
 };

@@ -26,9 +26,26 @@ import { ArrowRight as ArrowRightIcon } from '../../../icons/arrow-right';
 import { PencilAlt as PencilAltIcon } from '../../../icons/pencil-alt';
 import { Search as SearchIcon } from '../../../icons/search';
 
+interface Customer {
+  id: string;
+  avatar: string;
+  city: string;
+  country: string;
+  currency: string;
+  email: string;
+  hasAcceptedMarketing: boolean;
+  isProspect: boolean;
+  isReturning: boolean;
+  name: string;
+  state: string;
+  totalAmountSpent: number;
+  totalOrders: number;
+  updatedAt: number;
+}
+
 const now = new Date();
 
-const customers = [
+const customers: Customer[] = [
   {
     id: '5e887ac47eed253091be10cb',
     avatar: '/static/mock-images/avatars/avatar-carson_darrin.png',

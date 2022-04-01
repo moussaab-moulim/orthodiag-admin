@@ -15,7 +15,14 @@ import {
 import { ExternalLink as ExternalLinkIcon } from '../../../icons/external-link';
 import { InformationCircleOutlined as InformationCircleOutlinedIcon } from '../../../icons/information-circle-outlined';
 
-const pages = [
+interface Page {
+  bounceRate: number;
+  uniqueVisits: number;
+  url: string;
+  visitors: number;
+}
+
+const pages: Page[] = [
   {
     bounceRate: 16,
     uniqueVisits: 8584,

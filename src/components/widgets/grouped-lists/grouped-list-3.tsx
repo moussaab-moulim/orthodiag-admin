@@ -17,9 +17,16 @@ import {
 import { Scrollbar } from '../../scrollbar';
 import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizontal';
 
+interface Task {
+  id: string;
+  deadline: number | null;
+  members: { avatar: string; name: string }[];
+  title: string;
+}
+
 const now = new Date();
 
-const tasks = [
+const tasks: Task[] = [
   {
     id: '5eff24b501ba5281ddb5378c',
     deadline: addDays(addHours(now, 1), 1).getTime(),
@@ -112,7 +119,7 @@ const tasks = [
   }
 ];
 
-const getDeadline = (task): string => {
+const getDeadline = (task: Task): string => {
   let deadline = '';
 
   if (task.deadline) {

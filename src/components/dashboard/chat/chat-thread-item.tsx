@@ -1,11 +1,12 @@
 import type { FC } from 'react';
 import PropTypes from 'prop-types';
 import { formatDistanceStrict } from 'date-fns';
+import type { Locale } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
 import { Avatar, AvatarGroup, Box, ListItem, ListItemAvatar, Typography } from '@mui/material';
 import type { Thread } from '../../../types/chat';
 
-const formatDistanceLocale = {
+const formatDistanceLocale: Record<string, string> = {
   lessThanXSeconds: '{{count}}s',
   xSeconds: '{{count}}s',
   halfAMinute: '30s',
@@ -24,25 +25,28 @@ const formatDistanceLocale = {
   almostXYears: '{{count}}y'
 };
 
-const formatDistance = (token, count, options) => {
-  options = options || {};
+const customLocale: Locale = {
+  ...locale,
+  formatDistance: (token, count, options) => {
+    options = options || {};
 
-  const result = formatDistanceLocale[token].replace('{{count}}', count);
+    const result = formatDistanceLocale[token].replace('{{count}}', count);
 
-  if (options.addSuffix) {
-    if (options.comparison > 0) {
-      return 'in ' + result;
-    } else {
-      return result + ' ago';
+    if (options.addSuffix) {
+      if (options.comparison > 0) {
+        return 'in ' + result;
+      } else {
+        return result + ' ago';
+      }
     }
-  }
 
-  return result;
+    return result;
+  }
 };
 
 interface ChatThreadItemProps {
   active?: boolean;
-  onSelect: () => void;
+  onSelect?: () => void;
   thread: Thread;
 }
 
@@ -54,12 +58,12 @@ export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
     id: '5e86809283e28b96d2d38537'
   };
 
-  const recipients = thread.participants.filter((participant) => (
+  const recipients = thread.participants!.filter((participant) => (
     participant.id !== user.id
   ));
   const lastMessage = thread.messages[thread.messages.length - 1];
   const name = recipients
-    .reduce((names, participant) => [...names, participant.name], [])
+    .reduce((names: string[], participant) => [...names, participant.name], [])
     .join(', ');
   let content = '';
 
@@ -79,7 +83,9 @@ export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
       divider
       onClick={onSelect}
       sx={{
-        backgroundColor: active && 'action.selected',
+        ...(active && {
+          backgroundColor: 'action.selected'
+        }),
         cursor: 'pointer',
         overflow: 'hidden',
         px: 2,
@@ -116,7 +122,7 @@ export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
           {recipients.map((recipient) => (
             <Avatar
               key={recipient.id}
-              src={recipient.avatar}
+              src={recipient.avatar || undefined}
             />
           ))}
         </AvatarGroup>
@@ -140,7 +146,7 @@ export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
             display: 'flex'
           }}
         >
-          {thread.unreadCount > 0 && (
+          {Boolean(thread.unreadCount && thread.unreadCount > 0) && (
             <Box
               sx={{
                 backgroundColor: 'primary.main',
@@ -171,10 +177,7 @@ export const ChatThreadItem: FC<ChatThreadItemProps> = (props) => {
           new Date(),
           {
             addSuffix: false,
-            locale: {
-              ...locale,
-              formatDistance
-            }
+            locale: customLocale
           }
         )}
       </Typography>

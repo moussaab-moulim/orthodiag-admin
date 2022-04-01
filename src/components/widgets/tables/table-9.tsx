@@ -18,9 +18,21 @@ import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizo
 import { Scrollbar } from '../../scrollbar';
 import { SeverityPill } from '../../severity-pill';
 
+type InvoiceStatus = 'paid';
+
+interface Invoice {
+  id: string;
+  currency: string;
+  description: string;
+  issueDate: number;
+  paymentMethod: string;
+  status: InvoiceStatus;
+  value: number;
+}
+
 const now = new Date();
 
-const invoices = [
+const invoices: Invoice[] = [
   {
     id: '5ece2cef3e562cbd61996259',
     currency: '$',

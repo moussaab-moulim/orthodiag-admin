@@ -22,10 +22,25 @@ import { PencilAlt as PencilAltIcon } from '../../../icons/pencil-alt';
 import { Search as SearchIcon } from '../../../icons/search';
 import { Scrollbar } from '../../scrollbar';
 import { SeverityPill } from '../../severity-pill';
+import type { SeverityPillColor } from '../../severity-pill';
+
+type InvoiceStatus = 'canceled' | 'paid' | 'pending';
+
+interface Invoice {
+  id: string;
+  currency: string;
+  customer: {
+    email: string;
+    name: string;
+  };
+  issueDate: number;
+  status: InvoiceStatus;
+  totalAmount: number;
+}
 
 const now = new Date();
 
-const invoices = [
+const invoices: Invoice[] = [
   {
     id: '5ecb868d0f437390ef3ac62c',
     currency: '$',
@@ -102,8 +117,8 @@ const sortOptions = [
   }
 ];
 
-const getStatusLabel = (invoiceStatus) => {
-  const map = {
+const getStatusLabel = (invoiceStatus: InvoiceStatus): JSX.Element => {
+  const map: Record<InvoiceStatus, { color: SeverityPillColor; text: string; }> = {
     canceled: {
       color: 'error',
       text: 'Canceled'
@@ -118,7 +133,7 @@ const getStatusLabel = (invoiceStatus) => {
     }
   };
 
-  const { text, color }: any = map[invoiceStatus];
+  const { text, color } = map[invoiceStatus];
 
   return (
     <SeverityPill color={color}>

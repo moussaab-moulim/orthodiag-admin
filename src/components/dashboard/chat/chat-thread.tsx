@@ -3,15 +3,15 @@ import type { FC } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Box, Divider } from '@mui/material';
+import { chatApi } from '../../../__fake-api__/chat-api';
 import { addMessage, getThread, markThreadAsSeen, setActiveThread } from '../../../slices/chat';
 import { useDispatch, useSelector } from '../../../store';
 import type { RootState } from '../../../store';
-import { Scrollbar } from '../../scrollbar';
 import type { Participant, Thread } from '../../../types/chat';
+import { Scrollbar } from '../../scrollbar';
 import { ChatMessageAdd } from './chat-message-add';
 import { ChatMessages } from './chat-messages';
 import { ChatThreadToolbar } from './chat-thread-toolbar';
-import { chatApi } from '../../../__fake-api__/chat-api';
 
 interface ChatThreadProps {
   threadKey: string;
@@ -20,7 +20,7 @@ interface ChatThreadProps {
 const threadSelector = (state: RootState): Thread | undefined => {
   const { threads, activeThreadId } = state.chat;
 
-  return threads.byId[activeThreadId];
+  return threads.byId[activeThreadId as string];
 };
 
 export const ChatThread: FC<ChatThreadProps> = (props) => {
@@ -53,7 +53,7 @@ export const ChatThread: FC<ChatThreadProps> = (props) => {
       // the server throws an error, this means that the user tried a shady route
       // and we redirect them on the home view
       console.error(err);
-      router.push(`/dashboard/chat`);
+      router.push(`/dashboard/chat`).catch(console.error);
     }
   };
 

@@ -16,7 +16,7 @@ import { ChatContactSearch } from './chat-contact-search';
 import { ChatThreadItem } from './chat-thread-item';
 
 interface ChatSidebarProps {
-  containerRef?: MutableRefObject<HTMLDivElement>;
+  containerRef?: MutableRefObject<HTMLDivElement | null>;
   onClose?: () => void;
   open?: boolean;
 }
@@ -83,7 +83,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
     setIsSearchFocused(true);
   };
 
-  const handleSearchSelect = (result: any): void => {
+  const handleSearchSelect = (result: Contact): void => {
     setIsSearchFocused(false);
     setSearchQuery('');
 
@@ -91,7 +91,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
       onClose?.();
     }
 
-    router.push(`/dashboard/chat?threadKey=${result.id}`);
+    router.push(`/dashboard/chat?threadKey=${result.id}`).catch(console.error);
   };
 
   const handleSelectThread = (threadId: string): void => {
@@ -114,7 +114,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
       onClose?.();
     }
 
-    router.push(`/dashboard/chat?threadKey=${threadKey}`);
+    router.push(`/dashboard/chat?threadKey=${threadKey}`).catch(console.error);
   };
 
   const content = (

@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
-import Markdown from 'react-markdown/with-html';
+import Markdown from 'react-markdown';
 import {
   Avatar,
   Box,
@@ -33,7 +33,7 @@ import { MailReply } from './mail-reply';
 
 interface MailDetailsProps {
   emailId: string;
-  label: string;
+  label?: string;
 }
 
 const MarkdownWrapper = styled('div')(
@@ -141,7 +141,7 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
           }}
         >
           <Avatar
-            src={email.from.avatar}
+            src={email.from.avatar || undefined}
             sx={{
               height: 48,
               width: 48
@@ -234,7 +234,7 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
         </Typography>
         <Box sx={{ mt: 2 }}>
           <MarkdownWrapper>
-            <Markdown source={email.message} />
+            <Markdown children={email.message} />
             {email.attachments && (
               <Box sx={{ mt: 6 }}>
                 <Typography

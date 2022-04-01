@@ -16,7 +16,7 @@ import {
   Typography
 } from '@mui/material';
 import { ArrowRight as ArrowRightIcon } from '../../../icons/arrow-right';
-import type { Invoice } from '../../../types/invoice';
+import type { Invoice, InvoiceStatus } from '../../../types/invoice';
 import { getInitials } from '../../../utils/get-initials';
 import { Scrollbar } from '../../scrollbar';
 
@@ -24,13 +24,17 @@ interface InvoiceListTableProps {
   group?: boolean;
   invoices: Invoice[];
   invoicesCount: number;
-  onPageChange?: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  onPageChange: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
   onRowsPerPageChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   page: number;
   rowsPerPage: number;
 }
 
-const groupInvoices = (rawInvoices: Invoice[]): {} => rawInvoices.reduce(
+type GroupedInvoices = {
+  [key in InvoiceStatus]: Invoice[];
+};
+
+const groupInvoices = (invoices: Invoice[]): GroupedInvoices => invoices.reduce(
   (acc, invoice) => {
     const { status } = invoice;
 
@@ -40,13 +44,17 @@ const groupInvoices = (rawInvoices: Invoice[]): {} => rawInvoices.reduce(
     };
   },
   {
+    canceled: [],
     paid: [],
-    pending: [],
-    canceled: []
+    pending: []
   }
 );
 
-const InvoiceRow = (props) => {
+interface InvoiceRowProps {
+  invoice: Invoice;
+}
+
+const InvoiceRow: FC<InvoiceRowProps> = (props) => {
   const { invoice } = props;
 
   return (
@@ -125,7 +133,7 @@ const InvoiceRow = (props) => {
             color="textSecondary"
             variant="body2"
           >
-            {format(invoice.issueDate, 'dd/MM/yyyy')}
+            {invoice.issueDate && format(invoice.issueDate, 'dd/MM/yyyy')}
           </Typography>
         </Box>
       </TableCell>
@@ -143,7 +151,7 @@ const InvoiceRow = (props) => {
             color="textSecondary"
             variant="body2"
           >
-            {format(invoice.dueDate, 'dd/MM/yyyy')}
+            {invoice.dueDate && format(invoice.dueDate, 'dd/MM/yyyy')}
           </Typography>
         </Box>
       </TableCell>
@@ -187,9 +195,9 @@ export const InvoiceListTable: FC<InvoiceListTableProps> = (props) => {
             p: '1px'
           }}
         >
-          {group && (
+          {Boolean(group && groupedInvoices) && (
             <TableBody>
-              {Object.keys(groupedInvoices).map((status) => (
+              {(Object.keys(groupedInvoices) as InvoiceStatus[]).map((status) => (
                 <Fragment key={status}>
                   <TableRow>
                     <TableCell
@@ -245,7 +253,7 @@ InvoiceListTable.propTypes = {
   group: PropTypes.bool,
   invoices: PropTypes.array.isRequired,
   invoicesCount: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func,
+  onPageChange: PropTypes.func.isRequired,
   onRowsPerPageChange: PropTypes.func,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired

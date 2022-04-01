@@ -11,14 +11,13 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import type { Order } from '../../../types/order';
 import { SeverityPill } from '../../severity-pill';
 import type { SeverityPillColor } from '../../severity-pill';
 
 interface OrderListTableProps {
   onOpenDrawer?: (orderId: string) => void;
-  onPageChange?: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  onPageChange: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
   onRowsPerPageChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   orders: Order[];
   ordersCount: number;
@@ -124,7 +123,7 @@ export const OrderListTable: FC<OrderListTableProps> = (props) => {
 
 OrderListTable.propTypes = {
   onOpenDrawer: PropTypes.func,
-  onPageChange: PropTypes.func,
+  onPageChange: PropTypes.func.isRequired,
   onRowsPerPageChange: PropTypes.func,
   orders: PropTypes.array.isRequired,
   ordersCount: PropTypes.number.isRequired,

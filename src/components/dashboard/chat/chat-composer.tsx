@@ -1,17 +1,21 @@
 import { useState } from 'react';
+import type { FC } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Divider } from '@mui/material';
 import { addMessage } from '../../../slices/chat';
 import { useDispatch } from '../../../store';
+import type { Contact } from '../../../types/chat';
 import { ChatComposerToolbar } from './chat-composer-toolbar';
 import { ChatMessageAdd } from './chat-message-add';
 
-export const ChatComposer = (props) => {
+interface ChatComposerProps {}
+
+export const ChatComposer: FC<ChatComposerProps> = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [recipients, setRecipients] = useState([]);
+  const [recipients, setRecipients] = useState<Contact[]>([]);
 
-  const handleAddRecipient = (recipient: any): void => {
+  const handleAddRecipient = (recipient: Contact): void => {
     setRecipients((prevState) => {
       const exists = prevState.find((_recipient) => _recipient.id === recipient.id);
 
@@ -36,7 +40,7 @@ export const ChatComposer = (props) => {
         recipientIds: recipients.map((recipient) => recipient.id),
         body
       }));
-      router.push(`/dashboard/chat?threadKey=${threadId}`);
+      router.push(`/dashboard/chat?threadKey=${threadId}`).catch(console.error);
     } catch (err) {
       console.error(err);
     }

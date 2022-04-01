@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import Markdown from 'react-markdown/with-html';
+import Markdown from 'react-markdown';
 import { Box, Card, CardContent, Chip, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -79,7 +79,7 @@ export const DetailList6: FC = () => (
             Description
           </Typography>
           <MarkdownWrapper>
-            <Markdown source={description} />
+            <Markdown children={description} />
           </MarkdownWrapper>
         </Box>
       </CardContent>

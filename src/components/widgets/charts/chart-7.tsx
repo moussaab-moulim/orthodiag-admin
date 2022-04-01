@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import type { ApexOptions } from 'apexcharts';
 import {
   Box,
@@ -71,7 +71,7 @@ export const Chart7: FC = () => {
     'Social Media'
   ]);
 
-  const handleChange = (event, name: string): void => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>, name: string): void => {
     if (!event.target.checked) {
       setSelectedSeries(selectedSeries.filter((item) => item !== name));
     } else {
@@ -240,7 +240,7 @@ export const Chart7: FC = () => {
             ))}
           </Box>
           <Chart
-            width={350}
+            height={350}
             options={chartOptions}
             series={chartSeries}
             type="line"

@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import type { FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import type { ApexOptions } from 'apexcharts';
 import {
-  Badge,
   Box,
   Card,
   CardHeader,
@@ -60,7 +59,7 @@ export const AnalyticsTrafficSources: FC<CardProps> = (props) => {
     'Social Media'
   ]);
 
-  const handleChange = (event, name: string): void => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>, name: string): void => {
     if (!event.target.checked) {
       setSelectedSeries(selectedSeries.filter((item) => item !== name));
     } else {

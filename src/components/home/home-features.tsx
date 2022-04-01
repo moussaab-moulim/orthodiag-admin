@@ -9,8 +9,10 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  SvgIcon,
   Typography
 } from '@mui/material';
+import type { PaletteMode } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { Cog as CogIcon } from '../../icons/cog';
 import { Lock as LockIcon } from '../../icons/lock';
@@ -18,14 +20,14 @@ import { MinusOutlined as MinusOutlinedIcon } from '../../icons/minus-outlined';
 import { Template as TemplateIcon } from '../../icons/template';
 
 interface Feature {
-  icon: any;
+  icon: typeof SvgIcon;
   image: string;
   items: string[];
   subheader: string;
   title: string;
 }
 
-const getFeatures = (theme: string): Feature[] => ([
+const getFeatures = (theme: PaletteMode): Feature[] => ([
   {
     icon: LockIcon,
     image: `/static/home/auth_${theme}.png`,
@@ -112,24 +114,24 @@ export const HomeFeatures: FC = (props) => {
                   key={title}
                   onClick={() => handleChangeFeature(index)}
                   sx={{
-                    backgroundColor: selected && alpha(
-                      theme.palette.primary.main,
-                      0.08
-                    ),
                     borderRadius: 1,
-                    cursor: selected
-                      ? 'default'
-                      : 'pointer',
+                    cursor: 'pointer',
                     display: 'flex',
                     mb: 2,
-                    p: 2
+                    p: 2,
+                    ...(selected && {
+                      backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                      cursor: 'default'
+                    })
                   }}
                 >
                   <Avatar
                     sx={{
-                      backgroundColor: selected && 'primary.main',
-                      color: selected && 'primary.contrastText',
-                      mr: 2
+                      mr: 2,
+                      ...(selected && {
+                        backgroundColor: 'primary.main',
+                        color: 'primary.contrastText'
+                      })
                     }}
                   >
                     <Icon fontSize="small" />
@@ -149,13 +151,11 @@ export const HomeFeatures: FC = (props) => {
                         disablePadding
                         sx={{
                           display: 'grid',
-                          gridTemplateColumns: items.length > 4 && (
-                            {
-                              sm: 'repeat(2, 1fr)'
-                            }
-                          ),
                           gap: 1,
-                          pt: 2
+                          pt: 2,
+                          ...(items.length > 4 && {
+                            sm: 'repeat(2, 1fr)'
+                          })
                         }}
                       >
                         {items.map((item) => (

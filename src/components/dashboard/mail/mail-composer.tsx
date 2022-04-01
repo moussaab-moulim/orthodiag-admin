@@ -9,10 +9,10 @@ import {
   IconButton,
   Input,
   Paper,
-  Portal,
   Tooltip,
   Typography
 } from '@mui/material';
+import Portal from '@mui/material/Portal';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import MinimizeIcon from '@mui/icons-material/Minimize';
@@ -21,7 +21,7 @@ import { X as XIcon } from '../../../icons/x';
 import { QuillEditor } from '../../quill-editor';
 
 interface MailComposerProps {
-  open: boolean;
+  open?: boolean;
   onClose?: () => void;
 }
 
@@ -63,12 +63,15 @@ export const MailComposer: FC<MailComposerProps> = (props) => {
           right: 0,
           width: 600,
           zIndex: 2000,
-          ...(
-            isFullScreen && {
-              height: '100%',
-              width: '100%'
-            }
-          )
+          overflow: 'hidden',
+          ...(isFullScreen && {
+            borderRadius: 0,
+            height: '100%',
+            margin: 0,
+            maxHeight: '100%',
+            maxWidth: '100%',
+            width: '100%'
+          })
         }}
         elevation={12}
       >

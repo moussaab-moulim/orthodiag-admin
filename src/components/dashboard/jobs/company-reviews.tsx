@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ChangeEvent, FC } from 'react';
+import type { FC, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import { formatDistanceStrict } from 'date-fns';
 import {
@@ -23,7 +23,7 @@ interface CompanyReviewsProps {
 
 export const CompanyReviews: FC<CompanyReviewsProps> = (props) => {
   const { reviews, averageRating, ...other } = props;
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number | null>(null);
   // To get the user from the authContext, you can use
   // `const { user } = useAuth();`
   const user = {
@@ -31,7 +31,7 @@ export const CompanyReviews: FC<CompanyReviewsProps> = (props) => {
     name: 'Anika Visser'
   };
 
-  const handleRatingChange = (event: ChangeEvent<HTMLInputElement>, newRating: number): void => {
+  const handleRatingChange = (event: SyntheticEvent, newRating: number | null): void => {
     setRating(newRating);
   };
 
@@ -246,6 +246,7 @@ CompanyReviews.defaultProps = {
 };
 
 CompanyReviews.propTypes = {
-  reviews: PropTypes.array,
-  averageRating: PropTypes.number
+  // @ts-ignore
+  reviews: PropTypes.array.isRequired,
+  averageRating: PropTypes.number.isRequired
 };

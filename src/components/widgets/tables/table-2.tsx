@@ -22,9 +22,22 @@ import { Scrollbar } from '../../scrollbar';
 import { ChevronRight as ChevronRightIcon } from '../../../icons/chevron-right';
 import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizontal';
 
+interface Project {
+  id: string;
+  author: {
+    avatar: string;
+    name: string;
+  };
+  budget: number;
+  createdAt: number;
+  currency: string;
+  technologies: string[];
+  title: string;
+}
+
 const now = new Date();
 
-const projects = [
+const projects: Project[] = [
   {
     id: '5eff24e675e7b3cba23e4be7',
     author: {
@@ -87,7 +100,7 @@ const projects = [
   }
 ];
 
-const technologyMap = {
+const technologyMap: Record<string, string> = {
   'html-css': '/static/icons/html.svg',
   'react-js': '/static/icons/react-js.svg',
   'vue-js': '/static/icons/vue-js.svg',
@@ -173,8 +186,7 @@ export const Table2: FC = () => (
                   </Box>
                 </TableCell>
                 <TableCell>
-                  {numeral(project.budget)
-                    .format(`${project.currency}0,0.00`)}
+                  {numeral(project.budget).format(`${project.currency}0,0.00`)}
                 </TableCell>
                 <TableCell>
                   {project.technologies.map((technology) => (

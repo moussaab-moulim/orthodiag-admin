@@ -41,7 +41,7 @@ export const ChatThreadToolbar: FC<ChatThreadToolbarProps> = (props) => {
     participant.id !== user.id
   ));
   const name = recipients.reduce((
-    names,
+    names: string[],
     participant
   ) => [...names, participant.name], []).join(', ');
 
@@ -92,7 +92,7 @@ export const ChatThreadToolbar: FC<ChatThreadToolbarProps> = (props) => {
           {recipients.map((recipient) => (
             <Avatar
               key={recipient.id}
-              src={recipient.avatar}
+              src={recipient.avatar || undefined}
             />
           ))}
         </AvatarGroup>
@@ -100,14 +100,14 @@ export const ChatThreadToolbar: FC<ChatThreadToolbarProps> = (props) => {
           <Typography variant="subtitle2">
             {name}
           </Typography>
-          {recipients.length === 1 && (
+          {Boolean(recipients.length === 1 && recipients[0].lastActivity) && (
             <Typography
               color="textSecondary"
               variant="caption"
             >
               Last active
               {' '}
-              {formatDistanceToNowStrict(recipients[0].lastActivity, { addSuffix: true })}
+              {formatDistanceToNowStrict(recipients[0].lastActivity!, { addSuffix: true })}
             </Typography>
           )}
         </Box>
@@ -163,6 +163,7 @@ export const ChatThreadToolbar: FC<ChatThreadToolbarProps> = (props) => {
 };
 
 ChatThreadToolbar.propTypes = {
+  // @ts-ignore
   participants: PropTypes.array
 };
 

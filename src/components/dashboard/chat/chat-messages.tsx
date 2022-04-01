@@ -27,9 +27,9 @@ export const ChatMessages: FC<ChatMessagesProps> = (props) => {
         const participant = participants.find(
           (_participant) => _participant.id === message.authorId
         );
-        let authorAvatar;
-        let authorName;
-        let authorType;
+        let authorAvatar: string | null;
+        let authorName: string;
+        let authorType: 'user' | 'contact';
 
         // Since chat mock db is not synced with external auth providers
         // we set the user details from user auth state instead of thread participants
@@ -38,8 +38,8 @@ export const ChatMessages: FC<ChatMessagesProps> = (props) => {
           authorName = 'Me';
           authorType = 'user';
         } else {
-          authorAvatar = participant.avatar;
-          authorName = participant.name;
+          authorAvatar = participant!.avatar;
+          authorName = participant!.name;
           authorType = 'contact';
         }
 
@@ -62,5 +62,6 @@ export const ChatMessages: FC<ChatMessagesProps> = (props) => {
 ChatMessages.propTypes = {
   // @ts-ignore
   messages: PropTypes.array,
+  // @ts-ignore
   participants: PropTypes.array
 };

@@ -211,5 +211,5 @@ SocialPostCard.propTypes = {
   isLiked: PropTypes.bool.isRequired,
   likes: PropTypes.number.isRequired,
   media: PropTypes.string,
-  message: PropTypes.string
+  message: PropTypes.string.isRequired
 };

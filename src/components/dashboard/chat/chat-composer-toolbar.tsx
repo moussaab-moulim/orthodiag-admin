@@ -24,19 +24,19 @@ import { Scrollbar } from '../../scrollbar';
 interface ChatThreadComposerProps {
   onAddRecipient?: (contact: Contact) => void;
   onRemoveRecipient?: (recipientId: string) => void;
-  recipients: any[];
+  recipients: Contact[];
 }
 
-const getFilteredSearchResults = (
-  results: Contact[],
-  recipients: any[]
-): any[] => {
-  const recipientIds = recipients.reduce((acc, recipient) => [
+const filterSearchResults = (
+  searchResults: Contact[],
+  recipients: Contact[]
+): Contact[] => {
+  const recipientIds = recipients.reduce((acc: string[], recipient) => [
     ...acc,
     recipient.id
   ], []);
 
-  return results.filter((result) => !recipientIds.includes(result.id));
+  return searchResults.filter((result) => !recipientIds.includes(result.id));
 };
 
 export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
@@ -46,11 +46,8 @@ export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
   const [isSearchFocused, setIsSearchFocused] = useState<boolean>(true);
   const [searchResults, setSearchResults] = useState<Contact[]>([]);
 
-  const filteredSearchResults = getFilteredSearchResults(
-    searchResults,
-    recipients
-  );
-  const displayResults = query && isSearchFocused;
+  const displaySearchResults = query && isSearchFocused;
+  const filteredSearchResults = filterSearchResults(searchResults, recipients);
 
   const handleSearchChange = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
     try {
@@ -71,7 +68,7 @@ export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
   };
 
   const handleSearchBlur = (): void => {
-    if (!displayResults) {
+    if (!displaySearchResults) {
       setIsSearchFocused(false);
     }
   };
@@ -164,7 +161,7 @@ export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
           </Box>
         </Scrollbar>
       </Box>
-      {displayResults && (
+      {displaySearchResults && (
         <ClickAwayListener onClickAway={handleSearchResultsClickAway}>
           <Popper
             anchorEl={containerRef?.current}
@@ -258,6 +255,7 @@ export const ChatComposerToolbar: FC<ChatThreadComposerProps> = (props) => {
 ChatComposerToolbar.propTypes = {
   onAddRecipient: PropTypes.func,
   onRemoveRecipient: PropTypes.func,
+  // @ts-ignore
   recipients: PropTypes.array
 };
 

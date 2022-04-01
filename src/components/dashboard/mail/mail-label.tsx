@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import PropTypes from 'prop-types';
 import NextLink from 'next/link';
-import { Box, ButtonBase, ListItem, Typography } from '@mui/material';
+import { Box, ButtonBase, ListItem, Typography, SvgIcon } from '@mui/material';
 import LabelImportantIcon from '@mui/icons-material/LabelImportant';
 import { ExclamationCircle as ExclamationCircleIcon } from '../../../icons/exclamation-circle';
 import { Star as StarIcon } from '../../../icons/star';
@@ -19,7 +19,7 @@ interface MailLabelProps {
   onClick?: () => void;
 }
 
-const systemLabelIcons = {
+const systemLabelIcons: Record<string, typeof SvgIcon> = {
   all: MailIcon,
   inbox: InboxIcon,
   trash: TrashIcon,
@@ -30,9 +30,9 @@ const systemLabelIcons = {
   important: LabelImportantIcon
 };
 
-const getIcon = (label: Label) => {
+const getIcon = (label: Label): typeof SvgIcon => {
   if (label.type === 'system') {
-    return systemLabelIcons[label.id];
+    return systemLabelIcons[label.id as string];
   }
 
   return TagOutlinedIcon;
@@ -40,13 +40,13 @@ const getIcon = (label: Label) => {
 
 const getColor = (label: Label): string => {
   if (label.type === 'custom') {
-    return label.color;
+    return label.color as string;
   }
 
   return 'inherit';
 };
 
-export const MailLabel: FC<MailLabelProps> = (props, ref) => {
+export const MailLabel: FC<MailLabelProps> = (props) => {
   const { active, label, ...other } = props;
 
   const Icon = getIcon(label);

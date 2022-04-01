@@ -32,7 +32,7 @@ export const DocsSidebarItem: FC<DocsSidebarItemProps> = (props) => {
     title,
     ...other
   } = props;
-  const [open, setOpen] = useState<boolean>(openProp);
+  const [open, setOpen] = useState<boolean>(!!openProp);
 
   const handleToggle = (): void => {
     setOpen((prevOpen) => !prevOpen);
@@ -112,7 +112,7 @@ export const DocsSidebarItem: FC<DocsSidebarItemProps> = (props) => {
       }}
     >
       <NextLink
-        href={path}
+        href={path as string}
         passHref
       >
         <Button
@@ -121,16 +121,19 @@ export const DocsSidebarItem: FC<DocsSidebarItemProps> = (props) => {
           endIcon={chip}
           disableRipple
           sx={{
-            backgroundColor: active && 'rgba(255,255,255, 0.08)',
             borderRadius: 1,
-            color: active ? 'secondary.main' : 'text.primary',
-            fontWeight: active && 'fontWeightBold',
+            color: 'text.primary',
             justifyContent: 'flex-start',
             pl: `${paddingLeft}px`,
             pr: 3,
             textAlign: 'left',
             textTransform: 'none',
             width: '100%',
+            ...(active && {
+              backgroundColor: 'rgba(255,255,255, 0.08)',
+              color: 'secondary.main',
+              fontWeight: 'fontWeightBold'
+            }),
             '& .MuiButton-startIcon': {
               color: active ? 'secondary.main' : 'action.active'
             },

@@ -8,8 +8,8 @@ import { DocsSidebarSection } from './docs-sidebar-section';
 import { Scrollbar } from '../scrollbar';
 
 interface DocsSidebarProps {
-  onClose: () => void;
-  open: boolean;
+  onClose?: () => void;
+  open?: boolean;
 }
 
 interface Item {

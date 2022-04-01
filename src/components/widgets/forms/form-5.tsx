@@ -87,10 +87,10 @@ export const Form5: FC = () => (
               options={countries}
               renderInput={(params): JSX.Element => (
                 <TextField
+                  {...params}
                   fullWidth
                   label="Country"
                   name="country"
-                  {...params}
                 />
               )}
             />

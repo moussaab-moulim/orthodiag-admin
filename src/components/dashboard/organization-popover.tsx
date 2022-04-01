@@ -8,8 +8,8 @@ interface OrganizationPopoverProps {
 }
 
 const organizations = [
-  'OrthoGrier Neuchâtel',
-  'OrthoGrier Lausanne'
+  'Acme Inc',
+  'Division Inc'
 ];
 
 export const OrganizationPopover: FC<OrganizationPopoverProps> = (props) => {
@@ -28,7 +28,7 @@ export const OrganizationPopover: FC<OrganizationPopoverProps> = (props) => {
       }}
       keepMounted
       onClose={onClose}
-      open={open}
+      open={!!open}
       PaperProps={{ sx: { width: 248 } }}
       transitionDuration={0}
       {...other}

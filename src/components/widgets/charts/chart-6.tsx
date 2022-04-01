@@ -96,8 +96,7 @@ export const Chart6: FC = () => {
     },
     yaxis: {
       labels: {
-        // @ts-ignore
-        formatter: (value) => (value > 0 ? `${value}K` : value),
+        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
         offsetX: -10,
         style: {
           colors: theme.palette.text.secondary

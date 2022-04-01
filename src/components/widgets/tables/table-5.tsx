@@ -24,10 +24,30 @@ import { PencilAlt as PencilAltIcon } from '../../../icons/pencil-alt';
 import { Search as SearchIcon } from '../../../icons/search';
 import { Scrollbar } from '../../scrollbar';
 import { SeverityPill } from '../../severity-pill';
+import type { SeverityPillColor } from '../../severity-pill';
+
+type InventoryType = 'in_stock' | 'limited' | 'out_of_stock';
+
+interface Product {
+  id: string;
+  attributes: string[];
+  category: string;
+  currency: string;
+  createdAt: number;
+  image: string | null;
+  inventoryType: InventoryType;
+  isAvailable: boolean;
+  isShippable: boolean;
+  name: string;
+  price: number;
+  quantity: number;
+  updatedAt: number;
+  variants: number;
+}
 
 const now = new Date();
 
-const products = [
+const products: Product[] = [
   {
     id: '5ece2c077e39da27658aa8a9',
     attributes: ['Cotton'],
@@ -151,19 +171,19 @@ const sortOptions = [
   }
 ];
 
-const getInventoryLabel = (inventoryType) => {
-  const map = {
+const getInventoryLabel = (inventoryType: InventoryType): JSX.Element => {
+  const map: Record<InventoryType, { color: SeverityPillColor; text: string; }> = {
     in_stock: {
-      text: 'In Stock',
-      color: 'success'
+      color: 'success',
+      text: 'In Stock'
     },
     limited: {
-      text: 'Limited',
-      color: 'warning'
+      color: 'warning',
+      text: 'Limited'
     },
     out_of_stock: {
-      text: 'Out of Stock',
-      color: 'error'
+      color: 'error',
+      text: 'Out of Stock'
     }
   };
 
@@ -401,8 +421,7 @@ export const Table5: FC = () => (
                   {product.attributes.map((attr) => attr)}
                 </TableCell>
                 <TableCell>
-                  {numeral(product.price)
-                    .format(`${product.currency}0,0.00`)}
+                  {numeral(product.price).format(`${product.currency}0,0.00`)}
                 </TableCell>
                 <TableCell align="right">
                   <IconButton>

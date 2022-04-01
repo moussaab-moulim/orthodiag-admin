@@ -40,7 +40,7 @@ export const CompanySummary: FC<CompanySummaryProps> = (props) => {
               p: 0
             }}
           >
-            {company.locations.map((location) => (
+            {(company.locations || []).map((location) => (
               <Typography
                 key={location}
                 color="textSecondary"
@@ -68,7 +68,7 @@ export const CompanySummary: FC<CompanySummaryProps> = (props) => {
           Founders
         </Typography>
         <div>
-          {company.founders.map((founder) => (
+          {(company.founders || []).map((founder) => (
             <Box
               key={founder.id}
               sx={{

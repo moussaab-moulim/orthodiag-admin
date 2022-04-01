@@ -28,17 +28,21 @@ interface Country {
   visits: number;
 }
 
-const sortCountries = (
-  countries: Country[],
-  order: 'asc' | 'desc'
-): Country[] => countries
-  .sort((a, b) => {
-    if (order === 'asc') {
-      return a.visits < b.visits ? -1 : 1;
-    }
+type SortDir = 'asc' | 'desc';
 
-    return a.visits > b.visits ? -1 : 1;
-  });
+const applySort = (countries: Country[], sortDir: SortDir): Country[] => countries.sort((a, b) => {
+  let newOrder = 0;
+
+  if (a.visits < b.visits) {
+    newOrder = -1;
+  }
+
+  if (a.visits > b.visits) {
+    newOrder = 1;
+  }
+
+  return sortDir === 'asc' ? newOrder : -newOrder;
+});
 
 const countries: Country[] = [
   {
@@ -80,10 +84,10 @@ const countries: Country[] = [
 ];
 
 export const AnalyticsVisitsByCountry: FC<CardProps> = (props) => {
-  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+  const [sort, setSort] = useState<SortDir>('desc');
 
   const handleSort = (): void => {
-    setOrder((prevOrder) => {
+    setSort((prevOrder) => {
       if (prevOrder === 'asc') {
         return 'desc';
       }
@@ -92,7 +96,7 @@ export const AnalyticsVisitsByCountry: FC<CardProps> = (props) => {
     });
   };
 
-  const sortedCountries = sortCountries(countries, order);
+  const sortedCountries = applySort(countries, sort);
 
   return (
     <Card {...props}>
@@ -110,10 +114,10 @@ export const AnalyticsVisitsByCountry: FC<CardProps> = (props) => {
             <TableCell>
               Country
             </TableCell>
-            <TableCell sortDirection={order}>
+            <TableCell sortDirection={sort}>
               <TableSortLabel
                 active
-                direction={order}
+                direction={sort}
                 onClick={handleSort}
               >
                 Value

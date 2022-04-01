@@ -15,7 +15,16 @@ import {
 } from '@mui/material';
 import { Scrollbar } from '../../scrollbar';
 
-const orderItems = [
+interface OrderItem {
+  id: string;
+  billingCycle: string;
+  currency: string;
+  name: string;
+  quantity: number;
+  unitAmount: number;
+}
+
+const orderItems: OrderItem[] = [
   {
     id: '5ecb8abbdd6dfb1f9d6bf98b',
     billingCycle: 'monthly',
@@ -79,8 +88,7 @@ export const Table11: FC = () => (
                   {item.billingCycle}
                 </TableCell>
                 <TableCell>
-                  {numeral(item.unitAmount)
-                    .format(`${item.currency}0,0.00`)}
+                  {numeral(item.unitAmount).format(`${item.currency}0,0.00`)}
                 </TableCell>
               </TableRow>
             ))}

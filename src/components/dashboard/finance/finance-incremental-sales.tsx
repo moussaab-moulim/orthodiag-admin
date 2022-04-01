@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import type { ApexOptions } from 'apexcharts';
 import numeral from 'numeral';
 import {
-  Badge,
   Box,
   Card,
   CardContent,

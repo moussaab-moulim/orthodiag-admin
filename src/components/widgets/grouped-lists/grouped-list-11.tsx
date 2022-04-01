@@ -12,8 +12,22 @@ import {
   Typography
 } from '@mui/material';
 import { SeverityPill } from '../../severity-pill';
+import type { SeverityPillColor } from '../../severity-pill';
 
-const campaigns = [
+type CampaignStatus = 'draft' | 'active' | 'stopped';
+
+interface Campaign {
+  id: string;
+  clickRate: number;
+  conversionRate: number;
+  createdAt: string;
+  name: string;
+  platform: string;
+  status: CampaignStatus;
+  target: string;
+}
+
+const campaigns: Campaign[] = [
   {
     id: '4be0679f811115c9d2d28497',
     clickRate: 6.32,
@@ -56,7 +70,7 @@ const campaigns = [
   }
 ];
 
-const labelColorsMap = {
+const labelColorsMap: Record<CampaignStatus, SeverityPillColor> = {
   draft: 'secondary',
   active: 'success',
   stopped: 'error'

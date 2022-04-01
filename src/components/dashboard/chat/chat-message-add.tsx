@@ -23,7 +23,7 @@ export const ChatMessageAdd: FC<ChatMessageAddProps> = (props) => {
   };
 
   const handleAttach = (): void => {
-    fileInputRef.current.click();
+    fileInputRef.current?.click();
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {

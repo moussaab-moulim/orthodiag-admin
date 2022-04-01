@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
+// @ts-ignore
 import debounce from 'lodash.debounce';
 import {
   Box,
@@ -45,7 +46,7 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
   const dispatch = useDispatch();
   const { columns } = useSelector((state) => state.kanban);
 
-  const handleDetailsUpdate = debounce(async (update) => {
+  const handleDetailsUpdate = debounce(async (update: { name?: string; description?: string; }) => {
     try {
       await dispatch(updateCard(card.id, update));
       toast.success('Card updated!');
@@ -312,14 +313,17 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
                   {labels.map((label, index) => (
                     <Fragment key={label}>
                       <FormControlLabel
-                        checked={card.labels.includes(label)}
-                        control={<Checkbox />}
+                        control={(
+                          <Checkbox
+                            checked={card.labels.includes(label)}
+                            onChange={handleLabelsChange}
+                          />
+                        )}
                         label={(
                           <Typography variant="body2">
                             {label}
                           </Typography>
                         )}
-                        onChange={handleLabelsChange}
                         sx={{
                           pl: 2,
                           pr: 1,
@@ -346,7 +350,7 @@ KanbanCardModal.propTypes = {
   // @ts-ignore
   column: PropTypes.object.isRequired,
   onClose: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool.isRequired
 };
 
 KanbanCardModal.defaultProps = {

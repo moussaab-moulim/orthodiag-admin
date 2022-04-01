@@ -14,6 +14,7 @@ import {
   Typography
 } from '@mui/material';
 import { Search as SearchIcon } from '../../../icons/search';
+import type { Contact } from '../../../types/chat';
 import { Tip } from '../../tip';
 
 interface ChatContactSearchProps {
@@ -21,9 +22,9 @@ interface ChatContactSearchProps {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickAway?: () => void;
   onFocus?: (event: FocusEvent<HTMLInputElement>) => void;
-  onSelect?: (result: any) => void;
-  query: string;
-  results: any[];
+  onSelect?: (result: Contact) => void;
+  query?: string;
+  results: Contact[];
 }
 
 export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchProps>((
@@ -32,16 +33,16 @@ export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchPro
 ) => {
   const { isFocused, onChange, onClickAway, onFocus, onSelect, query, results, ...other } = props;
 
-  const handleSelect = (result: any): void => {
+  const displaySearchResults = query && isFocused;
+
+  const handleSelect = (result: Contact): void => {
     if (onSelect) {
       onSelect(result);
     }
   };
 
-  const displayResults = query && isFocused;
-
   return (
-    <ClickAwayListener onClickAway={onClickAway}>
+    <ClickAwayListener onClickAway={() => onClickAway?.()}>
       <Box
         ref={ref}
         sx={{ p: 2 }}
@@ -61,12 +62,12 @@ export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchPro
           }}
           value={query}
         />
-        {(isFocused && !query) && (
+        {Boolean(isFocused && !query) && (
           <Box sx={{ py: 2 }}>
             <Tip message="Enter a contact name" />
           </Box>
         )}
-        {(displayResults && results.length === 0) && (
+        {Boolean(displaySearchResults && results.length === 0) && (
           <Box sx={{ py: 2 }}>
             <Typography
               color="textSecondary"
@@ -77,7 +78,7 @@ export const ChatContactSearch = forwardRef<HTMLDivElement, ChatContactSearchPro
             </Typography>
           </Box>
         )}
-        {(displayResults && results.length > 0) && (
+        {(displaySearchResults && results.length > 0) && (
           <Box sx={{ py: 2 }}>
             <Typography
               color="textSecondary"
@@ -125,7 +126,7 @@ ChatContactSearch.propTypes = {
   onFocus: PropTypes.func,
   onSelect: PropTypes.func,
   query: PropTypes.string,
-  results: PropTypes.array
+  results: PropTypes.array.isRequired
 };
 
 ChatContactSearch.defaultProps = {

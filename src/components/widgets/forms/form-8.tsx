@@ -5,8 +5,8 @@ import { Avatar, Box, Button, Chip, IconButton, TextField, Typography } from '@m
 import { Plus as PlusIcon } from '../../../icons/plus';
 
 export const Form8: FC = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(new Date());
 
   return (
     <Box

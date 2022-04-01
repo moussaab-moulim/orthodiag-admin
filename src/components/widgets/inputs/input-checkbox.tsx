@@ -20,9 +20,7 @@ export const InputCheckbox: FC = () => (
     </Typography>
     <FormGroup sx={{ pl: 1 }}>
       <FormControlLabel
-        control={(
-          <Checkbox defaultChecked />
-        )}
+        control={<Checkbox defaultChecked />}
         label={(
           <Typography variant="body1">
             Email alerts

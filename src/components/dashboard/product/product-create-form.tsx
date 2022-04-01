@@ -18,6 +18,7 @@ import {
   Typography
 } from '@mui/material';
 import { FileDropzone } from '../../file-dropzone';
+import type { File } from '../../file-dropzone';
 import { QuillEditor } from '../../quill-editor';
 
 const categoryOptions = [
@@ -49,7 +50,7 @@ const categoryOptions = [
 
 export const ProductCreateForm: FC = (props) => {
   const router = useRouter();
-  const [files, setFiles] = useState<any[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   const formik = useFormik({
     initialValues: {
       barcode: '925487986526',
@@ -76,7 +77,7 @@ export const ProductCreateForm: FC = (props) => {
       try {
         // NOTE: Make API request
         toast.success('Product created!');
-        router.push('/dashboard/products');
+        router.push('/dashboard/products').catch(console.error);
       } catch (err) {
         console.error(err);
         toast.error('Something went wrong!');
@@ -87,11 +88,11 @@ export const ProductCreateForm: FC = (props) => {
     }
   });
 
-  const handleDrop = (newFiles: any): void => {
+  const handleDrop = (newFiles: File[]): void => {
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
   };
 
-  const handleRemove = (file): void => {
+  const handleRemove = (file: File): void => {
     setFiles((prevFiles) => prevFiles.filter((_file) => _file.path !== file.path));
   };
 
@@ -155,7 +156,7 @@ export const ProductCreateForm: FC = (props) => {
                 sx={{ height: 400 }}
                 value={formik.values.description}
               />
-              {(formik.touched.description && formik.errors.description) && (
+              {Boolean(formik.touched.description && formik.errors.description) && (
                 <Box sx={{ mt: 2 }}>
                   <FormHelperText error>
                     {formik.errors.description}

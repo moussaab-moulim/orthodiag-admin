@@ -35,8 +35,8 @@ import { DashboardSidebarSection } from './dashboard-sidebar-section';
 import { OrganizationPopover } from './organization-popover';
 
 interface DashboardSidebarProps {
-  onClose: () => void;
-  open: boolean;
+  onClose?: () => void;
+  open?: boolean;
 }
 
 interface Item {
@@ -53,7 +53,7 @@ interface Section {
 }
 
 const getSections = (t: TFunction): Section[] => [
- /*  {
+  {
     title: t('General'),
     items: [
       {
@@ -96,11 +96,11 @@ const getSections = (t: TFunction): Section[] => [
         icon: <UserCircleIcon fontSize="small" />
       }
     ]
-  }, */
+  },
   {
     title: t('Management'),
     items: [
-  /*     {
+      {
         title: t('Customers'),
         path: '/dashboard/customers',
         icon: <UsersIcon fontSize="small" />,
@@ -133,23 +133,23 @@ const getSections = (t: TFunction): Section[] => [
             path: '/dashboard/products/new'
           }
         ]
-      }, */
+      },
       {
-        title: t('dashboard-sidebar-appointments'),
-        icon: <CalendarIcon fontSize="small" />,
-        path: '/dashboard/appointments',
+        title: t('Orders'),
+        icon: <ShoppingCartIcon fontSize="small" />,
+        path: '/dashboard/orders',
         children: [
           {
             title: t('List'),
-            path: '/dashboard/appointments'
+            path: '/dashboard/orders'
           },
-          /* {
+          {
             title: t('Details'),
             path: '/dashboard/orders/1'
-          } */
+          }
         ]
       },
-   /*    {
+      {
         title: t('Invoices'),
         path: '/dashboard/invoices',
         icon: <ReceiptTaxIcon fontSize="small" />,
@@ -163,35 +163,10 @@ const getSections = (t: TFunction): Section[] => [
             path: '/dashboard/invoices/1'
           }
         ]
-      } */
-    ]
-  },
-  {
-    title: t('Apps'),
-    items: [
-      /* {
-        title: t('Kanban'),
-        path: '/dashboard/kanban',
-        icon: <ClipboardListIcon fontSize="small" />
-      },
-      {
-        title: t('Mail'),
-        path: '/dashboard/mail',
-        icon: <MailIcon fontSize="small" />
-      },
-      {
-        title: t('Chat'),
-        path: '/dashboard/chat',
-        icon: <ChatAlt2Icon fontSize="small" />
-      }, */
-      {
-        title: t('Calendar'),
-        path: '/dashboard/calendar',
-        icon: <CalendarIcon fontSize="small" />
       }
     ]
   },
-/*   {
+  {
     title: t('Platforms'),
     items: [
       {
@@ -327,7 +302,7 @@ const getSections = (t: TFunction): Section[] => [
         ]
       }
     ]
-  } */
+  }
 ];
 
 export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
@@ -421,7 +396,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                     color="inherit"
                     variant="subtitle1"
                   >
-                    OrthoGier Neuchâtel
+                    Acme Inc
                   </Typography>
                   <Typography
                     color="neutral.400"
@@ -463,7 +438,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
               />
             ))}
           </Box>
-       {/*    <Divider
+          <Divider
             sx={{
               borderColor: '#2D3748'  // dark divider
             }}
@@ -495,7 +470,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                 {t('Documentation')}
               </Button>
             </NextLink>
-          </Box> */}
+          </Box>
         </Box>
       </Scrollbar>
       <OrganizationPopover

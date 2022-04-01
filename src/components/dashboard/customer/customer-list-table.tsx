@@ -27,7 +27,7 @@ import { Scrollbar } from '../../scrollbar';
 interface CustomerListTableProps {
   customers: Customer[];
   customersCount: number;
-  onPageChange?: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  onPageChange: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
   onRowsPerPageChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   page: number;
   rowsPerPage: number;
@@ -57,9 +57,11 @@ export const CustomerListTable: FC<CustomerListTableProps> = (props) => {
   );
 
   const handleSelectAllCustomers = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedCustomers(event.target.checked
-      ? customers.map((customer) => customer.id)
-      : []);
+    setSelectedCustomers(
+      event.target.checked
+        ? customers.map((customer) => customer.id)
+        : []
+    );
   };
 
   const handleSelectOneCustomer = (
@@ -82,8 +84,10 @@ export const CustomerListTable: FC<CustomerListTableProps> = (props) => {
     <div {...other}>
       <Box
         sx={{
-          backgroundColor: 'neutral.100',
-          display: !enableBulkActions && 'none',
+          backgroundColor: (theme) => theme.palette.mode === 'dark'
+            ? 'neutral.800'
+            : 'neutral.100',
+          display: enableBulkActions ? 'block' : 'none',
           px: 2,
           py: 0.5
         }}
@@ -245,7 +249,7 @@ export const CustomerListTable: FC<CustomerListTableProps> = (props) => {
 CustomerListTable.propTypes = {
   customers: PropTypes.array.isRequired,
   customersCount: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func,
+  onPageChange: PropTypes.func.isRequired,
   onRowsPerPageChange: PropTypes.func,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired

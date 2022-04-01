@@ -41,9 +41,7 @@ export const Form11: FC = () => (
       </Grid>
       <Box sx={{ mt: 2 }}>
         <FormControlLabel
-          control={(
-            <Checkbox name="isTaxable" />
-          )}
+          control={<Checkbox name="isTaxable" />}
           label="Product is taxable"
         />
       </Box>

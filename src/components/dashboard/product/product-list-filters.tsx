@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ChangeEvent, FC, KeyboardEvent } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Chip, Divider, Input, Typography } from '@mui/material';
+import { useUpdateEffect } from '../../../hooks/use-update-effect';
 import { Search as SearchIcon } from '../../../icons/search';
 import { MultiSelect } from '../../multi-select';
 
@@ -76,27 +77,6 @@ const stockOptions = [
   }
 ];
 
-/**
- * A custom useEffect hook that only triggers on updates, not on initial mount
- * @param {Function} effect
- * @param {Array<any>} dependencies
- */
-const useUpdateEffect = (effect, dependencies = []) => {
-  const isInitialMount = useRef(true);
-
-  useEffect(
-    () => {
-      if (isInitialMount.current) {
-        isInitialMount.current = false;
-      } else {
-        return effect();
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    dependencies
-  );
-};
-
 export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
   const { onChange, ...other } = props;
   const [queryValue, setQueryValue] = useState<string>('');
@@ -104,7 +84,7 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
 
   useUpdateEffect(
     () => {
-      const filters = {
+      const filters: Filters = {
         name: undefined,
         category: [],
         status: [],
@@ -117,14 +97,14 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
         switch (filterItem.field) {
           case 'name':
             // There will (or should) be only one filter item with field "name"
-            // so we can setup it directly
-            filters.name = filterItem.value;
+            // so we can set up it directly
+            filters.name = filterItem.value as string;
             break;
           case 'category':
-            filters.category.push(filterItem.value);
+            filters.category.push(filterItem.value as string);
             break;
           case 'status':
-            filters.status.push(filterItem.value);
+            filters.status.push(filterItem.value as string);
             break;
           case 'inStock':
             // The value can be "available" or "outOfStock" and we transform it to a boolean
@@ -183,9 +163,9 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
     }
   };
 
-  const handleCategoryChange = (values: unknown[]): void => {
+  const handleCategoryChange = (values: string[]): void => {
     setFilterItems((prevState) => {
-      const valuesFound = [];
+      const valuesFound: string[] = [];
 
       // First cleanup the previous filter items
       const newFilterItems = prevState.filter((filterItem) => {
@@ -193,10 +173,10 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
           return true;
         }
 
-        const found = values.includes(filterItem.value);
+        const found = values.includes(filterItem.value as string);
 
         if (found) {
-          valuesFound.push(filterItem.value);
+          valuesFound.push(filterItem.value as string);
         }
 
         return found;
@@ -215,7 +195,7 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
             label: 'Category',
             field: 'category',
             value,
-            displayValue: option.label
+            displayValue: option!.label
           });
         }
       });
@@ -224,9 +204,9 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
     });
   };
 
-  const handleStatusChange = (values: unknown[]): void => {
+  const handleStatusChange = (values: string[]): void => {
     setFilterItems((prevState) => {
-      const valuesFound = [];
+      const valuesFound: string[] = [];
 
       // First cleanup the previous filter items
       const newFilterItems = prevState.filter((filterItem) => {
@@ -234,10 +214,10 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
           return true;
         }
 
-        const found = values.includes(filterItem.value);
+        const found = values.includes(filterItem.value as string);
 
         if (found) {
-          valuesFound.push(filterItem.value);
+          valuesFound.push(filterItem.value as string);
         }
 
         return found;
@@ -256,7 +236,7 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
             label: 'Status',
             field: 'status',
             value,
-            displayValue: option.label
+            displayValue: option!.label
           });
         }
       });
@@ -265,7 +245,7 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
     });
   };
 
-  const handleStockChange = (values: unknown[]): void => {
+  const handleStockChange = (values: string[]): void => {
     // Stock can only have one value, even if displayed as multi-select, so we select the first one.
     // This example allows you to select one value or "All", which is not included in the
     // rest of multi-selects.
@@ -305,14 +285,14 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
   const categoryValues = useMemo(
     () => filterItems
       .filter((filterItems) => filterItems.field === 'category')
-      .map((filterItems) => filterItems.value),
+      .map((filterItems) => filterItems.value) as string[],
     [filterItems]
   );
 
   const statusValues = useMemo(
     () => filterItems
       .filter((filterItems) => filterItems.field === 'status')
-      .map((filterItems) => filterItems.value),
+      .map((filterItems) => filterItems.value) as string[],
     [filterItems]
   );
 
@@ -320,7 +300,7 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
     () => {
       const values = filterItems
         .filter((filterItems) => filterItems.field === 'inStock')
-        .map((filterItems) => filterItems.value);
+        .map((filterItems) => filterItems.value) as string[];
 
       // Since we do not display the "all" as chip, we add it to the multi-select as a selected value
       if (values.length === 0) {
@@ -383,9 +363,9 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
                         }
                       }}
                     >
-                  <span>
-                    {filterItem.label}
-                  </span>
+                      <span>
+                        {filterItem.label}
+                      </span>
                       :
                       {' '}
                       {filterItem.displayValue || filterItem.value}
@@ -420,19 +400,19 @@ export const ProjectListFilters: FC<ProjectListFiltersProps> = (props) => {
       >
         <MultiSelect
           label="Category"
-          onChange={(value) => handleCategoryChange(value)}
+          onChange={handleCategoryChange}
           options={categoryOptions}
           value={categoryValues}
         />
         <MultiSelect
           label="Status"
-          onChange={(value) => handleStatusChange(value)}
+          onChange={handleStatusChange}
           options={statusOptions}
           value={statusValues}
         />
         <MultiSelect
           label="Stock"
-          onChange={(value) => handleStockChange(value)}
+          onChange={handleStockChange}
           options={stockOptions}
           value={stockValues}
         />

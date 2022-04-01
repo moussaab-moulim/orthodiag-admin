@@ -83,8 +83,7 @@ export const Chart4: FC = () => {
     },
     yaxis: {
       labels: {
-        // @ts-ignore
-        formatter: (value) => (value > 0 ? `${value}K` : value),
+        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
         offsetX: -10,
         style: {
           colors: theme.palette.text.secondary
@@ -122,7 +121,7 @@ export const Chart4: FC = () => {
               }}
             >
               <Chart
-                width={350}
+                height={350}
                 options={chartOptions}
                 series={chartSeries}
                 type="area"

@@ -189,10 +189,10 @@ CalendarToolbar.propTypes = {
   onDatePrev: PropTypes.func,
   onDateToday: PropTypes.func,
   onViewChange: PropTypes.func,
-  view: PropTypes.oneOf([
+  view: PropTypes.oneOf<CalendarView>([
     'dayGridMonth',
     'timeGridWeek',
     'timeGridDay',
     'listWeek'
-  ])
+  ]).isRequired
 };

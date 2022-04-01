@@ -15,7 +15,14 @@ import {
 } from '@mui/material';
 import { InformationCircleOutlined as InformationCircleOutlinedIcon } from '../../../icons/information-circle-outlined';
 
-const countries = [
+interface Country {
+  flag: string;
+  name: string;
+  seo: number;
+  visits: number;
+}
+
+const countries: Country[] = [
   {
     flag: '/static/icons/us_flag.svg',
     name: 'United States',

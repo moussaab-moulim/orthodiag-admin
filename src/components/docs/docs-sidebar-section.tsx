@@ -30,11 +30,11 @@ const renderNavItems = ({
 }): JSX.Element => (
   <List disablePadding>
     {items.reduce(
-      (acc, item) => reduceChildRoutes({
+      (acc: JSX.Element[], item) => reduceChildRoutes({
         acc,
+        depth,
         item,
-        path,
-        depth
+        path
       }),
       []
     )}
@@ -53,8 +53,8 @@ const reduceChildRoutes = ({
   path: string;
 }): Array<JSX.Element> => {
   const key = `${item.title}-${depth}`;
-  const partialMatch = path.includes(item.path);
-  const exactMatch = path === item.path;
+  const partialMatch = item.path ? path.includes(item.path) : false;
+  const exactMatch = path.split('?')[0] === item.path; // We don't compare query params
 
   if (item.children) {
     acc.push(
@@ -126,7 +126,8 @@ export const DocsSidebarSection: FC<DocsSidebarSectionProps> = (props) => {
 };
 
 DocsSidebarSection.propTypes = {
+  // @ts-ignore
   items: PropTypes.array,
-  path: PropTypes.string,
-  title: PropTypes.string
+  path: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };

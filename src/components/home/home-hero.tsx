@@ -36,7 +36,7 @@ export const HomeHero: FC = (props) => {
           align="center"
           variant="h1"
         >
-          Material Kit Pro v5.0
+          Material Kit Pro v5.1
         </Typography>
         <Typography
           align="center"

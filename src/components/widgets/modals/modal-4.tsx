@@ -18,9 +18,17 @@ import {
 } from '@mui/material';
 import { StatusIndicator } from '../../status-indicator';
 
+interface Contact {
+  id: string;
+  avatar: string;
+  isActive: boolean;
+  lastActivity: number;
+  name: string;
+}
+
 const now = new Date();
 
-const contacts = [
+const contacts: Contact[] = [
   {
     id: '5e8891ab188cd2855e6029b7',
     avatar: '/static/mock-images/avatars/avatar-alcides_antonio.png',

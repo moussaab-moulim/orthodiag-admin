@@ -26,7 +26,7 @@ import { Order } from '../../../types/order';
 import { Scrollbar } from '../../scrollbar';
 
 interface OrderDrawerProps {
-  containerRef?: MutableRefObject<HTMLDivElement>;
+  containerRef?: MutableRefObject<HTMLDivElement | null>;
   open?: boolean;
   onClose?: () => void;
   order?: Order;
@@ -51,7 +51,15 @@ const statusOptions = [
   }
 ];
 
-const OrderPreview = (props) => {
+interface OrderPreviewProps {
+  lgUp: boolean;
+  onApprove?: () => void;
+  onEdit?: () => void;
+  onReject?: () => void;
+  order: Order;
+}
+
+const OrderPreview: FC<OrderPreviewProps> = (props) => {
   const { lgUp, onApprove, onEdit, onReject, order } = props;
   const align = lgUp ? 'horizontal' : 'vertical';
 
@@ -209,7 +217,7 @@ const OrderPreview = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {order.items.map((item) => (
+            {(order.items || []).map((item) => (
               <TableRow key={item.id}>
                 <TableCell>
                   {item.name}
@@ -233,7 +241,13 @@ const OrderPreview = (props) => {
   );
 };
 
-const OrderForm = (props) => {
+interface OrderFormProps {
+  onCancel?: () => void;
+  onSave?: () => void;
+  order: Order;
+}
+
+const OrderForm: FC<OrderFormProps> = (props) => {
   const { onCancel, onSave, order } = props;
 
   return (

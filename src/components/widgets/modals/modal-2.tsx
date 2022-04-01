@@ -1,7 +1,12 @@
 import type { FC } from 'react';
 import { Box, ListItemIcon, ListItemText, MenuItem, Paper, Typography } from '@mui/material';
 
-const languageOptions = [
+interface LanguageOption {
+  icon: string;
+  label: string;
+}
+
+const languageOptions: LanguageOption[] = [
   {
     icon: '/static/icons/uk_flag.svg',
     label: 'English'
@@ -31,8 +36,8 @@ export const Modal2: FC = () => (
         mx: 'auto'
       }}
     >
-      {Object.keys(languageOptions).map((language) => (
-        <MenuItem key={language}>
+      {languageOptions.map((languageOption) => (
+        <MenuItem key={languageOption.label}>
           <ListItemIcon>
             <Box
               sx={{
@@ -45,8 +50,8 @@ export const Modal2: FC = () => (
               }}
             >
               <img
-                alt={languageOptions[language].label}
-                src={languageOptions[language].icon}
+                alt={languageOption.label}
+                src={languageOption.icon}
               />
             </Box>
           </ListItemIcon>
@@ -56,7 +61,7 @@ export const Modal2: FC = () => (
                 color="textPrimary"
                 variant="subtitle2"
               >
-                {languageOptions[language].label}
+                {languageOption.label}
               </Typography>
             )}
           />

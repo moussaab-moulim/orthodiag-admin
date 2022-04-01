@@ -18,7 +18,7 @@ interface CompanyActivityProps {
   activities: Activity[];
 }
 
-const getActivityContent = (activity: Activity): JSX.Element => {
+const getActivityContent = (activity: Activity): JSX.Element | null => {
   switch (activity.action) {
     case 'new_job':
       return (
@@ -192,5 +192,6 @@ CompanyActivity.defaultProps = {
 };
 
 CompanyActivity.propTypes = {
+  // @ts-ignore
   activities: PropTypes.array
 };

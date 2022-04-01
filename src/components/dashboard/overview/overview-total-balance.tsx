@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import numeral from 'numeral';
 import {
-  Badge,
   Box,
   Button,
   Card,

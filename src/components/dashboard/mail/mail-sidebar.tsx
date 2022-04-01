@@ -5,11 +5,11 @@ import { Box, Button, Drawer, List, ListSubheader, Typography, useMediaQuery } f
 import type { Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
-import type { Label } from '../../../types/mail';
+import type { Label, LabelType } from '../../../types/mail';
 import { MailLabel } from './mail-label';
 
 interface MailSidebarProps {
-  containerRef?: MutableRefObject<HTMLDivElement>;
+  containerRef?: MutableRefObject<HTMLDivElement | null>;
   label?: string;
   labels: Label[];
   open?: boolean;
@@ -35,10 +35,14 @@ const MailSidebarMobile = styled(Drawer)({
   }
 });
 
-const groupLabels = (labels) => {
-  const groups = {
-    'system': [],
-    'custom': []
+type GroupedLabels = {
+  [key in LabelType]: Label[];
+};
+
+const groupLabels = (labels: Label[]): GroupedLabels => {
+  const groups: GroupedLabels = {
+    system: [],
+    custom: []
   };
 
   labels.forEach((label) => {
@@ -62,7 +66,7 @@ export const MailSidebar: FC<MailSidebarProps> = (props) => {
     }
   };
 
-  const groupedLabels = groupLabels(labels);
+  const groupedLabels: GroupedLabels = groupLabels(labels);
 
   const content = (
     <div>
@@ -86,7 +90,7 @@ export const MailSidebar: FC<MailSidebarProps> = (props) => {
           px: 2
         }}
       >
-        {Object.keys(groupedLabels).map((type) => (
+        {(Object.keys(groupedLabels) as LabelType[]).map((type) => (
           <Fragment key={type}>
             {type === 'custom' && (
               <ListSubheader disableSticky={true}>

@@ -40,7 +40,7 @@ interface FormValues {
   end: Date;
   start: Date;
   title: string;
-  submit: any;
+  submit: string | null;
 }
 
 export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
@@ -51,8 +51,7 @@ export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
     onDeleteComplete,
     onEditComplete,
     open,
-    range,
-    ...other
+    range
   } = props;
   const dispatch = useDispatch();
   const initialValues = useMemo(
@@ -117,12 +116,12 @@ export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
         };
 
         if (event) {
-          await dispatch(updateEvent(event.id, data));
+          await dispatch(updateEvent(event.id!, data));
+          toast.success('Event updated!');
         } else {
           await dispatch(createEvent(data));
+          toast.success('Event added!');
         }
-
-        toast.success('Event added!');
 
         if (!event && onAddComplete) {
           onAddComplete();
@@ -145,7 +144,7 @@ export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
     formik.setFieldValue('start', date);
 
     // Prevent end date to be before start date
-    if (formik.values.end && date > formik.values.end) {
+    if (formik.values.end && date && date > formik.values.end) {
       formik.setFieldValue('end', date);
     }
   };
@@ -154,15 +153,18 @@ export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
     formik.setFieldValue('end', date);
 
     // Prevent start date to be after end date
-    if (formik.values.start && date < formik.values.start) {
+    if (formik.values.start && date && date < formik.values.start) {
       formik.setFieldValue('start', date);
     }
   };
 
   const handleDelete = async (): Promise<void> => {
     try {
-      await dispatch(deleteEvent(event.id));
+      if (!event) {
+        return;
+      }
 
+      await dispatch(deleteEvent(event.id!));
       onDeleteComplete?.();
     } catch (err) {
       console.error(err);
@@ -174,7 +176,7 @@ export const CalendarEventDialog: FC<CalendarEventFormProps> = (props) => {
       fullWidth
       maxWidth="sm"
       onClose={onClose}
-      open={open}
+      open={!!open}
     >
       <form onSubmit={formik.handleSubmit}>
         <Box sx={{ p: 3 }}>

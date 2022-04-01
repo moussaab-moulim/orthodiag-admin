@@ -16,9 +16,19 @@ import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizo
 import { Scrollbar } from '../../scrollbar';
 import { SeverityPill } from '../../severity-pill';
 
+interface Log {
+  id: string;
+  createdAt: number;
+  description: string;
+  ip: string;
+  method: string;
+  route: string;
+  status: number;
+}
+
 const now = new Date();
 
-const logs = [
+const logs: Log[] = [
   {
     id: '5ece2cfeb6e2ac847bba11ce',
     createdAt: subDays(subMinutes(subSeconds(now, 56), 2), 2).getTime(),

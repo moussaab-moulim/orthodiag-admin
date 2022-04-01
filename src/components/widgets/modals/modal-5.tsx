@@ -9,16 +9,26 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Paper,
+  Paper, SvgIcon,
   Typography
 } from '@mui/material';
 import { ChatAlt as ChatAltIcon } from '../../../icons/chat-alt';
 import { CreditCard as CreditCardIcon } from '../../../icons/credit-card';
 import { ShoppingCart as ShoppingCartIcon } from '../../../icons/shopping-cart';
 
+type NotificationType = 'item_shipped' | 'new_message' | 'order_placed';
+
+interface Notification {
+  id: string;
+  createdAt: number;
+  description: string;
+  title: string;
+  type: NotificationType;
+}
+
 const now = new Date();
 
-const notifications = [
+const notifications: Notification[] = [
   {
     id: '5e8883f1b51cc1956a5a1ec0',
     createdAt: subHours(now, 2).getTime(),
@@ -49,7 +59,7 @@ const notifications = [
   }
 ];
 
-const iconsMap = {
+const iconsMap: Record<NotificationType, typeof SvgIcon> = {
   item_shipped: ShoppingCartIcon,
   new_message: ChatAltIcon,
   order_placed: CreditCardIcon

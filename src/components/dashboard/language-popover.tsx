@@ -10,7 +10,16 @@ interface LanguagePopoverProps {
   open?: boolean;
 }
 
-const languageOptions = {
+type Language = 'en' | 'de' | 'es';
+
+type LanguageOptions = {
+  [key in Language]: {
+    icon: string;
+    label: string;
+  };
+}
+
+const languageOptions: LanguageOptions = {
   en: {
     icon: '/static/icons/uk_flag.svg',
     label: 'English'
@@ -22,10 +31,6 @@ const languageOptions = {
   es: {
     icon: '/static/icons/es_flag.svg',
     label: 'Spanish'
-  },
-  fr: {
-    icon: '/static/icons/fr_flag.svg',
-    label: 'Français'
   }
 };
 
@@ -33,9 +38,9 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
   const { i18n, t } = useTranslation();
 
-  const handleChange = (language: string): void => {
+  const handleChange = async (language: Language): Promise<void> => {
     onClose?.();
-    i18n.changeLanguage(language);
+    await i18n.changeLanguage(language);
     toast.success(t('Language changed') as string);
   };
 
@@ -48,12 +53,12 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
       }}
       keepMounted
       onClose={onClose}
-      open={open}
+      open={!!open}
       PaperProps={{ sx: { width: 240 } }}
       transitionDuration={0}
       {...other}
     >
-      {Object.keys(languageOptions).map((language) => (
+      {(Object.keys(languageOptions) as Language[]).map((language) => (
         <MenuItem
           onClick={() => handleChange(language)}
           key={language}

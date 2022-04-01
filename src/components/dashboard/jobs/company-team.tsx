@@ -67,7 +67,7 @@ export const CompanyTeam: FC<CompanyTeamProps> = (props) => {
                     mt: 1
                   }}
                 >
-                  {member.skillSet.map((skill) => (
+                  {(member.skillSet || []).map((skill) => (
                     <Chip
                       key={skill}
                       label={skill}
@@ -89,5 +89,6 @@ CompanyTeam.defaultProps = {
 };
 
 CompanyTeam.propTypes = {
-  members: PropTypes.array
+  // @ts-ignore
+  members: PropTypes.array.isRequired
 };

@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { Avatar, Box, Card, CardMedia, Link, Typography } from '@mui/material';
 
+type AuthorType = 'contact' | 'user';
+
 interface ChatMessageProps {
-  authorAvatar: string;
+  authorAvatar?: string | null;
   authorName: string;
-  authorType: 'contact' | 'user';
+  authorType: AuthorType;
   body: string;
   contentType: string;
   createdAt: number;
@@ -31,7 +33,7 @@ export const ChatMessage: FC<ChatMessageProps> = (props) => {
       {...other}
     >
       <Avatar
-        src={authorAvatar}
+        src={authorAvatar || undefined}
         sx={{
           height: 32,
           ml: authorType === 'user' ? 2 : 0,
@@ -108,7 +110,7 @@ export const ChatMessage: FC<ChatMessageProps> = (props) => {
 ChatMessage.propTypes = {
   authorAvatar: PropTypes.string.isRequired,
   authorName: PropTypes.string.isRequired,
-  authorType: PropTypes.oneOf(['contact', 'user']),
+  authorType: PropTypes.oneOf<AuthorType>(['contact', 'user']).isRequired,
   body: PropTypes.string.isRequired,
   contentType: PropTypes.string.isRequired,
   createdAt: PropTypes.number.isRequired

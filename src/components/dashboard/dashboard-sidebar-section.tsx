@@ -30,12 +30,7 @@ const renderNavItems = ({
 }): JSX.Element => (
   <List disablePadding>
     {items.reduce(
-      (acc, item) => reduceChildRoutes({
-        acc,
-        item,
-        depth,
-        path
-      }),
+      (acc: JSX.Element[], item) => reduceChildRoutes({ acc, depth, item, path }),
       []
     )}
   </List>
@@ -43,8 +38,8 @@ const renderNavItems = ({
 
 const reduceChildRoutes = ({
   acc,
-  item,
   depth,
+  item,
   path
 }: {
   acc: JSX.Element[];
@@ -53,8 +48,8 @@ const reduceChildRoutes = ({
   path: string;
 }): Array<JSX.Element> => {
   const key = `${item.title}-${depth}`;
-  const partialMatch = path.includes(item.path);
-  const exactMatch = path === item.path;
+  const partialMatch = item.path ? path.includes(item.path) : false;
+  const exactMatch = path.split('?')[0] === item.path; // We don't compare query params
 
   if (item.children) {
     acc.push(

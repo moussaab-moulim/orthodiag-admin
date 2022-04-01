@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from '../../../store';
 import { MailItem } from './mail-item';
 
 interface MailListProps {
-  label: string;
+  label?: string;
   onToggleSidebar?: () => void;
 }
 

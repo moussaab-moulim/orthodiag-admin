@@ -1,33 +1,25 @@
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
 import Markdown from 'react-markdown';
+import type { Components, CodeComponent } from 'react-markdown/lib/ast-to-react';
 import PropTypes from 'prop-types';
+// @ts-ignore
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import dracula from 'react-syntax-highlighter/dist/cjs/styles/prism/dracula';
+// @ts-ignore
+import dracula from 'react-syntax-highlighter/dist/esm/styles/prism/dracula';
 import { styled } from '@mui/material/styles';
 
+// NOTE: To reduce the bundle size, we did not include react-syntax-highlighter types package.
+
 interface DocsContentProps {
-  content: string;
+  content?: string;
 }
 
-interface LinkProps {
-  children: ReactNode;
-  href: string;
-}
+const Link: Components['link'] = (props) => {
+  const { href, children } = props;
 
-interface CodeProps {
-  language: string;
-  value: string;
-}
-
-const Link: FC<LinkProps> = (props) => {
-  const { href, children, ...other } = props;
-
-  if (!href.startsWith('http')) {
+  if (!href?.startsWith('http')) {
     return (
-      <a
-        href={href}
-        {...other}
-      >
+      <a href={href}>
         {children}
       </a>
     );
@@ -38,35 +30,38 @@ const Link: FC<LinkProps> = (props) => {
       href={href}
       rel="nofollow noreferrer noopener"
       target="_blank"
-      {...other}
     >
       {children}
     </a>
   );
 };
 
-Link.propTypes = {
-  children: PropTypes.node,
-  href: PropTypes.string
-};
+const Code: CodeComponent = (props) => {
+  const { node, inline, className, children, ...other } = props;
 
-const Code: FC<CodeProps> = (props) => {
-  const { language, value, ...other } = props;
+  const match = /language-(\w+)/.exec(className || '');
 
-  return (
+  return !inline && match ? (
     <SyntaxHighlighter
-      language={language}
+      children={String(children).replace(/\n$/, '')}
       style={dracula}
+      language={match[1]}
+      PreTag="div"
+      {...other}
+    />
+  ) : (
+    <code
+      className={className}
       {...other}
     >
-      {value}
-    </SyntaxHighlighter>
+      {children}
+    </code>
   );
 };
 
-Code.propTypes = {
-  language: PropTypes.string,
-  value: PropTypes.string
+const components: Components = {
+  link: Link,
+  code: Code
 };
 
 const DocsContentRoot = styled('div')(
@@ -89,21 +84,7 @@ const DocsContentRoot = styled('div')(
       fontFamily: 'Inconsolata, Monaco, Consolas, \'Courier New\', Courier, monospace',
       fontSize: 14,
       paddingLeft: 2,
-      paddingRight: 2,
-      '&:before': {
-        content: '"`"'
-      },
-      '&:after': {
-        content: '"`"'
-      }
-    },
-    '& pre > code': {
-      '&:before': {
-        content: 'unset'
-      },
-      '&:after': {
-        content: 'unset'
-      }
+      paddingRight: 2
     },
     '& h1': {
       fontSize: 35,
@@ -169,14 +150,12 @@ export const DocsContent: FC<DocsContentProps> = (props) => {
 
   return (
     <DocsContentRoot>
-      <Markdown
-        escapeHtml
-        renderers={{
-          link: Link,
-          code: Code
-        }}
-        source={content}
-      />
+      {content && (
+        <Markdown
+          components={components}
+          children={content}
+        />
+      )}
     </DocsContentRoot>
   );
 };

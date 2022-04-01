@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import Markdown from 'react-markdown/with-html';
+import Markdown from 'react-markdown';
 import {
   Avatar,
   Box,
@@ -45,7 +45,9 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
       </Typography>
       <Box sx={{ mt: 3 }}>
         <MarkdownWrapper>
-          <Markdown source={company.description} />
+          {company.description && (
+            <Markdown children={company.description} />
+          )}
         </MarkdownWrapper>
       </Box>
       <ImageList
@@ -53,7 +55,7 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
         gap={24}
         variant="masonry"
       >
-        {company.images.map((image) => (
+        {(company.images || []).map((image) => (
           <ImageListItem key={image}>
             <img
               alt={`${company.name} gallery`}
@@ -138,7 +140,7 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
           container
           spacing={3}
         >
-          {company.members.slice(0, 2).map((member) => (
+          {(company.members || []).slice(0, 2).map((member) => (
             <Grid
               key={member.id}
               item
@@ -182,7 +184,7 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
                     mt: 1
                   }}
                 >
-                  {member.skillSet.map((skill) => (
+                  {(member.skillSet || []).map((skill) => (
                     <Chip
                       sx={{ m: 1 }}
                       key={skill}

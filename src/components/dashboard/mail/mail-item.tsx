@@ -52,28 +52,24 @@ export const MailItem: FC<MailItemProps> = (props) => {
         borderBottomColor: 'divider',
         display: 'flex',
         p: 2,
-        ...(
-          !email.isUnread && {
-            position: 'relative',
-            '&:before': {
-              backgroundColor: 'primary.main',
-              content: '" "',
-              height: '100%',
-              left: 0,
-              position: 'absolute',
-              top: 0,
-              width: 4
-            },
-            '& $name, & $subject': {
-              fontWeight: 600
-            }
+        ...(!email.isUnread && {
+          position: 'relative',
+          '&:before': {
+            backgroundColor: 'primary.main',
+            content: '" "',
+            height: '100%',
+            left: 0,
+            position: 'absolute',
+            top: 0,
+            width: 4
+          },
+          '& $name, & $subject': {
+            fontWeight: 600
           }
-        ),
-        ...(
-          selected && {
-            backgroundColor: 'action.selected'
-          }
-        ),
+        }),
+        ...(selected && {
+          backgroundColor: 'action.selected'
+        }),
         '&:hover': {
           backgroundColor: 'action.hover'
         }
@@ -150,7 +146,7 @@ export const MailItem: FC<MailItemProps> = (props) => {
               display: 'flex'
             }}
           >
-            <Avatar src={email.from.avatar}>
+            <Avatar src={email.from.avatar || undefined}>
               {getInitials(email.from.name)}
             </Avatar>
             <Typography
@@ -158,11 +154,9 @@ export const MailItem: FC<MailItemProps> = (props) => {
               sx={{
                 width: 120,
                 ml: 2,
-                ...(
-                  !email.isUnread && {
-                    fontWeight: 600
-                  }
-                )
+                ...(!email.isUnread && {
+                  fontWeight: 600
+                })
               }}
               noWrap
               variant="body2"
@@ -218,14 +212,14 @@ export const MailItem: FC<MailItemProps> = (props) => {
                 {email.message}
               </Typography>
             </Box>
-            {email.attachments?.length > 0 && (
+            {Boolean(email.attachments && email.attachments.length > 0) && (
               <Box sx={{ mt: 1 }}>
                 <Chip
                   icon={<PaperClipIcon fontSize="small" />}
-                  label={email.attachments[0].name}
+                  label={email.attachments![0].name}
                   size="small"
                 />
-                {email.attachments?.length > 1 && (
+                {email.attachments!.length > 1 && (
                   <Chip
                     label="+1"
                     size="small"

@@ -25,14 +25,14 @@ import { InvoiceStatus } from '../../../types/invoice';
 
 export interface Filters {
   query?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: Date | null;
+  endDate?: Date | null;
   customer?: string[];
   status?: InvoiceStatus;
 }
 
 interface InvoiceListFiltersProps {
-  containerRef?: MutableRefObject<HTMLDivElement>;
+  containerRef?: MutableRefObject<HTMLDivElement | null>;
   filters?: Filters;
   onChange?: (filters: Filters) => void;
   onClose?: () => void;
@@ -82,13 +82,13 @@ export const InvoiceListFilters: FC<InvoiceListFiltersProps> = (props) => {
   };
 
   const handleStartDateChange = (date: Date | null): void => {
-    const newFilters = {
+    const newFilters: Filters = {
       ...filters,
       startDate: date
     };
 
     // Prevent end date to be before start date
-    if (newFilters.endDate && date > newFilters.endDate) {
+    if (newFilters.endDate && date && date > newFilters.endDate) {
       newFilters.endDate = date;
     }
 
@@ -96,13 +96,13 @@ export const InvoiceListFilters: FC<InvoiceListFiltersProps> = (props) => {
   };
 
   const handleEndDateChange = (date: Date | null): void => {
-    const newFilters = {
+    const newFilters: Filters = {
       ...filters,
       endDate: date
     };
 
     // Prevent start date to be after end date
-    if (newFilters.startDate && date < newFilters.startDate) {
+    if (newFilters.startDate && date && date < newFilters.startDate) {
       newFilters.startDate = date;
     }
 
@@ -113,12 +113,12 @@ export const InvoiceListFilters: FC<InvoiceListFiltersProps> = (props) => {
     if (event.target.checked) {
       onChange?.({
         ...filters,
-        customer: [...filters.customer, event.target.value]
+        customer: [...(filters.customer || []), event.target.value]
       });
     } else {
       onChange?.({
         ...filters,
-        customer: filters.customer.filter((customer) => customer !== event.target.value)
+        customer: (filters.customer || []).filter((customer) => customer !== event.target.value)
       });
     }
   };
@@ -224,8 +224,12 @@ export const InvoiceListFilters: FC<InvoiceListFiltersProps> = (props) => {
           >
             {customers.map((customer) => (
               <FormControlLabel
-                control={<Checkbox checked={filters.customer?.includes(customer)} />}
-                onChange={handleCustomerChange}
+                control={(
+                  <Checkbox
+                    checked={filters.customer?.includes(customer)}
+                    onChange={handleCustomerChange}
+                  />
+                )}
                 key={customer}
                 label={customer}
                 value={customer}
@@ -235,9 +239,13 @@ export const InvoiceListFilters: FC<InvoiceListFiltersProps> = (props) => {
         </Scrollbar>
       </Box>
       <FormControlLabel
-        control={<Switch checked={filters.status === 'paid'} />}
+        control={(
+          <Switch
+            checked={filters.status === 'paid'}
+            onChange={handleStatusChange}
+          />
+        )}
         label="Show paid only"
-        onChange={handleStatusChange}
         sx={{ mt: 2 }}
       />
     </Box>

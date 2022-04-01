@@ -8,6 +8,7 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
+  SvgIcon,
   Tooltip,
   Typography
 } from '@mui/material';
@@ -16,7 +17,16 @@ import { CreditCard as CreditCardIcon } from '../../../icons/credit-card';
 import { Mail as MailIcon } from '../../../icons/mail';
 import { ChevronRight as ChevronRightIcon } from '../../../icons/chevron-right';
 
-const notifications = [
+type NotificationType = 'message' | 'invite' | 'payout';
+
+interface Notification {
+  id: string;
+  message: string;
+  type: NotificationType;
+  value: number;
+}
+
+const notifications: Notification[] = [
   {
     id: '5e8883a4f7877f898c408c27',
     message: 'to send service quotes',
@@ -37,7 +47,7 @@ const notifications = [
   }
 ];
 
-const iconsMap = {
+const iconsMap: Record<NotificationType, typeof SvgIcon> = {
   invite: SendIcon,
   message: MailIcon,
   payout: CreditCardIcon

@@ -32,7 +32,7 @@ import { Scrollbar } from '../../scrollbar';
 import { SeverityPill } from '../../severity-pill';
 
 interface ProductListTableProps {
-  onPageChange?: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  onPageChange: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
   onRowsPerPageChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   page: number;
   products: Product[];
@@ -77,7 +77,7 @@ export const ProductListTable: FC<ProductListTableProps> = (props) => {
     rowsPerPage,
     ...other
   } = props;
-  const [openProduct, setOpenProduct] = useState<string>(null);
+  const [openProduct, setOpenProduct] = useState<string | null>(null);
 
   const handleOpenProduct = (productId: string): void => {
     setOpenProduct((prevValue) => (prevValue === productId ? null : productId));
@@ -484,7 +484,7 @@ export const ProductListTable: FC<ProductListTableProps> = (props) => {
 ProductListTable.propTypes = {
   products: PropTypes.array.isRequired,
   productsCount: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func,
+  onPageChange: PropTypes.func.isRequired,
   onRowsPerPageChange: PropTypes.func,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired

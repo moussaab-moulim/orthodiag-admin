@@ -85,5 +85,6 @@ CompanyJobs.defaultProps = {
 };
 
 CompanyJobs.propTypes = {
+  // @ts-ignore
   jobs: PropTypes.array
 };

@@ -141,7 +141,7 @@ export const Chart11: FC = () => {
               </Box>
             ))}
             <Chart
-              width={350}
+              height={350}
               options={chartOptions}
               series={chartSeries}
               type="bar"

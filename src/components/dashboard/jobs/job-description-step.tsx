@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { ArrowRight as ArrowRightIcon } from '../../../icons/arrow-right';
 import { QuillEditor } from '../../quill-editor';
 
@@ -24,10 +24,10 @@ export const JobDescriptionStep: FC<JobDescriptionStepProps> = (props) => {
         How would you describe the job post?
       </Typography>
       <QuillEditor
-        handleChange={handleChange}
+        onChange={handleChange}
         placeholder="Write something"
         sx={{
-          height: 330,
+          height: 400,
           mt: 3
         }}
         value={content}

@@ -68,7 +68,7 @@ const data: Notification[] = [
   }
 ];
 
-const getNotificationContent = (notification: Notification): JSX.Element => {
+const getNotificationContent = (notification: Notification): JSX.Element | null => {
   switch (notification.type) {
     case 'job_add':
       return (
@@ -241,7 +241,7 @@ export const NotificationsPopover: FC<NotificationsPopoverProps> = (props) => {
     })));
   };
 
-  const handleRemoveOne = (notificationId) => {
+  const handleRemoveOne = (notificationId: string) => {
     setNotifications((prevState) => prevState.filter(
       (notification) => notification.id !== notificationId
     ));
@@ -255,7 +255,7 @@ export const NotificationsPopover: FC<NotificationsPopoverProps> = (props) => {
         vertical: 'bottom'
       }}
       onClose={onClose}
-      open={open}
+      open={!!open}
       PaperProps={{ sx: { width: 380 } }}
       transitionDuration={0}
       {...other}

@@ -154,7 +154,7 @@ export const InvoicePDF: FC<InvoicePDFProps> = (props) => {
               Due Date
             </Text>
             <Text style={styles.body2}>
-              {format(invoice.dueDate, 'dd MMM yyyy')}
+              {invoice.dueDate && format(invoice.dueDate, 'dd MMM yyyy')}
             </Text>
           </View>
           <View>
@@ -162,7 +162,7 @@ export const InvoicePDF: FC<InvoicePDFProps> = (props) => {
               Date of issue
             </Text>
             <Text style={styles.body2}>
-              {format(invoice.issueDate, 'dd MMM yyyy')}
+              {invoice.issueDate && format(invoice.issueDate, 'dd MMM yyyy')}
             </Text>
           </View>
           <View>
@@ -209,7 +209,7 @@ export const InvoicePDF: FC<InvoicePDFProps> = (props) => {
               </View>
             </View>
             <View style={styles.tableBody}>
-              {invoice.items.map((item) => (
+              {(invoice.items || []).map((item) => (
                 <View
                   style={styles.tableRow}
                   key={item.id}
@@ -222,8 +222,7 @@ export const InvoicePDF: FC<InvoicePDFProps> = (props) => {
                   <View style={styles.tableCellN} />
                   <View style={styles.tableCellN}>
                     <Text style={[styles.body2, styles.alignRight]}>
-                      {numeral(item.unitAmount)
-                        .format(`${item.currency}0,0.00`)}
+                      {numeral(item.unitAmount).format(`${item.currency}0,0.00`)}
                     </Text>
                   </View>
                 </View>
@@ -237,8 +236,7 @@ export const InvoicePDF: FC<InvoicePDFProps> = (props) => {
                 </View>
                 <View style={styles.tableCellN}>
                   <Text style={[styles.body2, styles.alignRight]}>
-                    {numeral(invoice.subtotalAmount)
-                      .format(`${invoice.currency}0,0.00`)}
+                    {numeral(invoice.subtotalAmount).format(`${invoice.currency}0,0.00`)}
                   </Text>
                 </View>
               </View>
@@ -251,8 +249,7 @@ export const InvoicePDF: FC<InvoicePDFProps> = (props) => {
                 </View>
                 <View style={styles.tableCellN}>
                   <Text style={[styles.body2, styles.alignRight]}>
-                    {numeral(invoice.taxAmount)
-                      .format(`${invoice.currency}0,0.00`)}
+                    {numeral(invoice.taxAmount).format(`${invoice.currency}0,0.00`)}
                   </Text>
                 </View>
               </View>
@@ -265,8 +262,7 @@ export const InvoicePDF: FC<InvoicePDFProps> = (props) => {
                 </View>
                 <View style={styles.tableCellN}>
                   <Text style={[styles.body2, styles.alignRight]}>
-                    {numeral(invoice.totalAmount)
-                      .format(`${invoice.currency}0,0.00`)}
+                    {numeral(invoice.totalAmount).format(`${invoice.currency}0,0.00`)}
                   </Text>
                 </View>
               </View>

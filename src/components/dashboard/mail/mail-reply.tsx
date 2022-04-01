@@ -45,7 +45,7 @@ export const MailReply: FC = (props) => {
   };
 
   const handleAttach = (): void => {
-    fileInputRef.current.click();
+    fileInputRef.current?.click();
   };
 
   return (

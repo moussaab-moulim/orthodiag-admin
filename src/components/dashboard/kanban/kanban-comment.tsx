@@ -30,7 +30,7 @@ export const KanbanComment: FC<KanbanCommentProps> = (props) => {
       }}
       {...other}
     >
-      <Avatar src={member.avatar} />
+      <Avatar src={member.avatar || undefined} />
       <Box
         sx={{
           ml: 2,

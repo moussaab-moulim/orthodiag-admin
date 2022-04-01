@@ -12,7 +12,7 @@ import { KanbanCardModal } from './kanban-card-modal';
 
 interface KanbanCardProps {
   cardId: string;
-  dragging: boolean;
+  dragging?: boolean;
   index?: number;
   column: Column;
   style?: Record<any, any>;
@@ -121,7 +121,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>((props, re
                 {card.members.map((member) => (
                   <Avatar
                     key={member.id}
-                    src={member.avatar}
+                    src={member.avatar || undefined}
                   />
                 ))}
               </AvatarGroup>

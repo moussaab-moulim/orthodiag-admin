@@ -21,10 +21,27 @@ import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizo
 import { PencilAlt as PencilAltIcon } from '../../../icons/pencil-alt';
 import { Scrollbar } from '../../scrollbar';
 import { SeverityPill } from '../../severity-pill';
+import type { SeverityPillColor } from '../../severity-pill';
+
+type OrderStatus = 'canceled' | 'complete' | 'pending' | 'rejected';
+
+interface Order {
+  id: string;
+  createdAt: number;
+  currency: string;
+  customer: {
+    email: string;
+    name: string;
+  };
+  number: string;
+  paymentMethod: string;
+  status: OrderStatus;
+  totalAmount: number;
+}
 
 const now = new Date();
 
-const orders = [
+const orders: Order[] = [
   {
     id: '5ecb8a6d9f53bfae09e16115',
     createdAt: subMinutes(subSeconds(now, 23), 32).getTime(),
@@ -48,7 +65,7 @@ const orders = [
     },
     number: 'DEV-101',
     paymentMethod: 'PayPal',
-    status: 'completed',
+    status: 'complete',
     totalAmount: 500.00
   },
   {
@@ -74,7 +91,7 @@ const orders = [
     },
     number: 'DEV-99',
     paymentMethod: 'PayPal',
-    status: 'completed',
+    status: 'complete',
     totalAmount: 500.00
   },
   {
@@ -87,20 +104,20 @@ const orders = [
     },
     number: 'DEV-98',
     paymentMethod: 'PayPal',
-    status: 'completed',
+    status: 'complete',
     totalAmount: 500.00
   }
 ];
 
-const getStatusLabel = (paymentStatus) => {
-  const map = {
+const getStatusLabel = (orderStatus: OrderStatus): JSX.Element => {
+  const map: Record<OrderStatus, { color: SeverityPillColor; text: string; }> = {
     canceled: {
       color: 'error',
       text: 'Canceled'
     },
-    completed: {
+    complete: {
       color: 'success',
-      text: 'Completed'
+      text: 'complete'
     },
     pending: {
       color: 'warning',
@@ -112,7 +129,7 @@ const getStatusLabel = (paymentStatus) => {
     }
   };
 
-  const { text, color }: any = map[paymentStatus];
+  const { text, color } = map[orderStatus];
 
   return (
     <SeverityPill color={color}>
@@ -200,8 +217,7 @@ export const Table4: FC = () => (
                   {order.paymentMethod}
                 </TableCell>
                 <TableCell>
-                  {numeral(order.totalAmount)
-                    .format(`${order.currency}0,0.00`)}
+                  {numeral(order.totalAmount).format(`${order.currency}0,0.00`)}
                 </TableCell>
                 <TableCell>
                   {getStatusLabel(order.status)}

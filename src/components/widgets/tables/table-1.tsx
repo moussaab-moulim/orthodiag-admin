@@ -21,10 +21,27 @@ import { ChevronRight as ChevronRightIcon } from '../../../icons/chevron-right';
 import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizontal';
 import { Scrollbar } from '../../scrollbar';
 import { SeverityPill } from '../../severity-pill';
+import type { SeverityPillColor } from '../../severity-pill';
+
+type OrderStatus = 'complete' | 'pending' | 'rejected';
+
+interface Order {
+  id: string;
+  createdAt: number;
+  customer: {
+    email: string;
+    name: string;
+  };
+  currency: string;
+  items: number;
+  number: string;
+  status: OrderStatus;
+  totalAmount: number;
+}
 
 const now = new Date();
 
-const orders = [
+const orders: Order[] = [
   {
     id: '5eff2548979e396cb4b000ba',
     createdAt: subMinutes(subSeconds(now, 10), 7).getTime(),
@@ -105,7 +122,7 @@ const orders = [
   }
 ];
 
-const labelColors = {
+const labelColors: Record<OrderStatus, SeverityPillColor> = {
   complete: 'success',
   pending: 'warning',
   rejected: 'error'
