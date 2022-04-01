@@ -7,8 +7,10 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import FullCalendar from '@fullcalendar/react';
+import type { DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import type { EventResizeDoneArg } from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import timelinePlugin from '@fullcalendar/timeline';
@@ -170,7 +172,7 @@ const Calendar: NextPage = () => {
     });
   };
 
-  const handleRangeSelect = (arg: any): void => {
+  const handleRangeSelect = (arg: DateSelectArg): void => {
     const calendarEl = calendarRef.current;
 
     if (calendarEl) {
@@ -188,31 +190,35 @@ const Calendar: NextPage = () => {
     });
   };
 
-  const handleEventSelect = (arg: any): void => {
+  const handleEventSelect = (arg: EventClickArg): void => {
     setDialog({
       isOpen: true,
       eventId: arg.event.id
     });
   };
 
-  const handleEventResize = async ({ event }: any): Promise<void> => {
+  const handleEventResize = async (arg: EventResizeDoneArg): Promise<void> => {
+    const { event } = arg;
+
     try {
       await dispatch(updateEvent(event.id, {
         allDay: event.allDay,
-        start: event.start,
-        end: event.end
+        start: event.start?.getTime(),
+        end: event.end?.getTime()
       }));
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleEventDrop = async ({ event }: any): Promise<void> => {
+  const handleEventDrop = async (arg: EventDropArg): Promise<void> => {
+    const { event } = arg;
+
     try {
       await dispatch(updateEvent(event.id, {
         allDay: event.allDay,
-        start: event.start,
-        end: event.end
+        start: event.start?.getTime(),
+        end: event.end?.getTime()
       }));
     } catch (err) {
       console.error(err);

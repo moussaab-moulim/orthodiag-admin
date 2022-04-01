@@ -56,8 +56,8 @@ const Mail: NextPage = () => {
     (theme: Theme) => theme.breakpoints.up('md'),
     { noSsr: true }
   );
-  const emailId = router.query.emailId as string;
-  const label = router.query.label as string;
+  const emailId = router.query.emailId as string | undefined;
+  const label = router.query.label as string | undefined;
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });

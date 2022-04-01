@@ -53,8 +53,8 @@ const Chat: NextPage = () => {
   const dispatch = useDispatch();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const compose = router.query.compose as string === 'true';
-  const threadKey = router.query.threadKey as string;
+  const compose = router.query.compose as string | undefined === 'true';
+  const threadKey = router.query.threadKey as string | undefined;
   const mdUp = useMediaQuery(
     (theme: Theme) => theme.breakpoints.up('md'),
     { noSsr: true }
@@ -149,7 +149,7 @@ const Chat: NextPage = () => {
                 <MenuAlt4Icon fontSize="small" />
               </IconButton>
             </Box>
-            {view === 'thread' && <ChatThread threadKey={threadKey} />}
+            {view === 'thread' && <ChatThread threadKey={threadKey!} />}
             {view === 'compose' && <ChatComposer />}
             {view === 'blank' && (
               <Box
