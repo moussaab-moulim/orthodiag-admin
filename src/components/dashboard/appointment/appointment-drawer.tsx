@@ -14,8 +14,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TextField, Theme,
-  Typography, useMediaQuery
+  TextField,
+  Theme,
+  Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,10 +26,9 @@ import { PropertyList } from '../../property-list';
 import { PropertyListItem } from '../../property-list-item';
 import { Appointment } from '../../../types/appointment';
 import { Scrollbar } from '../../scrollbar';
-import moment from 'moment';
 
 interface AppointmentDrawerProps {
-  containerRef?: MutableRefObject<HTMLDivElement>;
+  containerRef?: MutableRefObject<HTMLDivElement> | null;
   open?: boolean;
   onClose?: () => void;
   appointment?: Appointment;
@@ -36,23 +37,23 @@ interface AppointmentDrawerProps {
 const statusOptions = [
   {
     label: 'Canceled',
-    value: 'canceled'
+    value: 'canceled',
   },
   {
     label: 'Complete',
-    value: 'complete'
+    value: 'complete',
   },
   {
     label: 'Pending',
-    value: 'pending'
+    value: 'pending',
   },
   {
     label: 'Rejected',
-    value: 'rejected'
-  }
+    value: 'rejected',
+  },
 ];
 
-const AppointmentPreview = (props) => {
+const AppointmentPreview = (props: any) => {
   const { lgUp, onApprove, onEdit, onReject, appointment } = props;
   const align = lgUp ? 'horizontal' : 'vertical';
 
@@ -61,22 +62,17 @@ const AppointmentPreview = (props) => {
       <Box
         sx={{
           alignItems: 'center',
-          backgroundColor: (theme) => theme.palette.mode === 'dark'
-            ? 'neutral.800'
-            : 'neutral.100',
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? 'neutral.800' : 'neutral.100',
           borderRadius: 1,
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'space-between',
           px: 3,
-          py: 2.5
+          py: 2.5,
         }}
       >
-        <Typography
-          color="textSecondary"
-          sx={{ mr: 2 }}
-          variant="overline"
-        >
+        <Typography color='textSecondary' sx={{ mr: 2 }} variant='overline'>
           Actions
         </Typography>
         <Box
@@ -86,92 +82,68 @@ const AppointmentPreview = (props) => {
             flexWrap: 'wrap',
             m: -1,
             '& > button': {
-              m: 1
-            }
+              m: 1,
+            },
           }}
         >
-          <Button
-            onClick={onApprove}
-            size="small"
-            variant="contained"
-          >
+          <Button onClick={onApprove} size='small' variant='contained'>
             Approve
           </Button>
-          <Button
-            onClick={onReject}
-            size="small"
-            variant="outlined"
-          >
+          <Button onClick={onReject} size='small' variant='outlined'>
             Reject
           </Button>
           <Button
             onClick={onEdit}
-            size="small"
-            startIcon={(<EditIcon fontSize="small" />)}
+            size='small'
+            startIcon={<EditIcon fontSize='small' />}
           >
             Edit
           </Button>
         </Box>
       </Box>
-      <Typography
-        sx={{ my: 3 }}
-        variant="h6"
-      >
+      <Typography sx={{ my: 3 }} variant='h6'>
         Details
       </Typography>
       <PropertyList>
         <PropertyListItem
           align={align}
           disableGutters
-          label="ID"
+          label='ID'
           value={appointment.id}
         />
         <PropertyListItem
           align={align}
           disableGutters
-          label="Number"
+          label='Number'
           value={appointment.number}
         />
-        <PropertyListItem
-          align={align}
-          disableGutters
-          label="Client"
-        >
-          <Typography
-            color="primary"
-            variant="body2"
-          >
+        <PropertyListItem align={align} disableGutters label='Client'>
+          <Typography color='primary' variant='body2'>
             {appointment.fullName}
           </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body2"
-          >
+          <Typography color='textSecondary' variant='body2'>
             {appointment.email}
           </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body2"
-          >
+          <Typography color='textSecondary' variant='body2'>
             {appointment.phoneNumber}
           </Typography>
         </PropertyListItem>
         <PropertyListItem
           align={align}
           disableGutters
-          label="Date"
-          value={moment(appointment.requestedDate).format("DD/MM/yyyy HH:mm")}
+          label='Date'
+          value={format(appointment.requestedDate, 'DD/MM/YYYY HH:mm')}
         />
         <PropertyListItem
           align={align}
           disableGutters
-          label="Promotion Code"
+          label='Promotion Code'
           value={appointment.promotionCode}
         />
         <PropertyListItem
           align={align}
           disableGutters
-          label="Status"
+          label='Status'
           value={appointment.status}
         />
       </PropertyList>
@@ -222,7 +194,7 @@ const AppointmentPreview = (props) => {
   );
 };
 
-const AppointmentForm = (props) => {
+const AppointmentForm = (props: any) => {
   const { onCancel, onSave, appointment } = props;
 
   return (
@@ -230,22 +202,17 @@ const AppointmentForm = (props) => {
       <Box
         sx={{
           alignItems: 'center',
-          backgroundColor: (theme) => theme.palette.mode === 'dark'
-            ? 'neutral.800'
-            : 'neutral.100',
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? 'neutral.800' : 'neutral.100',
           borderRadius: 1,
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'space-between',
           px: 3,
-          py: 2.5
+          py: 2.5,
         }}
       >
-        <Typography
-          variant="overline"
-          sx={{ mr: 2 }}
-          color="textSecondary"
-        >
+        <Typography variant='overline' sx={{ mr: 2 }} color='textSecondary'>
           Appointment
         </Typography>
         <Box
@@ -254,115 +221,102 @@ const AppointmentForm = (props) => {
             display: 'flex',
             m: -1,
             '& > button': {
-              m: 1
-            }
+              m: 1,
+            },
           }}
         >
           <Button
-            color="primary"
+            color='primary'
             onClick={onSave}
-            size="small"
-            variant="contained"
+            size='small'
+            variant='contained'
           >
             Save changes
           </Button>
-          <Button
-            onClick={onCancel}
-            size="small"
-            variant="outlined"
-          >
+          <Button onClick={onCancel} size='small' variant='outlined'>
             Cancel
           </Button>
         </Box>
       </Box>
-      <Typography
-        sx={{ my: 3 }}
-        variant="h6"
-      >
+      <Typography sx={{ my: 3 }} variant='h6'>
         Details
       </Typography>
       <TextField
         disabled
         fullWidth
-        label="ID"
-        margin="normal"
-        name="id"
+        label='ID'
+        margin='normal'
+        name='id'
         value={appointment.id}
       />
       <TextField
         disabled
         fullWidth
-        label="Number"
-        margin="normal"
-        name="number"
+        label='Number'
+        margin='normal'
+        name='number'
         value={appointment.number}
       />
       <TextField
         disabled
         fullWidth
-        label="Customer name"
-        margin="normal"
-        name="customer_name"
+        label='Customer name'
+        margin='normal'
+        name='customer_name'
         value={appointment.customer.name}
       />
       <TextField
         disabled
         fullWidth
-        label="Date"
-        margin="normal"
-        name="date"
+        label='Date'
+        margin='normal'
+        name='date'
         value={format(appointment.createdAt, 'dd/MM/yyyy HH:mm')}
       />
       <TextField
         fullWidth
-        label="Address"
-        margin="normal"
-        name="address"
+        label='Address'
+        margin='normal'
+        name='address'
         value={appointment.customer.address1}
       />
       <TextField
         fullWidth
-        label="Country"
-        margin="normal"
-        name="country"
+        label='Country'
+        margin='normal'
+        name='country'
         value={appointment.customer.country}
       />
       <TextField
         fullWidth
-        label="State/Region"
-        margin="normal"
-        name="state_region"
+        label='State/Region'
+        margin='normal'
+        name='state_region'
         value={appointment.customer.city}
       />
       <TextField
         fullWidth
-        label="Total Amount"
-        margin="normal"
-        name="amount"
+        label='Total Amount'
+        margin='normal'
+        name='amount'
         value={appointment.totalAmount}
       />
       <TextField
         fullWidth
-        label="Status"
-        margin="normal"
-        name="status"
+        label='Status'
+        margin='normal'
+        name='status'
         select
         SelectProps={{ native: true }}
         value={appointment.status}
       >
         {statusOptions.map((statusOption) => (
-          <option
-            key={statusOption.value}
-            value={statusOption.value}
-          >
+          <option key={statusOption.value} value={statusOption.value}>
             {statusOption.label}
           </option>
         ))}
       </TextField>
-      <Button
-        color="error"
-        sx={{ mt: 3 }}
-      >
+      <Button color='error' sx={{ mt: 3 }}>
         Delete appointment
       </Button>
     </>
@@ -374,8 +328,8 @@ const AppointmentDrawerDesktop = styled(Drawer)({
   flexShrink: 0,
   '& .MuiDrawer-paper': {
     position: 'relative',
-    width: 500
-  }
+    width: 500,
+  },
 });
 
 const AppointmentDrawerMobile = styled(Drawer)({
@@ -387,8 +341,8 @@ const AppointmentDrawerMobile = styled(Drawer)({
     height: 'calc(100% - 64px)',
     maxWidth: '100%',
     top: 64,
-    width: 500
-  }
+    width: 500,
+  },
 });
 
 export const AppointmentDrawer: FC<AppointmentDrawerProps> = (props) => {
@@ -406,70 +360,58 @@ export const AppointmentDrawer: FC<AppointmentDrawerProps> = (props) => {
 
   // The reason for doing this, is that the persistent drawer has to be rendered, but not it's
   // content if an appointment is not passed.
-  const content = appointment
-    ? (
-      <>
-        <Box
-          sx={{
-            alignItems: 'center',
-            backgroundColor: 'primary.main',
-            color: 'primary.contrastText',
-            display: 'flex',
-            justifyContent: 'space-between',
-            px: 3,
-            py: 2
-          }}
-        >
-          <Typography
-            color="inherit"
-            variant="h6"
-          >
-            {appointment.number}
-          </Typography>
-          <IconButton
-            color="inherit"
-            onClick={onClose}
-          >
-            <XIcon fontSize="small" />
-          </IconButton>
-        </Box>
-        <Box
-          sx={{
-            px: 3,
-            py: 4
-          }}
-        >
-          {
-            !isEditing
-              ? (
-                <AppointmentPreview
-                  onApprove={onClose}
-                  onEdit={handleEdit}
-                  onReject={onClose}
-                  appointment={appointment}
-                  lgUp={lgUp}
-                />
-              )
-              : (
-                <AppointmentForm
-                  onCancel={handleCancel}
-                  onSave={handleCancel}
-                  appointment={appointment}
-                />
-              )
-          }
-        </Box>
-      </>
-    )
-    : null;
+  const content = appointment ? (
+    <>
+      <Box
+        sx={{
+          alignItems: 'center',
+          backgroundColor: 'primary.main',
+          color: 'primary.contrastText',
+          display: 'flex',
+          justifyContent: 'space-between',
+          px: 3,
+          py: 2,
+        }}
+      >
+        <Typography color='inherit' variant='h6'>
+          {appointment.number}
+        </Typography>
+        <IconButton color='inherit' onClick={onClose}>
+          <XIcon fontSize='small' />
+        </IconButton>
+      </Box>
+      <Box
+        sx={{
+          px: 3,
+          py: 4,
+        }}
+      >
+        {!isEditing ? (
+          <AppointmentPreview
+            onApprove={onClose}
+            onEdit={handleEdit}
+            onReject={onClose}
+            appointment={appointment}
+            lgUp={lgUp}
+          />
+        ) : (
+          <AppointmentForm
+            onCancel={handleCancel}
+            onSave={handleCancel}
+            appointment={appointment}
+          />
+        )}
+      </Box>
+    </>
+  ) : null;
 
   if (lgUp) {
     return (
       <AppointmentDrawerDesktop
-        anchor="right"
+        anchor='right'
         open={open}
         SlideProps={{ container: containerRef?.current }}
-        variant="persistent"
+        variant='persistent'
         {...other}
       >
         {content}
@@ -479,12 +421,12 @@ export const AppointmentDrawer: FC<AppointmentDrawerProps> = (props) => {
 
   return (
     <AppointmentDrawerMobile
-      anchor="right"
+      anchor='right'
       ModalProps={{ container: containerRef?.current }}
       onClose={onClose}
       open={open}
       SlideProps={{ container: containerRef?.current }}
-      variant="temporary"
+      variant='temporary'
       {...other}
     >
       {content}
@@ -497,5 +439,5 @@ AppointmentDrawer.propTypes = {
   onClose: PropTypes.func,
   open: PropTypes.bool,
   // @ts-ignore
-  appointment: PropTypes.object
+  appointment: PropTypes.object,
 };

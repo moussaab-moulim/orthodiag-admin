@@ -11,7 +11,7 @@ import {
   Tab,
   Tabs,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { appointmentApi } from '../../../__fake-api__/appointment-api';
@@ -23,7 +23,11 @@ import { useMounted } from '../../../hooks/use-mounted';
 import { Plus as PlusIcon } from '../../../icons/plus';
 import { Search as SearchIcon } from '../../../icons/search';
 import { gtm } from '../../../lib/gtm';
-import type { Appointment, AppointmentStatus } from '../../../types/appointment';
+import type {
+  Appointment,
+  AppointmentStatus,
+} from '../../../types/appointment';
+import { PageLayout } from '@components/page-layout';
 
 interface Filters {
   query?: string;
@@ -33,102 +37,101 @@ interface Filters {
 const tabs = [
   {
     label: 'All',
-    value: 'all'
+    value: 'all',
   },
   {
     label: 'Canceled',
-    value: 'canceled'
+    value: 'canceled',
   },
   {
     label: 'Completed',
-    value: 'complete'
+    value: 'complete',
   },
   {
     label: 'Pending',
-    value: 'pending'
+    value: 'pending',
   },
   {
     label: 'Rejected',
-    value: 'rejected'
-  }
+    value: 'rejected',
+  },
 ];
 
 const sortOptions = [
   {
     label: 'Newest',
-    value: 'desc'
+    value: 'desc',
   },
   {
     label: 'Oldest',
-    value: 'asc'
-  }
+    value: 'asc',
+  },
 ];
 
-const applyFilters = (
-  appointments: Appointment[],
-  filters: Filters
-) => appointments.filter((appointment) => {
-  if (filters.query) {
-    // Checks only the appointment number, but can be extended to support other fields, such as customer
-    // name, email, etc.
-    const containsQuery = appointment.number.toLowerCase().includes(filters.query.toLowerCase());
+const applyFilters = (appointments: Appointment[], filters: Filters) =>
+  appointments.filter((appointment) => {
+    if (filters.query) {
+      // Checks only the appointment number, but can be extended to support other fields, such as customer
+      // name, email, etc.
+      const containsQuery = appointment!.number
+        .toLowerCase()
+        .includes(filters.query.toLowerCase());
 
-    if (!containsQuery) {
-      return false;
+      if (!containsQuery) {
+        return false;
+      }
     }
-  }
 
-  if (typeof filters.status !== 'undefined') {
-    const statusMatched = appointment.status === filters.status;
+    if (typeof filters.status !== 'undefined') {
+      const statusMatched = appointment.status === filters.status;
 
-    if (!statusMatched) {
-      return false;
+      if (!statusMatched) {
+        return false;
+      }
     }
-  }
 
-  return true;
-});
+    return true;
+  });
 
-const applySort = (appointments: Appointment[], appointment: 'asc' | 'desc') => appointments.sort((a, b) => {
-  const comparator = a.createdAt > b.createdAt ? -1 : 1;
+const applySort = (appointments: Appointment[], appointment: 'asc' | 'desc') =>
+  appointments.sort((a, b) => {
+    const comparator = a.createdAt > b.createdAt ? -1 : 1;
 
-  return appointment === 'desc' ? comparator : -comparator;
-});
+    return appointment === 'desc' ? comparator : -comparator;
+  });
 
 const applyPagination = (
   appointments: Appointment[],
   page: number,
   rowsPerPage: number
-): Appointment[] => appointments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+): Appointment[] =>
+  appointments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-const AppointmentListInner = styled(
-  'div',
-  { shouldForwardProp: (prop) => prop !== 'open' }
-)<{ open?: boolean; }>(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    overflow: 'hidden',
-    paddingBottom: theme.spacing(8),
-    paddingTop: theme.spacing(8),
-    zIndex: 1,
+const AppointmentListInner = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<{ open?: boolean }>(({ theme, open }) => ({
+  flexGrow: 1,
+  overflow: 'hidden',
+  paddingBottom: theme.spacing(8),
+  paddingTop: theme.spacing(8),
+  zIndex: 1,
+  [theme.breakpoints.up('lg')]: {
+    marginRight: -500,
+  },
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
     [theme.breakpoints.up('lg')]: {
-      marginRight: -500
+      marginRight: 0,
     },
     transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    ...(open && {
-      [theme.breakpoints.up('lg')]: {
-        marginRight: 0
-      },
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      })
-    })
-  })
-);
+  }),
+}));
 
 const AppointmentList: NextPage = () => {
   const isMounted = useMounted();
@@ -141,11 +144,14 @@ const AppointmentList: NextPage = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [filters, setFilters] = useState<Filters>({
     query: '',
-    status: undefined
+    status: undefined,
   });
-  const [drawer, setDrawer] = useState<{ isOpen: boolean; appointmentId?: string; }>({
+  const [drawer, setDrawer] = useState<{
+    isOpen: boolean;
+    appointmentId: string | null;
+  }>({
     isOpen: false,
-    appointmentId: null
+    appointmentId: null,
   });
 
   useEffect(() => {
@@ -176,7 +182,7 @@ const AppointmentList: NextPage = () => {
     setCurrentTab(value);
     setFilters((prevState) => ({
       ...prevState,
-      status: value === 'all' ? undefined : value as AppointmentStatus
+      status: value === 'all' ? undefined : (value as AppointmentStatus),
     }));
   };
 
@@ -184,7 +190,7 @@ const AppointmentList: NextPage = () => {
     event.preventDefault();
     setFilters((prevState) => ({
       ...prevState,
-      query: queryRef.current?.value
+      query: queryRef.current?.value,
     }));
   };
 
@@ -193,86 +199,80 @@ const AppointmentList: NextPage = () => {
     setSort(value);
   };
 
-  const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, newPage: number): void => {
+  const handlePageChange = (
+    event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ): void => {
     setPage(newPage);
   };
 
-  const handleRowsPerPageChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleRowsPerPageChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
   const handleOpenDrawer = (appointmentId: string): void => {
     setDrawer({
       isOpen: true,
-      appointmentId
+      appointmentId,
     });
   };
 
   const handleCloseDrawer = () => {
     setDrawer({
       isOpen: false,
-      appointmentId: null
+      appointmentId: null,
     });
   };
 
   // Usually query is done on backend with indexing solutions
   const filteredAppointments = applyFilters(appointments, filters);
   const sortedAppointments = applySort(filteredAppointments, sort);
-  const paginatedAppointments = applyPagination(sortedAppointments, page, rowsPerPage);
+  const paginatedAppointments = applyPagination(
+    sortedAppointments,
+    page,
+    rowsPerPage
+  );
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Appointment List | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Appointment List`}>
       <Box
-        component="main"
+        component='main'
         ref={rootRef}
         sx={{
           backgroundColor: 'background.paper',
           display: 'flex',
           flexGrow: 1,
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       >
         <AppointmentListInner open={drawer.isOpen}>
           <Box sx={{ px: 3 }}>
-            <Grid
-              container
-              justifyContent="space-between"
-              spacing={3}
-            >
+            <Grid container justifyContent='space-between' spacing={3}>
               <Grid item>
-                <Typography variant="h4">
-                  Appointments
-                </Typography>
+                <Typography variant='h4'>Appointments</Typography>
               </Grid>
               <Grid item>
                 <Button
-                  startIcon={<PlusIcon fontSize="small" />}
-                  variant="contained"
+                  startIcon={<PlusIcon fontSize='small' />}
+                  variant='contained'
                 >
                   Add
                 </Button>
               </Grid>
             </Grid>
             <Tabs
-              indicatorColor="primary"
+              indicatorColor='primary'
               onChange={handleTabsChange}
-              scrollButtons="auto"
-              textColor="primary"
+              scrollButtons='auto'
+              textColor='primary'
               value={currentTab}
               sx={{ mt: 3 }}
-              variant="scrollable"
+              variant='scrollable'
             >
               {tabs.map((tab) => (
-                <Tab
-                  key={tab.value}
-                  label={tab.label}
-                  value={tab.value}
-                />
+                <Tab key={tab.value} label={tab.label} value={tab.value} />
               ))}
             </Tabs>
           </Box>
@@ -283,34 +283,34 @@ const AppointmentList: NextPage = () => {
               display: 'flex',
               flexWrap: 'wrap',
               m: -1.5,
-              p: 3
+              p: 3,
             }}
           >
             <Box
-              component="form"
+              component='form'
               onSubmit={handleQueryChange}
               sx={{
                 flexGrow: 1,
-                m: 1.5
+                m: 1.5,
               }}
             >
               <TextField
-                defaultValue=""
+                defaultValue=''
                 fullWidth
                 inputProps={{ ref: queryRef }}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="small" />
+                    <InputAdornment position='start'>
+                      <SearchIcon fontSize='small' />
                     </InputAdornment>
-                  )
+                  ),
                 }}
-                placeholder="Search by appointment number"
+                placeholder='Search by appointment number'
               />
             </Box>
             <TextField
-              label="Sort By"
-              name="appointment"
+              label='Sort By'
+              name='appointment'
               onChange={handleSortChange}
               select
               SelectProps={{ native: true }}
@@ -318,10 +318,7 @@ const AppointmentList: NextPage = () => {
               value={sort}
             >
               {sortOptions.map((option) => (
-                <option
-                  key={option.value}
-                  value={option.value}
-                >
+                <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
               ))}
@@ -342,18 +339,18 @@ const AppointmentList: NextPage = () => {
           containerRef={rootRef}
           onClose={handleCloseDrawer}
           open={drawer.isOpen}
-          appointment={appointments.find((appointment) => appointment.id === drawer.appointmentId)}
+          appointment={appointments.find(
+            (appointment) => appointment.id === drawer.appointmentId
+          )}
         />
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 AppointmentList.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

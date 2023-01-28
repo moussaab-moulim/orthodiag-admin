@@ -9,6 +9,7 @@ import { Buttons1 } from '../../components/widgets/buttons/buttons-1';
 import { Buttons2 } from '../../components/widgets/buttons/buttons-2';
 import { Buttons3 } from '../../components/widgets/buttons/buttons-3';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const BrowseButtons: NextPage = () => {
   useEffect(() => {
@@ -16,44 +17,31 @@ const BrowseButtons: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Buttons | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Buttons`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
-          <WidgetPreviewer
-            element={<Buttons1 />}
-            name="Simple buttons"
-          />
+        <Container maxWidth='lg'>
+          <WidgetPreviewer element={<Buttons1 />} name='Simple buttons' />
           <WidgetPreviewer
             element={<Buttons2 />}
-            name="Buttons with text and icon"
+            name='Buttons with text and icon'
           />
-          <WidgetPreviewer
-            element={<Buttons3 />}
-            name="Button groups"
-          />
+          <WidgetPreviewer element={<Buttons3 />} name='Button groups' />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseButtons.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

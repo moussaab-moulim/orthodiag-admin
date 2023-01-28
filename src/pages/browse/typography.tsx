@@ -6,6 +6,7 @@ import { BrowseLayout } from '../../components/browse-layout';
 import { MainLayout } from '../../components/main-layout';
 import { WidgetPreviewer } from '../../components/widget-previewer';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 export const BrowseTypography: NextPage = () => {
   useEffect(() => {
@@ -13,28 +14,23 @@ export const BrowseTypography: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Typography | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Typography`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <WidgetPreviewer
-            element={(
+            element={
               <Box
                 sx={{
                   backgroundColor: 'background.paper',
                   color: 'text.primary',
-                  p: 3
+                  p: 3,
                 }}
               >
                 <Grid container>
@@ -44,88 +40,69 @@ export const BrowseTypography: NextPage = () => {
                     xs={12}
                     sx={{
                       '& > *:not(:last-child)': {
-                        pb: 3
-                      }
+                        pb: 3,
+                      },
                     }}
                   >
-                    <Typography variant="h1">
-                      H1
-                    </Typography>
-                    <Typography variant="h2">
-                      H2
-                    </Typography>
-                    <Typography variant="h3">
-                      H3
-                    </Typography>
-                    <Typography variant="h4">
-                      H4
-                    </Typography>
-                    <Typography variant="h5">
-                      H5
-                    </Typography>
-                    <Typography variant="h6">
-                      H6
-                    </Typography>
-                    <Typography variant="h2">
+                    <Typography variant='h1'>H1</Typography>
+                    <Typography variant='h2'>H2</Typography>
+                    <Typography variant='h3'>H3</Typography>
+                    <Typography variant='h4'>H4</Typography>
+                    <Typography variant='h5'>H5</Typography>
+                    <Typography variant='h6'>H6</Typography>
+                    <Typography variant='h2'>
                       Your clients will love it
                     </Typography>
-                    <Typography variant="subtitle2">
-                      Aliquam dapibus elementum nulla at malesuada. Ut mi nisl, aliquet non
-                      mollis vel, feugiat non nibh. Vivamus sit amet tristique dui. Praesent in
-                      bibendum arcu, at placerat augue. Nam varius fermentum diam, at tristique
-                      libero ultrices non. Praesent scelerisque diam vitae posuere dignissim.
+                    <Typography variant='subtitle2'>
+                      Aliquam dapibus elementum nulla at malesuada. Ut mi nisl,
+                      aliquet non mollis vel, feugiat non nibh. Vivamus sit amet
+                      tristique dui. Praesent in bibendum arcu, at placerat
+                      augue. Nam varius fermentum diam, at tristique libero
+                      ultrices non. Praesent scelerisque diam vitae posuere
+                      dignissim.
                     </Typography>
-                    <Typography variant="h3">
-                      Comes for both roles
+                    <Typography variant='h3'>Comes for both roles</Typography>
+                    <Typography variant='h4'>Developers</Typography>
+                    <Typography variant='subtitle1'>
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                      Aenean commodo ligula eget dolor.
                     </Typography>
-                    <Typography variant="h4">
-                      Developers
+                    <Typography variant='h5'>Designers</Typography>
+                    <Typography variant='body2'>
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                      Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
+                      natoque penatibus et magnis dis parturient montes,
+                      nascetur ridiculus mus.
                     </Typography>
-                    <Typography variant="subtitle1">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-                      ligula eget dolor.
-                    </Typography>
-                    <Typography variant="h5">
-                      Designers
-                    </Typography>
-                    <Typography variant="body2">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-                      ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
-                      parturient montes, nascetur ridiculus mus.
-                    </Typography>
-                    <Typography variant="h6">
+                    <Typography variant='h6'>
                       Modern technology stack
                     </Typography>
-                    <Typography variant="body1">
-                      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                      eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                      in culpa qui officia deserunt mollit anim id est laborum.
+                    <Typography variant='body1'>
+                      Duis aute irure dolor in reprehenderit in voluptate velit
+                      esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                      sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.
                     </Typography>
-                    <Typography variant="overline">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-                      ligula eget dolor. Aenean massa.
+                    <Typography variant='overline'>
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                      Aenean commodo ligula eget dolor. Aenean massa.
                     </Typography>
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                  />
+                  <Grid item md={6} />
                 </Grid>
               </Box>
-            )}
-            name="Typography"
+            }
+            name='Typography'
           />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseTypography.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

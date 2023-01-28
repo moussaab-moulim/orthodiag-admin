@@ -11,7 +11,7 @@ import {
   Grid,
   IconButton,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import { FileDropzone } from '../../components/file-dropzone';
 import type { File } from '../../components/file-dropzone';
@@ -20,16 +20,19 @@ import { ArrowLeft as ArrowLeftIcon } from '../../icons/arrow-left';
 import { DotsVertical as DotsHorizontalIcon } from '../../icons/dots-vertical';
 import { gtm } from '../../lib/gtm';
 import { fileToBase64 } from '../../utils/file-to-base64';
+import { PageLayout } from '@components/page-layout';
 
 const BlogPostCreate: NextPage = () => {
-  const [cover, setCover] = useState<string | null>('/static/mock-images/covers/cover_4.jpeg');
+  const [cover, setCover] = useState<string | null>(
+    '/static/mock-images/covers/cover_4.jpeg'
+  );
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
   }, []);
 
   const handleDropCover = async ([file]: File[]) => {
-    const data = await fileToBase64(file) as string;
+    const data = (await fileToBase64(file)) as string;
     setCover(data);
   };
 
@@ -38,35 +41,24 @@ const BlogPostCreate: NextPage = () => {
   };
 
   return (
-    <>
-      <Head>
-        <title>
-          Blog: Post Create | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Blog: Post Create`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="md">
-          <NextLink
-            href="/dashboard"
-            passHref
-          >
+        <Container maxWidth='md'>
+          <NextLink href='/dashboard' passHref>
             <Button
-              component="a"
-              startIcon={<ArrowLeftIcon fontSize="small" />}
+              component='a'
+              startIcon={<ArrowLeftIcon fontSize='small' />}
             >
               Dashboard
             </Button>
           </NextLink>
-          <Typography
-            variant="h3"
-            sx={{ mt: 3 }}
-          >
+          <Typography variant='h3' sx={{ mt: 3 }}>
             Create post
           </Typography>
           <Card
@@ -79,79 +71,60 @@ const BlogPostCreate: NextPage = () => {
               mb: 8,
               mt: 6,
               px: 3,
-              py: 2
+              py: 2,
             }}
           >
-            <Typography variant="subtitle1">
-              Hello, Admin
-            </Typography>
+            <Typography variant='subtitle1'>Hello, Admin</Typography>
             <div>
-              <NextLink
-                href="/blog"
-                passHref
-              >
+              <NextLink href='/blog' passHref>
                 <Button
-                  component="a"
+                  component='a'
                   sx={{
                     display: {
                       xs: 'none',
-                      sm: 'inline-flex'
+                      sm: 'inline-flex',
                     },
-                    mr: 2
+                    mr: 2,
                   }}
-                  variant="outlined"
+                  variant='outlined'
                 >
                   Cancel
                 </Button>
               </NextLink>
-              <NextLink
-                href="/blog/1"
-                passHref
-              >
+              <NextLink href='/blog/1' passHref>
                 <Button
-                  component="a"
+                  component='a'
                   sx={{
                     display: {
                       xs: 'none',
-                      sm: 'inline-flex'
+                      sm: 'inline-flex',
                     },
-                    mr: 2
+                    mr: 2,
                   }}
-                  variant="contained"
+                  variant='contained'
                 >
                   Publish changes
                 </Button>
               </NextLink>
               <IconButton>
-                <DotsHorizontalIcon fontSize="small" />
+                <DotsHorizontalIcon fontSize='small' />
               </IconButton>
             </div>
           </Card>
           <Card sx={{ mt: 4 }}>
             <CardContent>
-              <Typography variant="h6">
-                Basic details
-              </Typography>
+              <Typography variant='h6'>Basic details</Typography>
               <Box sx={{ mt: 3 }}>
-                <TextField
-                  fullWidth
-                  label="Post title"
-                  name="title"
-                />
+                <TextField fullWidth label='Post title' name='title' />
                 <Box sx={{ mt: 3 }}>
-                  <TextField
-                    fullWidth
-                    label="Short description"
-                  />
+                  <TextField fullWidth label='Short description' />
                 </Box>
               </Box>
             </CardContent>
           </Card>
           <Card sx={{ mt: 4 }}>
             <CardContent>
-              <Typography variant="h6">
-                Post cover
-              </Typography>
+              <Typography variant='h6'>Post cover</Typography>
               {cover ? (
                 <Box
                   sx={{
@@ -160,7 +133,7 @@ const BlogPostCreate: NextPage = () => {
                     backgroundSize: 'cover',
                     borderRadius: 1,
                     height: 230,
-                    mt: 3
+                    mt: 3,
                   }}
                 />
               ) : (
@@ -176,36 +149,29 @@ const BlogPostCreate: NextPage = () => {
                     borderColor: 'divider',
                     height: 230,
                     mt: 3,
-                    p: 3
+                    p: 3,
                   }}
                 >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="h6"
-                  >
+                  <Typography align='center' color='textSecondary' variant='h6'>
                     Select a cover image
                   </Typography>
                   <Typography
-                    align="center"
-                    color="textSecondary"
+                    align='center'
+                    color='textSecondary'
                     sx={{ mt: 1 }}
-                    variant="subtitle1"
+                    variant='subtitle1'
                   >
-                    Image used for the blog post cover and also for Open Graph meta
+                    Image used for the blog post cover and also for Open Graph
+                    meta
                   </Typography>
                 </Box>
               )}
-              <Button
-                onClick={handleRemove}
-                sx={{ mt: 3 }}
-                disabled={!cover}
-              >
+              <Button onClick={handleRemove} sx={{ mt: 3 }} disabled={!cover}>
                 Remove photo
               </Button>
               <Box sx={{ mt: 3 }}>
                 <FileDropzone
-                  accept="image/*"
+                  accept='image/*'
                   maxFiles={1}
                   onDrop={handleDropCover}
                 />
@@ -214,48 +180,25 @@ const BlogPostCreate: NextPage = () => {
           </Card>
           <Card sx={{ mt: 4 }}>
             <CardContent>
-              <Typography variant="h6">
-                Content
-              </Typography>
+              <Typography variant='h6'>Content</Typography>
               <QuillEditor
-                placeholder="Write something"
+                placeholder='Write something'
                 sx={{
                   height: 330,
-                  mt: 3
+                  mt: 3,
                 }}
               />
             </CardContent>
           </Card>
           <Card sx={{ mt: 4 }}>
             <CardContent>
-              <Grid
-                container
-                spacing={3}
-              >
-                <Grid
-                  item
-                  xs={12}
-                  lg={4}
-                >
-                  <Typography variant="h6">
-                    Meta
-                  </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} lg={4}>
+                  <Typography variant='h6'>Meta</Typography>
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  lg={8}
-                >
-                  <TextField
-                    fullWidth
-                    label="SEO title"
-                    name="title"
-                  />
-                  <TextField
-                    fullWidth
-                    sx={{ mt: 3 }}
-                    label="SEO description"
-                  />
+                <Grid item xs={12} lg={8}>
+                  <TextField fullWidth label='SEO title' name='title' />
+                  <TextField fullWidth sx={{ mt: 3 }} label='SEO description' />
                 </Grid>
               </Grid>
             </CardContent>
@@ -263,26 +206,20 @@ const BlogPostCreate: NextPage = () => {
           <Box
             sx={{
               display: {
-                sm: 'none'
+                sm: 'none',
               },
-              mt: 2
+              mt: 2,
             }}
           >
-            <NextLink
-              href="/blog/1"
-              passHref
-            >
-              <Button
-                component="a"
-                variant="contained"
-              >
+            <NextLink href='/blog/1' passHref>
+              <Button component='a' variant='contained'>
                 Publish changes
               </Button>
             </NextLink>
           </Box>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 

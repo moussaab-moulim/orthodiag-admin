@@ -10,7 +10,7 @@ import {
   Grid,
   Switch,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from '@mui/material';
 import type { Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -25,98 +25,98 @@ import { Filter as FilterIcon } from '../../../icons/filter';
 import { Plus as PlusIcon } from '../../../icons/plus';
 import { gtm } from '../../../lib/gtm';
 import type { Invoice } from '../../../types/invoice';
+import { PageLayout } from '@components/page-layout';
 
-const applyFilters = (
-  invoices: Invoice[],
-  filters: Filters
-): Invoice[] => invoices.filter((invoice) => {
-  if (filters.query) {
-    const queryMatched = invoice.number.toLowerCase().includes(filters.query.toLowerCase());
+const applyFilters = (invoices: Invoice[], filters: Filters): Invoice[] =>
+  invoices.filter((invoice) => {
+    if (filters.query) {
+      const queryMatched = invoice.number
+        .toLowerCase()
+        .includes(filters.query.toLowerCase());
 
-    if (!queryMatched) {
+      if (!queryMatched) {
+        return false;
+      }
+    }
+
+    if (filters.startDate && invoice.issueDate) {
+      // Convert the filter start date to timestamp to be able to compare with the
+      // timestamp from the invoice
+      const startDateMatched =
+        endOfDay(invoice.issueDate) >= startOfDay(filters.startDate.getTime());
+
+      if (!startDateMatched) {
+        return false;
+      }
+    }
+
+    if (filters.endDate && invoice.issueDate) {
+      // Convert the filter end date to timestamp to be able to compare with the
+      // timestamp from the invoice
+      const endDateMatched =
+        startOfDay(invoice.issueDate) <= endOfDay(filters.endDate.getTime());
+
+      if (!endDateMatched) {
+        return false;
+      }
+    }
+
+    if (filters.customer && filters.customer.length > 0) {
+      const customerMatched = filters.customer.includes(invoice.customer.name);
+
+      if (!customerMatched) {
+        return false;
+      }
+    }
+
+    if (filters.status === 'paid' && invoice.status !== 'paid') {
       return false;
     }
-  }
 
-  if (filters.startDate && invoice.issueDate) {
-    // Convert the filter start date to timestamp to be able to compare with the
-    // timestamp from the invoice
-    const startDateMatched = endOfDay(invoice.issueDate) >= startOfDay(filters.startDate.getTime());
-
-    if (!startDateMatched) {
-      return false;
-    }
-  }
-
-  if (filters.endDate && invoice.issueDate) {
-    // Convert the filter end date to timestamp to be able to compare with the
-    // timestamp from the invoice
-    const endDateMatched = startOfDay(invoice.issueDate) <= endOfDay(filters.endDate.getTime());
-
-    if (!endDateMatched) {
-      return false;
-    }
-  }
-
-  if (filters.customer && filters.customer.length > 0) {
-    const customerMatched = filters.customer.includes(invoice.customer.name);
-
-    if (!customerMatched) {
-      return false;
-    }
-  }
-
-  if (filters.status === 'paid' && invoice.status !== 'paid') {
-    return false;
-  }
-
-  return true;
-});
+    return true;
+  });
 
 const applyPagination = (
   invoices: Invoice[],
   page: number,
   rowsPerPage: number
-): Invoice[] => invoices.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+): Invoice[] =>
+  invoices.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-const InvoiceListInner = styled(
-  'div',
-  { shouldForwardProp: (prop) => prop !== 'open' }
-)<{ open?: boolean; }>(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    overflow: 'hidden',
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-    zIndex: 1,
+const InvoiceListInner = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<{ open?: boolean }>(({ theme, open }) => ({
+  flexGrow: 1,
+  overflow: 'hidden',
+  paddingLeft: theme.spacing(3),
+  paddingRight: theme.spacing(3),
+  paddingTop: theme.spacing(8),
+  paddingBottom: theme.spacing(8),
+  zIndex: 1,
+  [theme.breakpoints.up('lg')]: {
+    marginLeft: -380,
+  },
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
     [theme.breakpoints.up('lg')]: {
-      marginLeft: -380
+      marginLeft: 0,
     },
     transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    ...(open && {
-      [theme.breakpoints.up('lg')]: {
-        marginLeft: 0
-      },
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      })
-    })
-  })
-);
+  }),
+}));
 
 const InvoiceList: NextPage = () => {
   const isMounted = useMounted();
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const mdUp = useMediaQuery(
-    (theme: Theme) => theme.breakpoints.up('md'),
-    { noSsr: true }
-  );
+  const mdUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'), {
+    noSsr: true,
+  });
   const [group, setGroup] = useState<boolean>(true);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [page, setPage] = useState<number>(0);
@@ -126,7 +126,7 @@ const InvoiceList: NextPage = () => {
     query: '',
     startDate: null,
     endDate: null,
-    customer: []
+    customer: [],
   });
 
   useEffect(() => {
@@ -170,33 +170,37 @@ const InvoiceList: NextPage = () => {
     setOpenFilters(false);
   };
 
-  const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, newPage: number): void => {
+  const handlePageChange = (
+    event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ): void => {
     setPage(newPage);
   };
 
-  const handleRowsPerPageChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleRowsPerPageChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
   // Usually query is done on backend with indexing solutions
   const filteredInvoices = applyFilters(invoices, filters);
-  const paginatedInvoices = applyPagination(filteredInvoices, page, rowsPerPage);
+  const paginatedInvoices = applyPagination(
+    filteredInvoices,
+    page,
+    rowsPerPage
+  );
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Invoice List | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Invoice List`}>
       <Box
-        component="main"
+        component='main'
         ref={rootRef}
         sx={{
           backgroundColor: 'background.default',
           display: 'flex',
           flexGrow: 1,
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       >
         <InvoiceListFilters
@@ -208,32 +212,23 @@ const InvoiceList: NextPage = () => {
         />
         <InvoiceListInner open={openFilters}>
           <Box sx={{ mb: 3 }}>
-            <Grid
-              container
-              spacing={3}
-              justifyContent="space-between"
-            >
+            <Grid container spacing={3} justifyContent='space-between'>
               <Grid item>
-                <Typography variant="h4">
-                  Invoices
-                </Typography>
+                <Typography variant='h4'>Invoices</Typography>
               </Grid>
-              <Grid
-                item
-                sx={{ m: -1 }}
-              >
+              <Grid item sx={{ m: -1 }}>
                 <Button
-                  endIcon={<FilterIcon fontSize="small" />}
+                  endIcon={<FilterIcon fontSize='small' />}
                   onClick={handleToggleFilters}
                   sx={{ m: 1 }}
-                  variant="outlined"
+                  variant='outlined'
                 >
                   Filters
                 </Button>
                 <Button
-                  startIcon={<PlusIcon fontSize="small" />}
+                  startIcon={<PlusIcon fontSize='small' />}
                   sx={{ m: 1 }}
-                  variant="contained"
+                  variant='contained'
                 >
                   New
                 </Button>
@@ -243,17 +238,14 @@ const InvoiceList: NextPage = () => {
               sx={{
                 display: 'flex',
                 justifyContent: 'flex-end',
-                mt: 3
+                mt: 3,
               }}
             >
               <FormControlLabel
-                control={(
-                  <Switch
-                    checked={group}
-                    onChange={handleChangeGroup}
-                  />
-                )}
-                label="Show groups"
+                control={
+                  <Switch checked={group} onChange={handleChangeGroup} />
+                }
+                label='Show groups'
               />
             </Box>
           </Box>
@@ -268,15 +260,13 @@ const InvoiceList: NextPage = () => {
           />
         </InvoiceListInner>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 InvoiceList.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

@@ -12,6 +12,7 @@ import { useMounted } from '../../../../hooks/use-mounted';
 import { gtm } from '../../../../lib/gtm';
 import type { Customer } from '../../../../types/customer';
 import { getInitials } from '../../../../utils/get-initials';
+import { PageLayout } from '@components/page-layout';
 
 const CustomerEdit: NextPage = () => {
   const isMounted = useMounted();
@@ -46,41 +47,28 @@ const CustomerEdit: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Customer Edit | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Customer Edit`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.default',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="md">
+        <Container maxWidth='md'>
           <Box sx={{ mb: 4 }}>
-            <NextLink
-              href="/dashboard/customers"
-              passHref
-            >
+            <NextLink href='/dashboard/customers' passHref>
               <Link
-                color="textPrimary"
-                component="a"
+                color='textPrimary'
+                component='a'
                 sx={{
                   alignItems: 'center',
-                  display: 'flex'
+                  display: 'flex',
                 }}
               >
-                <ArrowBackIcon
-                  fontSize="small"
-                  sx={{ mr: 1 }}
-                />
-                <Typography variant="subtitle2">
-                  Customers
-                </Typography>
+                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+                <Typography variant='subtitle2'>Customers</Typography>
               </Link>
             </NextLink>
           </Box>
@@ -88,7 +76,7 @@ const CustomerEdit: NextPage = () => {
             sx={{
               alignItems: 'center',
               display: 'flex',
-              overflow: 'hidden'
+              overflow: 'hidden',
             }}
           >
             <Avatar
@@ -96,16 +84,13 @@ const CustomerEdit: NextPage = () => {
               sx={{
                 height: 64,
                 mr: 2,
-                width: 64
+                width: 64,
               }}
             >
               {getInitials(customer.name)}
             </Avatar>
             <div>
-              <Typography
-                noWrap
-                variant="h4"
-              >
+              <Typography noWrap variant='h4'>
                 {customer.email}
               </Typography>
               <Box
@@ -114,17 +99,11 @@ const CustomerEdit: NextPage = () => {
                   display: 'flex',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
+                  whiteSpace: 'nowrap',
                 }}
               >
-                <Typography variant="subtitle2">
-                  user_id:
-                </Typography>
-                <Chip
-                  label={customer.id}
-                  size="small"
-                  sx={{ ml: 1 }}
-                />
+                <Typography variant='subtitle2'>user_id:</Typography>
+                <Chip label={customer.id} size='small' sx={{ ml: 1 }} />
               </Box>
             </div>
           </Box>
@@ -133,15 +112,13 @@ const CustomerEdit: NextPage = () => {
           </Box>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 CustomerEdit.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

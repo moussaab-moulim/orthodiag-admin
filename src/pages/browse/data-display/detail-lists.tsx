@@ -14,6 +14,7 @@ import { DetailList6 } from '../../../components/widgets/detail-lists/detail-lis
 import { DetailList7 } from '../../../components/widgets/detail-lists/detail-list-7';
 import { DetailList8 } from '../../../components/widgets/detail-lists/detail-list-8';
 import { gtm } from '../../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const BrowseDetailLists: NextPage = () => {
   useEffect(() => {
@@ -21,64 +22,48 @@ const BrowseDetailLists: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Detail Lists | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Detail Lists`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <WidgetPreviewer
             element={<DetailList1 />}
-            name="Currency balance card"
+            name='Currency balance card'
           />
           <WidgetPreviewer
             element={<DetailList2 />}
-            name="Contact details card"
+            name='Contact details card'
           />
           <WidgetPreviewer
             element={<DetailList3 />}
-            name="Invoices details card"
+            name='Invoices details card'
           />
-          <WidgetPreviewer
-            element={<DetailList4 />}
-            name="Order info"
-          />
-          <WidgetPreviewer
-            element={<DetailList5 />}
-            name="Order info card"
-          />
+          <WidgetPreviewer element={<DetailList4 />} name='Order info' />
+          <WidgetPreviewer element={<DetailList5 />} name='Order info card' />
           <WidgetPreviewer
             element={<DetailList6 />}
-            name="Project information card"
+            name='Project information card'
           />
           <WidgetPreviewer
             element={<DetailList7 />}
-            name="Project details card"
+            name='Project details card'
           />
-          <WidgetPreviewer
-            element={<DetailList8 />}
-            name="About card"
-          />
+          <WidgetPreviewer element={<DetailList8 />} name='About card' />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseDetailLists.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

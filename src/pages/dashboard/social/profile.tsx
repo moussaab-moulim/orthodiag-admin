@@ -13,7 +13,7 @@ import {
   Tab,
   Tabs,
   Tooltip,
-  Typography
+  Typography,
 } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -28,17 +28,19 @@ import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizo
 import { UserAdd as UserAddIcon } from '../../../icons/user-add';
 import { gtm } from '../../../lib/gtm';
 import type { Profile } from '../../../types/social';
+import { PageLayout } from '@components/page-layout';
 
 const tabs = [
   { label: 'Timeline', value: 'timeline' },
-  { label: 'Connections', value: 'connections' }
+  { label: 'Connections', value: 'connections' },
 ];
 
 export const SocialProfile: NextPage = () => {
   const isMounted = useMounted();
   const [currentTab, setCurrentTab] = useState<string>('timeline');
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [connectedStatus, setConnectedStatus] = useState<string>('not_connected');
+  const [connectedStatus, setConnectedStatus] =
+    useState<string>('not_connected');
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
@@ -65,11 +67,9 @@ export const SocialProfile: NextPage = () => {
   );
 
   const handleConnectToggle = (): void => {
-    setConnectedStatus((prevConnectedStatus) => (
-      prevConnectedStatus === 'not_connected'
-        ? 'pending'
-        : 'not_connected'
-    ));
+    setConnectedStatus((prevConnectedStatus) =>
+      prevConnectedStatus === 'not_connected' ? 'pending' : 'not_connected'
+    );
   };
 
   const handleTabsChange = (event: ChangeEvent<{}>, value: string): void => {
@@ -81,20 +81,15 @@ export const SocialProfile: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Social Profile | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Social Profile`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <Box
             style={{ backgroundImage: `url(${profile.cover})` }}
             sx={{
@@ -106,32 +101,32 @@ export const SocialProfile: NextPage = () => {
               position: 'relative',
               '&:hover': {
                 '& button': {
-                  visibility: 'visible'
-                }
-              }
+                  visibility: 'visible',
+                },
+              },
             }}
           >
             <Button
-              startIcon={<AddPhotoIcon fontSize="small" />}
+              startIcon={<AddPhotoIcon fontSize='small' />}
               sx={{
                 backgroundColor: blueGrey[900],
                 bottom: {
                   lg: 24,
-                  xs: 'auto'
+                  xs: 'auto',
                 },
                 color: 'common.white',
                 position: 'absolute',
                 right: 24,
                 top: {
                   lg: 'auto',
-                  xs: 24
+                  xs: 24,
                 },
                 visibility: 'hidden',
                 '&:hover': {
-                  backgroundColor: blueGrey[900]
-                }
+                  backgroundColor: blueGrey[900],
+                },
               }}
-              variant="contained"
+              variant='contained'
             >
               Change Cover
             </Button>
@@ -140,115 +135,103 @@ export const SocialProfile: NextPage = () => {
             sx={{
               alignItems: 'center',
               display: 'flex',
-              mt: 5
+              mt: 5,
             }}
           >
             <Avatar
               src={profile.avatar}
               sx={{
                 height: 64,
-                width: 64
+                width: 64,
               }}
             />
             <Box sx={{ ml: 2 }}>
-              <Typography
-                color="textSecondary"
-                variant="overline"
-              >
+              <Typography color='textSecondary' variant='overline'>
                 {profile.bio}
               </Typography>
-              <Typography variant="h6">
-                {profile.name}
-              </Typography>
+              <Typography variant='h6'>{profile.name}</Typography>
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box
               sx={{
                 display: {
                   md: 'block',
-                  xs: 'none'
-                }
+                  xs: 'none',
+                },
               }}
             >
               {connectedStatus === 'not_connected' && (
                 <Button
                   onClick={handleConnectToggle}
-                  size="small"
-                  startIcon={(<UserAddIcon fontSize="small" />)}
+                  size='small'
+                  startIcon={<UserAddIcon fontSize='small' />}
                   sx={{ ml: 2 }}
-                  variant="outlined"
+                  variant='outlined'
                 >
                   Connect
                 </Button>
               )}
               {connectedStatus === 'pending' && (
                 <Button
-                  color="primary"
+                  color='primary'
                   onClick={handleConnectToggle}
-                  size="small"
+                  size='small'
                   sx={{ ml: 2 }}
-                  variant="outlined"
+                  variant='outlined'
                 >
                   Pending
                 </Button>
               )}
-              <NextLink
-                href="/dashboard/chat"
-                passHref
-              >
+              <NextLink href='/dashboard/chat' passHref>
                 <Button
-                  component="a"
-                  size="small"
-                  startIcon={(<ChatIcon fontSize="small" />)}
+                  component='a'
+                  size='small'
+                  startIcon={<ChatIcon fontSize='small' />}
                   sx={{ ml: 1 }}
-                  variant="contained"
+                  variant='contained'
                 >
                   Send Message
                 </Button>
               </NextLink>
             </Box>
-            <Tooltip title="More options">
+            <Tooltip title='More options'>
               <IconButton sx={{ ml: 1 }}>
-                <DotsHorizontalIcon fontSize="small" />
+                <DotsHorizontalIcon fontSize='small' />
               </IconButton>
             </Tooltip>
           </Box>
         </Container>
         <Box sx={{ mt: 5 }}>
-          <Container maxWidth="lg">
+          <Container maxWidth='lg'>
             <Tabs
-              indicatorColor="primary"
+              indicatorColor='primary'
               onChange={handleTabsChange}
-              scrollButtons="auto"
-              textColor="primary"
+              scrollButtons='auto'
+              textColor='primary'
               value={currentTab}
-              variant="scrollable"
+              variant='scrollable'
             >
               {tabs.map((tab) => (
-                <Tab
-                  key={tab.value}
-                  label={tab.label}
-                  value={tab.value}
-                />
+                <Tab key={tab.value} label={tab.label} value={tab.value} />
               ))}
             </Tabs>
             <Divider />
             <Box sx={{ py: 3 }}>
-              {currentTab === 'timeline' && <SocialTimeline profile={profile} />}
+              {currentTab === 'timeline' && (
+                <SocialTimeline profile={profile} />
+              )}
               {currentTab === 'connections' && <SocialConnections />}
             </Box>
           </Container>
         </Box>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 SocialProfile.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

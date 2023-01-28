@@ -12,6 +12,7 @@ import { GridList4 } from '../../../components/widgets/grid-lists/grid-list-4';
 import { GridList5 } from '../../../components/widgets/grid-lists/grid-list-5';
 import { GridList6 } from '../../../components/widgets/grid-lists/grid-list-6';
 import { gtm } from '../../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const BrowseGridLists: NextPage = () => {
   useEffect(() => {
@@ -19,56 +20,46 @@ const BrowseGridLists: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Grid Lists | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Grid Lists`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <WidgetPreviewer
             element={<GridList1 />}
-            name="Grid list with image"
+            name='Grid list with image'
           />
-          <WidgetPreviewer
-            element={<GridList2 />}
-            name="Mixed grid list"
-          />
+          <WidgetPreviewer element={<GridList2 />} name='Mixed grid list' />
           <WidgetPreviewer
             element={<GridList3 />}
-            name="Grid list with bottom button"
+            name='Grid list with bottom button'
           />
           <WidgetPreviewer
             element={<GridList4 />}
-            name="Grid list with avatar and cover picture "
+            name='Grid list with avatar and cover picture '
           />
           <WidgetPreviewer
             element={<GridList5 />}
-            name="Grid list with picture and bottom buttons"
+            name='Grid list with picture and bottom buttons'
           />
           <WidgetPreviewer
             element={<GridList6 />}
-            name="Grid list with picture and bottom buttons"
+            name='Grid list with picture and bottom buttons'
           />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseGridLists.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

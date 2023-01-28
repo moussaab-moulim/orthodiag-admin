@@ -12,6 +12,7 @@ import { Cog as CogIcon } from '../../icons/cog';
 import { Download as DownloadIcon } from '../../icons/download';
 import { Reports as ReportsIcon } from '../../icons/reports';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const Logistics: NextPage = () => {
   useEffect(() => {
@@ -19,30 +20,19 @@ const Logistics: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Logistics | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Logistics`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="xl">
+        <Container maxWidth='xl'>
           <Box sx={{ mb: 4 }}>
-            <Grid
-              container
-              justifyContent="space-between"
-              spacing={3}
-            >
+            <Grid container justifyContent='space-between' spacing={3}>
               <Grid item>
-                <Typography variant="h4">
-                  Logistics
-                </Typography>
+                <Typography variant='h4'>Logistics</Typography>
               </Grid>
               <Grid
                 item
@@ -50,27 +40,27 @@ const Logistics: NextPage = () => {
                   alignItems: 'center',
                   display: 'flex',
                   flexWrap: 'wrap',
-                  m: -1
+                  m: -1,
                 }}
               >
                 <Button
-                  startIcon={<ReportsIcon fontSize="small" />}
+                  startIcon={<ReportsIcon fontSize='small' />}
                   sx={{ m: 1 }}
-                  variant="outlined"
+                  variant='outlined'
                 >
                   Reports
                 </Button>
                 <Button
-                  startIcon={<CogIcon fontSize="small" />}
+                  startIcon={<CogIcon fontSize='small' />}
                   sx={{ m: 1 }}
-                  variant="outlined"
+                  variant='outlined'
                 >
                   Settings
                 </Button>
                 <Button
-                  startIcon={<DownloadIcon fontSize="small" />}
+                  startIcon={<DownloadIcon fontSize='small' />}
                   sx={{ m: 1 }}
-                  variant="contained"
+                  variant='contained'
                 >
                   Export
                 </Button>
@@ -79,43 +69,27 @@ const Logistics: NextPage = () => {
           </Box>
           <LogisticsOverview />
           <Box sx={{ mt: 4 }}>
-            <Grid
-              container
-              spacing={4}
-            >
-              <Grid
-                item
-                xl={6}
-                xs={12}
-              >
+            <Grid container spacing={4}>
+              <Grid item xl={6} xs={12}>
                 <LogisticsTotalVehicles />
               </Grid>
-              <Grid
-                item
-                xl={6}
-                xs={12}
-              >
+              <Grid item xl={6} xs={12}>
                 <LogisticsVehiclesCondition />
               </Grid>
-              <Grid
-                item
-                xs={12}
-              >
+              <Grid item xs={12}>
                 <LogisticsOnRouteVehicles />
               </Grid>
             </Grid>
           </Box>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 Logistics.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

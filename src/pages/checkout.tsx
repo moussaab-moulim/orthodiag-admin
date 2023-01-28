@@ -11,6 +11,7 @@ import { ArrowLeft as ArrowLeftIcon } from '../icons/arrow-left';
 import { ArrowRight as ArrowRightIcon } from '../icons/arrow-right';
 import { Lock as LockIcon } from '../icons/lock';
 import { gtm } from '../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 interface Product {
   id: string;
@@ -26,15 +27,15 @@ const productsData: Product[] = [
     image: '/static/mock-images/products/product_1.png',
     name: 'Healthcare Erbology',
     price: 23.99,
-    quantity: 1
+    quantity: 1,
   },
   {
     id: 'ece4069546ff025047b97735',
     image: '/static/mock-images/products/product_2.png',
     name: 'Makeup Lancome Rouge',
-    price: 95.00,
-    quantity: 1
-  }
+    price: 95.0,
+    quantity: 1,
+  },
 ];
 
 const Checkout: NextPage = () => {
@@ -49,7 +50,7 @@ const Checkout: NextPage = () => {
     optionalAddress: '',
     paymentMethod: 'visa',
     state: '',
-    zip: ''
+    zip: '',
   });
   const [products, setProducts] = useState<Product[]>(productsData);
 
@@ -58,96 +59,73 @@ const Checkout: NextPage = () => {
   }, []);
 
   const handleBillingChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setBilling((prevBilling) => (
-      {
-        ...prevBilling,
-        [event.target.name]: event.target.value
-      }
-    ));
+    setBilling((prevBilling) => ({
+      ...prevBilling,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleProductQuantityChange = (
     event: SelectChangeEvent<number>,
     productId: string
   ): void => {
-    setProducts((prevProducts) => prevProducts.map((product) => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          quantity: event.target.value as number
-        };
-      }
+    setProducts((prevProducts) =>
+      prevProducts.map((product) => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            quantity: event.target.value as number,
+          };
+        }
 
-      return product;
-    }));
+        return product;
+      })
+    );
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
   };
 
-  const subtotal = products
-    .reduce((
-      accumulator,
-      product
-    ) => accumulator + product.price * product.quantity, 0);
+  const subtotal = products.reduce(
+    (accumulator, product) => accumulator + product.price * product.quantity,
+    0
+  );
   const shippingTax = 12;
   const total = subtotal + shippingTax;
 
   return (
-    <>
-      <Head>
-        <title>
-          Checkout | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle='Checkout'>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <form onSubmit={handleSubmit}>
-            <NextLink
-              href="/dashboard"
-              passHref
-            >
+            <NextLink href='/dashboard' passHref>
               <Button
-                component="a"
-                startIcon={<ArrowLeftIcon fontSize="small" />}
+                component='a'
+                startIcon={<ArrowLeftIcon fontSize='small' />}
               >
                 Dashboard
               </Button>
             </NextLink>
-            <Typography
-              variant="h3"
-              sx={{ mt: 3 }}
-            >
+            <Typography variant='h3' sx={{ mt: 3 }}>
               Checkout
             </Typography>
             <Box mt={6}>
-              <Grid
-                container
-                spacing={6}
-              >
-                <Grid
-                  item
-                  md={7}
-                  xs={12}
-                >
+              <Grid container spacing={6}>
+                <Grid item md={7} xs={12}>
                   <CheckoutBilling
                     billing={billing}
                     onChange={handleBillingChange}
                   />
                 </Grid>
-                <Grid
-                  item
-                  md={5}
-                  xs={12}
-                >
+                <Grid item md={5} xs={12}>
                   <CheckoutOrderSummary
                     onQuantityChange={handleProductQuantityChange}
                     products={products}
@@ -162,35 +140,25 @@ const Checkout: NextPage = () => {
               <Box
                 sx={{
                   alignItems: 'center',
-                  display: 'flex'
+                  display: 'flex',
                 }}
               >
-                <LockIcon
-                  fontWeight="small"
-                  sx={{ color: 'text.secondary' }}
-                />
-                <Typography
-                  sx={{ ml: 2 }}
-                  variant="subtitle2"
-                >
+                <LockIcon fontWeight='small' sx={{ color: 'text.secondary' }} />
+                <Typography sx={{ ml: 2 }} variant='subtitle2'>
                   Secure Checkout
                 </Typography>
               </Box>
-              <Typography
-                color="textSecondary"
-                sx={{ mt: 2 }}
-                variant="body2"
-              >
+              <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
                 Your purchases are secured by an industry best encryption
                 service – Braintree
               </Typography>
               <Button
-                color="primary"
-                endIcon={<ArrowRightIcon fontSize="small" />}
-                size="large"
+                color='primary'
+                endIcon={<ArrowRightIcon fontSize='small' />}
+                size='large'
                 sx={{ mt: 3 }}
-                type="submit"
-                variant="contained"
+                type='submit'
+                variant='contained'
               >
                 Complete order
               </Button>
@@ -198,7 +166,7 @@ const Checkout: NextPage = () => {
           </form>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 

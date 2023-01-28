@@ -18,6 +18,7 @@ import { Modal10 } from '../../components/widgets/modals/modal-10';
 import { Modal11 } from '../../components/widgets/modals/modal-11';
 import { Modal12 } from '../../components/widgets/modals/modal-12';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 export const BrowseModals: NextPage = () => {
   useEffect(() => {
@@ -25,80 +26,37 @@ export const BrowseModals: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Modals | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Modals`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
-          <WidgetPreviewer
-            element={<Modal1 />}
-            name="Modal 1"
-          />
-          <WidgetPreviewer
-            element={<Modal2 />}
-            name="Modal 2"
-          />
-          <WidgetPreviewer
-            element={<Modal3 />}
-            name="Modal 3"
-          />
-          <WidgetPreviewer
-            element={<Modal4 />}
-            name="Modal 4"
-          />
-          <WidgetPreviewer
-            element={<Modal5 />}
-            name="Modal 5"
-          />
-          <WidgetPreviewer
-            element={<Modal6 />}
-            name="Modal 6"
-          />
-          <WidgetPreviewer
-            element={<Modal7 />}
-            name="Modal 7"
-          />
-          <WidgetPreviewer
-            element={<Modal8 />}
-            name="Modal 8"
-          />
-          <WidgetPreviewer
-            element={<Modal9 />}
-            name="Modal 9"
-          />
-          <WidgetPreviewer
-            element={<Modal10 />}
-            name="Modal 10"
-          />
-          <WidgetPreviewer
-            element={<Modal11 />}
-            name="Modal 11"
-          />
-          <WidgetPreviewer
-            element={<Modal12 />}
-            name="Modal 12"
-          />
+        <Container maxWidth='lg'>
+          <WidgetPreviewer element={<Modal1 />} name='Modal 1' />
+          <WidgetPreviewer element={<Modal2 />} name='Modal 2' />
+          <WidgetPreviewer element={<Modal3 />} name='Modal 3' />
+          <WidgetPreviewer element={<Modal4 />} name='Modal 4' />
+          <WidgetPreviewer element={<Modal5 />} name='Modal 5' />
+          <WidgetPreviewer element={<Modal6 />} name='Modal 6' />
+          <WidgetPreviewer element={<Modal7 />} name='Modal 7' />
+          <WidgetPreviewer element={<Modal8 />} name='Modal 8' />
+          <WidgetPreviewer element={<Modal9 />} name='Modal 9' />
+          <WidgetPreviewer element={<Modal10 />} name='Modal 10' />
+          <WidgetPreviewer element={<Modal11 />} name='Modal 11' />
+          <WidgetPreviewer element={<Modal12 />} name='Modal 12' />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseModals.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

@@ -15,7 +15,7 @@ import {
   Link,
   Tab,
   Tabs,
-  Typography
+  Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { jobApi } from '../../../../__fake-api__/job-api';
@@ -31,13 +31,14 @@ import { useMounted } from '../../../../hooks/use-mounted';
 import { gtm } from '../../../../lib/gtm';
 import type { Company } from '../../../../types/job';
 import { getInitials } from '../../../../utils/get-initials';
+import { PageLayout } from '@components/page-layout';
 
 const tabs = [
   { label: 'Overview', value: 'overview' },
   { label: 'Reviews', value: 'reviews' },
   { label: 'Activity', value: 'activity' },
   { label: 'Team', value: 'team' },
-  { label: 'Assets', value: 'assets' }
+  { label: 'Assets', value: 'assets' },
 ];
 
 const CompanyDetails: NextPage = () => {
@@ -78,101 +79,74 @@ const CompanyDetails: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Company Details | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Company Details`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <Box sx={{ mb: 4 }}>
-            <NextLink
-              href="/dashboard/jobs"
-              passHref
-            >
+            <NextLink href='/dashboard/jobs' passHref>
               <Link
-                color="textPrimary"
+                color='textPrimary'
                 sx={{
                   alignItems: 'center',
-                  display: 'flex'
+                  display: 'flex',
                 }}
               >
-                <ArrowBackIcon
-                  fontSize="small"
-                  sx={{ mr: 1 }}
-                />
-                <Typography variant="subtitle2">
-                  Jobs
-                </Typography>
+                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+                <Typography variant='subtitle2'>Jobs</Typography>
               </Link>
             </NextLink>
           </Box>
-          <Grid
-            container
-            spacing={4}
-          >
-            <Grid
-              item
-              xs={12}
-              lg={8}
-            >
+          <Grid container spacing={4}>
+            <Grid item xs={12} lg={8}>
               <Card>
                 <CardHeader
                   disableTypography
-                  title={(
+                  title={
                     <Box sx={{ display: 'flex' }}>
                       <Avatar
                         src={company.logo}
                         sx={{
                           background: 'transparent',
-                          mr: 2
+                          mr: 2,
                         }}
-                        variant="rounded"
+                        variant='rounded'
                       >
                         {getInitials(company.name)}
                       </Avatar>
                       <div>
-                        <Typography variant="h6">
-                          {company.name}
-                        </Typography>
-                        <Typography
-                          sx={{ mt: 1 }}
-                          variant="body2"
-                        >
+                        <Typography variant='h6'>{company.name}</Typography>
+                        <Typography sx={{ mt: 1 }} variant='body2'>
                           {company.shortDescription}
                         </Typography>
                       </div>
                     </Box>
-                  )}
+                  }
                 />
                 <Divider />
                 <Tabs
-                  indicatorColor="primary"
+                  indicatorColor='primary'
                   onChange={handleTabsChange}
-                  scrollButtons="auto"
+                  scrollButtons='auto'
                   sx={{ px: 3 }}
-                  textColor="primary"
+                  textColor='primary'
                   value={currentTab}
-                  variant="scrollable"
+                  variant='scrollable'
                 >
                   {tabs.map((tab) => (
-                    <Tab
-                      key={tab.value}
-                      label={tab.label}
-                      value={tab.value}
-                    />
+                    <Tab key={tab.value} label={tab.label} value={tab.value} />
                   ))}
                 </Tabs>
                 <Divider />
                 <CardContent>
-                  {currentTab === 'overview' && <CompanyOverview company={company} />}
+                  {currentTab === 'overview' && (
+                    <CompanyOverview company={company} />
+                  )}
                   {currentTab === 'reviews' && (
                     <CompanyReviews
                       reviews={company.reviews || []}
@@ -182,30 +156,28 @@ const CompanyDetails: NextPage = () => {
                   {currentTab === 'activity' && (
                     <CompanyActivity activities={company.activities || []} />
                   )}
-                  {currentTab === 'team' && <CompanyTeam members={company.members || []} />}
-                  {currentTab === 'assets' && <CompanyAssets assets={company.assets || []} />}
+                  {currentTab === 'team' && (
+                    <CompanyTeam members={company.members || []} />
+                  )}
+                  {currentTab === 'assets' && (
+                    <CompanyAssets assets={company.assets || []} />
+                  )}
                 </CardContent>
               </Card>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              lg={4}
-            >
+            <Grid item xs={12} lg={4}>
               <CompanySummary company={company} />
             </Grid>
           </Grid>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 CompanyDetails.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

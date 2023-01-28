@@ -11,13 +11,14 @@ import { AccountNotificationsSettings } from '../../components/dashboard/account
 import { AccountTeamSettings } from '../../components/dashboard/account/account-team-settings';
 import { AccountSecuritySettings } from '../../components/dashboard/account/account-security-settings';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const tabs = [
   { label: 'General', value: 'general' },
   { label: 'Billing', value: 'billing' },
   { label: 'Team', value: 'team' },
   { label: 'Notifications', value: 'notifications' },
-  { label: 'Security', value: 'security' }
+  { label: 'Security', value: 'security' },
 ];
 
 const Account: NextPage = () => {
@@ -32,38 +33,27 @@ const Account: NextPage = () => {
   };
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Account | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Account`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="md">
-          <Typography variant="h4">
-            Account
-          </Typography>
+        <Container maxWidth='md'>
+          <Typography variant='h4'>Account</Typography>
           <Tabs
-            indicatorColor="primary"
+            indicatorColor='primary'
             onChange={handleTabsChange}
-            scrollButtons="auto"
-            textColor="primary"
+            scrollButtons='auto'
+            textColor='primary'
             value={currentTab}
-            variant="scrollable"
+            variant='scrollable'
             sx={{ mt: 3 }}
           >
             {tabs.map((tab) => (
-              <Tab
-                key={tab.value}
-                label={tab.label}
-                value={tab.value}
-              />
+              <Tab key={tab.value} label={tab.label} value={tab.value} />
             ))}
           </Tabs>
           <Divider sx={{ mb: 3 }} />
@@ -74,15 +64,13 @@ const Account: NextPage = () => {
           {currentTab === 'security' && <AccountSecuritySettings />}
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 Account.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

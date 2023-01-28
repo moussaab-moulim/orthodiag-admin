@@ -13,7 +13,7 @@ import {
   Tab,
   Tabs,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import { customerApi } from '../../../__fake-api__/customer-api';
 import { AuthGuard } from '../../../components/authentication/auth-guard';
@@ -26,6 +26,7 @@ import { Search as SearchIcon } from '../../../icons/search';
 import { Upload as UploadIcon } from '../../../icons/upload';
 import { gtm } from '../../../lib/gtm';
 import type { Customer } from '../../../types/customer';
+import { PageLayout } from '@components/page-layout';
 
 interface Filters {
   query?: string;
@@ -59,76 +60,82 @@ interface Tab {
 const tabs: Tab[] = [
   {
     label: 'All',
-    value: 'all'
+    value: 'all',
   },
   {
     label: 'Accepts Marketing',
-    value: 'hasAcceptedMarketing'
+    value: 'hasAcceptedMarketing',
   },
   {
     label: 'Prospect',
-    value: 'isProspect'
+    value: 'isProspect',
   },
   {
     label: 'Returning',
-    value: 'isReturning'
-  }
+    value: 'isReturning',
+  },
 ];
 
 const sortOptions: SortOption[] = [
   {
     label: 'Last update (newest)',
-    value: 'updatedAt|desc'
+    value: 'updatedAt|desc',
   },
   {
     label: 'Last update (oldest)',
-    value: 'updatedAt|asc'
+    value: 'updatedAt|asc',
   },
   {
     label: 'Total orders (highest)',
-    value: 'totalOrders|desc'
+    value: 'totalOrders|desc',
   },
   {
     label: 'Total orders (lowest)',
-    value: 'totalOrders|asc'
-  }
+    value: 'totalOrders|asc',
+  },
 ];
 
-const applyFilters = (
-  customers: Customer[],
-  filters: Filters
-): Customer[] => customers.filter((customer) => {
-  if (filters.query) {
-    let queryMatched = false;
-    const properties: ('email' | 'name')[] = ['email', 'name'];
+const applyFilters = (customers: Customer[], filters: Filters): Customer[] =>
+  customers.filter((customer) => {
+    if (filters.query) {
+      let queryMatched = false;
+      const properties: ('email' | 'name')[] = ['email', 'name'];
 
-    properties.forEach((property) => {
-      if ((customer[property]).toLowerCase().includes(filters.query!.toLowerCase())) {
-        queryMatched = true;
+      properties.forEach((property) => {
+        if (
+          customer[property]
+            .toLowerCase()
+            .includes(filters.query!.toLowerCase())
+        ) {
+          queryMatched = true;
+        }
+      });
+
+      if (!queryMatched) {
+        return false;
       }
-    });
+    }
 
-    if (!queryMatched) {
+    if (filters.hasAcceptedMarketing && !customer.hasAcceptedMarketing) {
       return false;
     }
-  }
 
-  if (filters.hasAcceptedMarketing && !customer.hasAcceptedMarketing) {
-    return false;
-  }
+    if (filters.isProspect && !customer.isProspect) {
+      return false;
+    }
 
-  if (filters.isProspect && !customer.isProspect) {
-    return false;
-  }
+    if (filters.isReturning && !customer.isReturning) {
+      return false;
+    }
 
-  if (filters.isReturning && !customer.isReturning) {
-    return false;
-  }
+    return true;
+  });
 
-  return true;
-});
-
-const descendingComparator = (a: Customer, b: Customer, sortBy: SortField): number => {
+const descendingComparator = (
+  a: Customer,
+  b: Customer,
+  sortBy: SortField
+): number => {
   // When compared to something undefined, always returns false.
   // This means that if a field does not exist from either element ('a' or 'b') the return will be 0.
 
@@ -143,11 +150,10 @@ const descendingComparator = (a: Customer, b: Customer, sortBy: SortField): numb
   return 0;
 };
 
-const getComparator = (sortDir: SortDir, sortBy: SortField) => (
+const getComparator = (sortDir: SortDir, sortBy: SortField) =>
   sortDir === 'desc'
     ? (a: Customer, b: Customer) => descendingComparator(a, b, sortBy)
-    : (a: Customer, b: Customer) => -descendingComparator(a, b, sortBy)
-);
+    : (a: Customer, b: Customer) => -descendingComparator(a, b, sortBy);
 
 const applySort = (customers: Customer[], sort: Sort): Customer[] => {
   const [sortBy, sortDir] = sort.split('|') as [SortField, SortDir];
@@ -174,7 +180,8 @@ const applyPagination = (
   customers: Customer[],
   page: number,
   rowsPerPage: number
-): Customer[] => customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+): Customer[] =>
+  customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const CustomerList: NextPage = () => {
   const isMounted = useMounted();
@@ -188,7 +195,7 @@ const CustomerList: NextPage = () => {
     query: '',
     hasAcceptedMarketing: undefined,
     isProspect: undefined,
-    isReturning: undefined
+    isReturning: undefined,
   });
 
   useEffect(() => {
@@ -220,7 +227,7 @@ const CustomerList: NextPage = () => {
       ...filters,
       hasAcceptedMarketing: undefined,
       isProspect: undefined,
-      isReturning: undefined
+      isReturning: undefined,
     };
 
     if (value !== 'all') {
@@ -235,7 +242,7 @@ const CustomerList: NextPage = () => {
     event.preventDefault();
     setFilters((prevState) => ({
       ...prevState,
-      query: queryRef.current?.value
+      query: queryRef.current?.value,
     }));
   };
 
@@ -243,49 +250,47 @@ const CustomerList: NextPage = () => {
     setSort(event.target.value as Sort);
   };
 
-  const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, newPage: number): void => {
+  const handlePageChange = (
+    event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ): void => {
     setPage(newPage);
   };
 
-  const handleRowsPerPageChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleRowsPerPageChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
   // Usually query is done on backend with indexing solutions
   const filteredCustomers = applyFilters(customers, filters);
   const sortedCustomers = applySort(filteredCustomers, sort);
-  const paginatedCustomers = applyPagination(sortedCustomers, page, rowsPerPage);
+  const paginatedCustomers = applyPagination(
+    sortedCustomers,
+    page,
+    rowsPerPage
+  );
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Customer List | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Customer List`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="xl">
+        <Container maxWidth='xl'>
           <Box sx={{ mb: 4 }}>
-            <Grid
-              container
-              justifyContent="space-between"
-              spacing={3}
-            >
+            <Grid container justifyContent='space-between' spacing={3}>
               <Grid item>
-                <Typography variant="h4">
-                  Customers
-                </Typography>
+                <Typography variant='h4'>Customers</Typography>
               </Grid>
               <Grid item>
                 <Button
-                  startIcon={<PlusIcon fontSize="small" />}
-                  variant="contained"
+                  startIcon={<PlusIcon fontSize='small' />}
+                  variant='contained'
                 >
                   Add
                 </Button>
@@ -294,17 +299,14 @@ const CustomerList: NextPage = () => {
             <Box
               sx={{
                 m: -1,
-                mt: 3
+                mt: 3,
               }}
             >
-              <Button
-                startIcon={<UploadIcon fontSize="small" />}
-                sx={{ m: 1 }}
-              >
+              <Button startIcon={<UploadIcon fontSize='small' />} sx={{ m: 1 }}>
                 Import
               </Button>
               <Button
-                startIcon={<DownloadIcon fontSize="small" />}
+                startIcon={<DownloadIcon fontSize='small' />}
                 sx={{ m: 1 }}
               >
                 Export
@@ -313,20 +315,16 @@ const CustomerList: NextPage = () => {
           </Box>
           <Card>
             <Tabs
-              indicatorColor="primary"
+              indicatorColor='primary'
               onChange={handleTabsChange}
-              scrollButtons="auto"
+              scrollButtons='auto'
               sx={{ px: 3 }}
-              textColor="primary"
+              textColor='primary'
               value={currentTab}
-              variant="scrollable"
+              variant='scrollable'
             >
               {tabs.map((tab) => (
-                <Tab
-                  key={tab.value}
-                  label={tab.label}
-                  value={tab.value}
-                />
+                <Tab key={tab.value} label={tab.label} value={tab.value} />
               ))}
             </Tabs>
             <Divider />
@@ -336,34 +334,34 @@ const CustomerList: NextPage = () => {
                 display: 'flex',
                 flexWrap: 'wrap',
                 m: -1.5,
-                p: 3
+                p: 3,
               }}
             >
               <Box
-                component="form"
+                component='form'
                 onSubmit={handleQueryChange}
                 sx={{
                   flexGrow: 1,
-                  m: 1.5
+                  m: 1.5,
                 }}
               >
                 <TextField
-                  defaultValue=""
+                  defaultValue=''
                   fullWidth
                   inputProps={{ ref: queryRef }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
+                      <InputAdornment position='start'>
+                        <SearchIcon fontSize='small' />
                       </InputAdornment>
-                    )
+                    ),
                   }}
-                  placeholder="Search customers"
+                  placeholder='Search customers'
                 />
               </Box>
               <TextField
-                label="Sort By"
-                name="sort"
+                label='Sort By'
+                name='sort'
                 onChange={handleSortChange}
                 select
                 SelectProps={{ native: true }}
@@ -371,10 +369,7 @@ const CustomerList: NextPage = () => {
                 value={sort}
               >
                 {sortOptions.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
+                  <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
@@ -391,15 +386,13 @@ const CustomerList: NextPage = () => {
           </Card>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 CustomerList.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

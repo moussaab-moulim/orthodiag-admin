@@ -2,7 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import NextLink from 'next/link';
-import { Box, Button, Card, Container, Divider, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Divider,
+  Typography,
+} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { blogApi } from '../../__fake-api__/blog-api';
@@ -12,6 +19,7 @@ import { useMounted } from '../../hooks/use-mounted';
 import { ArrowLeft as ArrowLeftIcon } from '../../icons/arrow-left';
 import { gtm } from '../../lib/gtm';
 import type { Post } from '../../types/blog';
+import { PageLayout } from '@components/page-layout';
 
 const BlogPostList: NextPage = () => {
   const isMounted = useMounted();
@@ -38,35 +46,24 @@ const BlogPostList: NextPage = () => {
   }, [getPosts]);
 
   return (
-    <>
-      <Head>
-        <title>
-          Blog: Post List | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Blog: Post List`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="md">
-          <NextLink
-            href="/dashboard"
-            passHref
-          >
+        <Container maxWidth='md'>
+          <NextLink href='/dashboard' passHref>
             <Button
-              component="a"
-              startIcon={<ArrowLeftIcon fontSize="small" />}
+              component='a'
+              startIcon={<ArrowLeftIcon fontSize='small' />}
             >
               Dashboard
             </Button>
           </NextLink>
-          <Typography
-            variant="h3"
-            sx={{ mt: 3 }}
-          >
+          <Typography variant='h3' sx={{ mt: 3 }}>
             Blog Platform
           </Typography>
           <Card
@@ -79,39 +76,23 @@ const BlogPostList: NextPage = () => {
               mb: 8,
               mt: 6,
               px: 3,
-              py: 2
+              py: 2,
             }}
           >
-            <Typography variant="subtitle1">
-              Hello, Admin
-            </Typography>
-            <NextLink
-              href="/blog/new"
-              passHref
-            >
-              <Button
-                component="a"
-                variant="contained"
-              >
+            <Typography variant='subtitle1'>Hello, Admin</Typography>
+            <NextLink href='/blog/new' passHref>
+              <Button component='a' variant='contained'>
                 New Post
               </Button>
             </NextLink>
           </Card>
-          <Typography variant="h4">
-            Recent Articles
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="subtitle1"
-          >
+          <Typography variant='h4'>Recent Articles</Typography>
+          <Typography color='textSecondary' variant='subtitle1'>
             Discover the latest news, tips and user research insights from Acme.
           </Typography>
-          <Typography
-            color="textSecondary"
-            variant="subtitle1"
-          >
-            You will learn about web infrastructure, design systems and devops APIs best
-            practices.
+          <Typography color='textSecondary' variant='subtitle1'>
+            You will learn about web infrastructure, design systems and devops
+            APIs best practices.
           </Typography>
           <Divider sx={{ my: 3 }} />
           {posts.map((post) => (
@@ -133,17 +114,14 @@ const BlogPostList: NextPage = () => {
               display: 'flex',
               justifyContent: 'center',
               mt: 4,
-              mb: 8
+              mb: 8,
             }}
           >
-            <Button
-              disabled
-              startIcon={(<ArrowBackIcon fontSize="small" />)}
-            >
+            <Button disabled startIcon={<ArrowBackIcon fontSize='small' />}>
               Newer
             </Button>
             <Button
-              endIcon={(<ArrowForwardIcon fontSize="small" />)}
+              endIcon={<ArrowForwardIcon fontSize='small' />}
               sx={{ ml: 1 }}
             >
               Older posts
@@ -154,7 +132,7 @@ const BlogPostList: NextPage = () => {
           </Box>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 

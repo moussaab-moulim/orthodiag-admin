@@ -12,7 +12,7 @@ import {
   Divider,
   Grid,
   Link,
-  Typography
+  Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { invoiceApi } from '../../../__fake-api__/invoice-api';
@@ -25,6 +25,7 @@ import { ArrowLeft as ArrowLeftIcon } from '../../../icons/arrow-left';
 import { gtm } from '../../../lib/gtm';
 import type { Invoice } from '../../../types/invoice';
 import { getInitials } from '../../../utils/get-initials';
+import { PageLayout } from '@components/page-layout';
 
 const InvoiceDetails: NextPage = () => {
   const isMounted = useMounted();
@@ -60,108 +61,76 @@ const InvoiceDetails: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Invoice Details | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Invoice Details`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="md">
+        <Container maxWidth='md'>
           <Box sx={{ mb: 3 }}>
             <Box sx={{ mb: 4 }}>
-              <NextLink
-                href="/dashboard/invoices"
-                passHref
-              >
-                <Link
-                  color="textPrimary"
-                  variant="subtitle2"
-                >
+              <NextLink href='/dashboard/invoices' passHref>
+                <Link color='textPrimary' variant='subtitle2'>
                   <Box
                     sx={{
                       alignItems: 'center',
-                      display: 'flex'
+                      display: 'flex',
                     }}
                   >
-                    <ArrowBackIcon
-                      fontSize="small"
-                      sx={{ mr: 1 }}
-                    />
-                    <Typography variant="subtitle2">
-                      Invoices
-                    </Typography>
+                    <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+                    <Typography variant='subtitle2'>Invoices</Typography>
                   </Box>
                 </Link>
               </NextLink>
             </Box>
-            <Grid
-              container
-              justifyContent="space-between"
-              spacing={3}
-            >
+            <Grid container justifyContent='space-between' spacing={3}>
               <Grid
                 item
                 sx={{
                   alignItems: 'center',
-                  display: 'flex'
+                  display: 'flex',
                 }}
               >
                 <Avatar
                   sx={{
                     height: 42,
                     mr: 2,
-                    width: 42
+                    width: 42,
                   }}
                 >
                   {getInitials(invoice.customer.name)}
                 </Avatar>
                 <div>
-                  <Typography variant="h4">
-                    {invoice.number}
-                  </Typography>
+                  <Typography variant='h4'>{invoice.number}</Typography>
                   <Box
                     sx={{
                       display: 'flex',
-                      alignItems: 'center'
+                      alignItems: 'center',
                     }}
                   >
-                    <Typography
-                      color="textSecondary"
-                      variant="body2"
-                    >
+                    <Typography color='textSecondary' variant='body2'>
                       {invoice.customer.name}
                     </Typography>
                   </Box>
                 </div>
               </Grid>
-              <Grid
-                item
-                sx={{ m: -1 }}
-              >
+              <Grid item sx={{ m: -1 }}>
                 <Button
                   onClick={(): void => setViewPDF(true)}
                   sx={{ m: 1 }}
-                  variant="outlined"
+                  variant='outlined'
                 >
                   Preview
                 </Button>
                 <PDFDownloadLink
                   document={<InvoicePDF invoice={invoice} />}
-                  fileName="invoice"
+                  fileName='invoice'
                   style={{ textDecoration: 'none' }}
                 >
-                  <Button
-                    color="primary"
-                    sx={{ m: 1 }}
-                    variant="contained"
-                  >
+                  <Button color='primary' sx={{ m: 1 }} variant='contained'>
                     Download
                   </Button>
                 </PDFDownloadLink>
@@ -172,51 +141,42 @@ const InvoiceDetails: NextPage = () => {
           <InvoicePreview invoice={invoice} />
         </Container>
       </Box>
-      <Dialog
-        fullScreen
-        open={viewPDF}
-      >
+      <Dialog fullScreen open={viewPDF}>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            height: '100%'
+            height: '100%',
           }}
         >
           <Box
             sx={{
               backgroundColor: 'background.default',
-              p: 2
+              p: 2,
             }}
           >
             <Button
-              startIcon={<ArrowLeftIcon fontSize="small" />}
+              startIcon={<ArrowLeftIcon fontSize='small' />}
               onClick={(): void => setViewPDF(false)}
-              variant="contained"
+              variant='contained'
             >
               Back
             </Button>
           </Box>
           <Box sx={{ flexGrow: 1 }}>
-            <PDFViewer
-              height="100%"
-              style={{ border: 'none' }}
-              width="100%"
-            >
+            <PDFViewer height='100%' style={{ border: 'none' }} width='100%'>
               <InvoicePDF invoice={invoice} />
             </PDFViewer>
           </Box>
         </Box>
       </Dialog>
-    </>
+    </PageLayout>
   );
 };
 
 InvoiceDetails.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

@@ -1,12 +1,21 @@
 import { useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Badge, Box, Container, Divider, Grid, Switch, Typography } from '@mui/material';
+import {
+  Badge,
+  Box,
+  Container,
+  Divider,
+  Grid,
+  Switch,
+  Typography,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { AuthGuard } from '../../components/authentication/auth-guard';
 import { DashboardLayout } from '../../components/dashboard/dashboard-layout';
 import { PricingPlan } from '../../components/pricing/pricing-plan';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const Pricing: NextPage = () => {
   const theme = useTheme();
@@ -16,64 +25,48 @@ const Pricing: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Pricing | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Pricing`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          pb: 6
+          pb: 6,
         }}
       >
         <Box
           sx={{
             backgroundColor: 'background.default',
-            py: 6
+            py: 6,
           }}
         >
-          <Container maxWidth="lg">
-            <Grid
-              container
-              alignItems="center"
-              spacing={2}
-              flexWrap="nowrap"
-            >
-              <Grid
-                item
-                md={7}
-                xs={12}
-              >
-                <Typography variant="h3">
+          <Container maxWidth='lg'>
+            <Grid container alignItems='center' spacing={2} flexWrap='nowrap'>
+              <Grid item md={7} xs={12}>
+                <Typography variant='h3'>
                   Start today. Boost up your services!
                 </Typography>
                 <Typography
-                  color="textSecondary"
+                  color='textSecondary'
                   sx={{ my: 2 }}
-                  variant="body1"
+                  variant='body1'
                 >
-                  Join 3,000+ developers &amp; designers using Devias to
-                  power modern web projects.
+                  Join 3,000+ developers &amp; designers using Devias to power
+                  modern web projects.
                 </Typography>
                 <Switch />
                 <Badge
-                  badgeContent="25% OFF"
+                  badgeContent='25% OFF'
                   sx={{
                     '& .MuiBadge-badge': {
                       backgroundColor: 'primary.main',
                       color: 'primary.contrastText',
                       right: -38,
-                      top: '25%'
-                    }
+                      top: '25%',
+                    },
                   }}
                 >
-                  <Typography variant="body1">
-                    Yearly Payment
-                  </Typography>
+                  <Typography variant='body1'>Yearly Payment</Typography>
                 </Badge>
               </Grid>
               <Grid
@@ -82,8 +75,8 @@ const Pricing: NextPage = () => {
                 sx={{
                   display: {
                     md: 'block',
-                    xs: 'none'
-                  }
+                    xs: 'none',
+                  },
                 }}
               >
                 <Box
@@ -95,12 +88,12 @@ const Pricing: NextPage = () => {
                       height: 'auto',
                       position: 'absolute',
                       top: 0,
-                      width: '100%'
-                    }
+                      width: '100%',
+                    },
                   }}
                 >
                   <img
-                    alt="Pricing hero"
+                    alt='Pricing hero'
                     src={`/static/pricing/pricing_${theme.palette.mode}.svg`}
                   />
                 </Box>
@@ -109,110 +102,86 @@ const Pricing: NextPage = () => {
           </Container>
         </Box>
         <Divider />
-        <Container
-          maxWidth="lg"
-          sx={{ py: 6 }}
-        >
-          <Grid
-            container
-            spacing={4}
-          >
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
+        <Container maxWidth='lg' sx={{ py: 6 }}>
+          <Grid container spacing={4}>
+            <Grid item md={4} xs={12}>
               <PricingPlan
-                cta="Start Free Trial"
-                currency="$"
-                description="To familiarize yourself with our tools."
-                features={[
-                  'Create contracts',
-                  'Chat support',
-                  'Email alerts'
-                ]}
-                image="/static/pricing/plan1.svg"
-                name="Startup"
-                price="0"
+                cta='Start Free Trial'
+                currency='$'
+                description='To familiarize yourself with our tools.'
+                features={['Create contracts', 'Chat support', 'Email alerts']}
+                image='/static/pricing/plan1.svg'
+                name='Startup'
+                price='0'
                 sx={{
                   height: '100%',
                   maxWidth: 460,
-                  mx: 'auto'
+                  mx: 'auto',
                 }}
               />
             </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
+            <Grid item md={4} xs={12}>
               <PricingPlan
-                cta="Start Free Trial"
-                currency="$"
-                description="To familiarize yourself with our tools."
+                cta='Start Free Trial'
+                currency='$'
+                description='To familiarize yourself with our tools.'
                 features={[
                   'All previous',
                   'Highlights reporting',
                   'Data history',
-                  'Unlimited users'
+                  'Unlimited users',
                 ]}
-                image="/static/pricing/plan2.svg"
-                name="Standard"
+                image='/static/pricing/plan2.svg'
+                name='Standard'
                 popular
-                price="4.99"
+                price='4.99'
                 sx={{
                   height: '100%',
                   maxWidth: 460,
-                  mx: 'auto'
+                  mx: 'auto',
                 }}
               />
             </Grid>
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
+            <Grid item md={4} xs={12}>
               <PricingPlan
-                cta="Contact Us"
-                currency="$"
-                description="To familiarize yourself with our tools."
+                cta='Contact Us'
+                currency='$'
+                description='To familiarize yourself with our tools.'
                 features={[
                   'All previous',
                   'Unlimited contacts',
                   'Analytics platform',
                   'Public API access',
-                  'Send and sign unlimited contracts'
+                  'Send and sign unlimited contracts',
                 ]}
-                image="/static/pricing/plan3.svg"
-                name="Business"
-                price="29.99"
+                image='/static/pricing/plan3.svg'
+                name='Business'
+                price='29.99'
                 sx={{
                   height: '100%',
                   maxWidth: 460,
-                  mx: 'auto'
+                  mx: 'auto',
                 }}
               />
             </Grid>
           </Grid>
         </Container>
         <Typography
-          align="center"
-          color="textSecondary"
-          component="p"
-          variant="caption"
+          align='center'
+          color='textSecondary'
+          component='p'
+          variant='caption'
         >
           30% of our income goes into Whale Charity
         </Typography>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 Pricing.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback, MouseEvent, ChangeEvent } from 'react';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  MouseEvent,
+  ChangeEvent,
+} from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import NextLink from 'next/link';
@@ -15,54 +21,56 @@ import { Upload as UploadIcon } from '../../../icons/upload';
 import { Plus as PlusIcon } from '../../../icons/plus';
 import { gtm } from '../../../lib/gtm';
 import type { Product } from '../../../types/product';
+import { PageLayout } from '@components/page-layout';
 
-const applyFilters = (
-  products: Product[],
-  filters: Filters
-): Product[] => products.filter((product) => {
-  if (filters.name) {
-    const nameMatched = product.name.toLowerCase().includes(filters.name.toLowerCase());
+const applyFilters = (products: Product[], filters: Filters): Product[] =>
+  products.filter((product) => {
+    if (filters.name) {
+      const nameMatched = product.name
+        .toLowerCase()
+        .includes(filters.name.toLowerCase());
 
-    if (!nameMatched) {
-      return false;
+      if (!nameMatched) {
+        return false;
+      }
     }
-  }
 
-  // It is possible to select multiple category options
-  if (filters.category?.length > 0) {
-    const categoryMatched = filters.category.includes(product.category);
+    // It is possible to select multiple category options
+    if (filters.category?.length > 0) {
+      const categoryMatched = filters.category.includes(product.category);
 
-    if (!categoryMatched) {
-      return false;
+      if (!categoryMatched) {
+        return false;
+      }
     }
-  }
 
-  // It is possible to select multiple status options
-  if (filters.status?.length > 0) {
-    const statusMatched = filters.status.includes(product.status);
+    // It is possible to select multiple status options
+    if (filters.status?.length > 0) {
+      const statusMatched = filters.status.includes(product.status);
 
-    if (!statusMatched) {
-      return false;
+      if (!statusMatched) {
+        return false;
+      }
     }
-  }
 
-  // Present only if filter required
-  if (typeof filters.inStock !== 'undefined') {
-    const stockMatched = product.inStock === filters.inStock;
+    // Present only if filter required
+    if (typeof filters.inStock !== 'undefined') {
+      const stockMatched = product.inStock === filters.inStock;
 
-    if (!stockMatched) {
-      return false;
+      if (!stockMatched) {
+        return false;
+      }
     }
-  }
 
-  return true;
-});
+    return true;
+  });
 
 const applyPagination = (
   products: Product[],
   page: number,
   rowsPerPage: number
-): Product[] => products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+): Product[] =>
+  products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const ProductList: NextPage = () => {
   const isMounted = useMounted();
@@ -73,7 +81,7 @@ const ProductList: NextPage = () => {
     name: undefined,
     category: [],
     status: [],
-    inStock: undefined
+    inStock: undefined,
   });
 
   useEffect(() => {
@@ -104,53 +112,48 @@ const ProductList: NextPage = () => {
     setFilters(filters);
   };
 
-  const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, newPage: number): void => {
+  const handlePageChange = (
+    event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ): void => {
     setPage(newPage);
   };
 
-  const handleRowsPerPageChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleRowsPerPageChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
   // Usually query is done on backend with indexing solutions
   const filteredProducts = applyFilters(products, filters);
-  const paginatedProducts = applyPagination(filteredProducts, page, rowsPerPage);
+  const paginatedProducts = applyPagination(
+    filteredProducts,
+    page,
+    rowsPerPage
+  );
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Product List | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Product List`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="xl">
+        <Container maxWidth='xl'>
           <Box sx={{ mb: 4 }}>
-            <Grid
-              container
-              justifyContent="space-between"
-              spacing={3}
-            >
+            <Grid container justifyContent='space-between' spacing={3}>
               <Grid item>
-                <Typography variant="h4">
-                  Products
-                </Typography>
+                <Typography variant='h4'>Products</Typography>
               </Grid>
               <Grid item>
-                <NextLink
-                  href="/dashboard/products/new"
-                  passHref
-                >
+                <NextLink href='/dashboard/products/new' passHref>
                   <Button
-                    component="a"
-                    startIcon={<PlusIcon fontSize="small" />}
-                    variant="contained"
+                    component='a'
+                    startIcon={<PlusIcon fontSize='small' />}
+                    variant='contained'
                   >
                     Add
                   </Button>
@@ -160,17 +163,14 @@ const ProductList: NextPage = () => {
             <Box
               sx={{
                 m: -1,
-                mt: 3
+                mt: 3,
               }}
             >
-              <Button
-                startIcon={<UploadIcon fontSize="small" />}
-                sx={{ m: 1 }}
-              >
+              <Button startIcon={<UploadIcon fontSize='small' />} sx={{ m: 1 }}>
                 Import
               </Button>
               <Button
-                startIcon={<DownloadIcon fontSize="small" />}
+                startIcon={<DownloadIcon fontSize='small' />}
                 sx={{ m: 1 }}
               >
                 Export
@@ -190,15 +190,13 @@ const ProductList: NextPage = () => {
           </Card>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 ProductList.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

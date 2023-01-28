@@ -10,6 +10,7 @@ import { SocialPostCard } from '../../../components/dashboard/social/social-post
 import { useMounted } from '../../../hooks/use-mounted';
 import { gtm } from '../../../lib/gtm';
 import type { Post } from '../../../types/social';
+import { PageLayout } from '@components/page-layout';
 
 const SocialFeed: NextPage = () => {
   const isMounted = useMounted();
@@ -40,37 +41,26 @@ const SocialFeed: NextPage = () => {
   );
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Social Feed | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Social Feed`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <Box sx={{ mb: 3 }}>
-            <Typography
-              color="textSecondary"
-              variant="overline"
-            >
+            <Typography color='textSecondary' variant='overline'>
               Social Feed
             </Typography>
-            <Typography variant="h4">
+            <Typography variant='h4'>
               Here&apos;s what your connections posted
             </Typography>
           </Box>
           <SocialPostAdd />
           {posts.map((post) => (
-            <Box
-              key={post.id}
-              sx={{ mt: 3 }}
-            >
+            <Box key={post.id} sx={{ mt: 3 }}>
               <SocialPostCard
                 authorAvatar={post.author.avatar}
                 authorName={post.author.name}
@@ -85,15 +75,13 @@ const SocialFeed: NextPage = () => {
           ))}
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 SocialFeed.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

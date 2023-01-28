@@ -17,6 +17,7 @@ import { ChevronDown as ChevronDownIcon } from '../../../icons/chevron-down';
 import { PencilAlt as PencilAltIcon } from '../../../icons/pencil-alt';
 import { gtm } from '../../../lib/gtm';
 import type { Order } from '../../../types/order';
+import { PageLayout } from '@components/page-layout';
 
 const OrderDetails: NextPage = () => {
   const isMounted = useMounted();
@@ -51,95 +52,70 @@ const OrderDetails: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Order Details | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Order Details`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="md">
+        <Container maxWidth='md'>
           <Box sx={{ mb: 4 }}>
-            <NextLink
-              href="/dashboard/orders"
-              passHref
-            >
+            <NextLink href='/dashboard/orders' passHref>
               <Link
-                color="textPrimary"
-                component="a"
+                color='textPrimary'
+                component='a'
                 sx={{
                   alignItems: 'center',
-                  display: 'flex'
+                  display: 'flex',
                 }}
               >
-                <ArrowBackIcon
-                  fontSize="small"
-                  sx={{ mr: 1 }}
-                />
-                <Typography variant="subtitle2">
-                  Orders
-                </Typography>
+                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+                <Typography variant='subtitle2'>Orders</Typography>
               </Link>
             </NextLink>
           </Box>
           <Box sx={{ mb: 4 }}>
-            <Grid
-              container
-              justifyContent="space-between"
-              spacing={3}
-            >
+            <Grid container justifyContent='space-between' spacing={3}>
               <Grid item>
-                <Typography variant="h4">
-                  {order.number}
-                </Typography>
+                <Typography variant='h4'>{order.number}</Typography>
                 <Box
                   sx={{
                     alignItems: 'center',
                     display: 'flex',
                     ml: -1,
-                    mt: 1
+                    mt: 1,
                   }}
                 >
                   <Typography
-                    color="textSecondary"
-                    variant="body2"
+                    color='textSecondary'
+                    variant='body2'
                     sx={{ ml: 1 }}
                   >
                     Placed on
                   </Typography>
                   <CalendarIcon
-                    color="action"
-                    fontSize="small"
+                    color='action'
+                    fontSize='small'
                     sx={{ ml: 1 }}
                   />
-                  <Typography
-                    variant="body2"
-                    sx={{ ml: 1 }}
-                  >
+                  <Typography variant='body2' sx={{ ml: 1 }}>
                     {format(order.createdAt, 'dd/MM/yyyy HH:mm')}
                   </Typography>
                 </Box>
               </Grid>
-              <Grid
-                item
-                sx={{ ml: -2 }}
-              >
+              <Grid item sx={{ ml: -2 }}>
                 <Button
-                  endIcon={(<PencilAltIcon fontSize="small" />)}
-                  variant="outlined"
+                  endIcon={<PencilAltIcon fontSize='small' />}
+                  variant='outlined'
                   sx={{ ml: 2 }}
                 >
                   Edit
                 </Button>
                 <Button
-                  endIcon={(<ChevronDownIcon fontSize="small" />)}
-                  variant="contained"
+                  endIcon={<ChevronDownIcon fontSize='small' />}
+                  variant='contained'
                   sx={{ ml: 2 }}
                 >
                   Action
@@ -156,17 +132,14 @@ const OrderDetails: NextPage = () => {
           </Box>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 OrderDetails.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 
 export default OrderDetails;
-

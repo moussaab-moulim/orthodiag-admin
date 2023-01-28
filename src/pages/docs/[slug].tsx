@@ -8,6 +8,7 @@ import { DocsContent } from '../../components/docs/docs-content';
 import { DocsLayout } from '../../components/docs/docs-layout';
 import { gtm } from '../../lib/gtm';
 import { getArticleBySlug, getArticles } from '../../utils/docs';
+import { PageLayout } from '@components/page-layout';
 
 interface Article {
   content?: string;
@@ -22,28 +23,25 @@ export const getStaticPaths = () => {
     paths: articles.map((article) => {
       return {
         params: {
-          slug: article.slug
-        }
+          slug: article.slug,
+        },
       };
     }),
-    fallback: false
+    fallback: false,
   };
 };
 
-export const getStaticProps = ({ params }: { params: { slug: string }}) => {
-  const article = getArticleBySlug(
-    params.slug,
-    ['content', 'slug', 'title']
-  );
+export const getStaticProps = ({ params }: { params: { slug: string } }) => {
+  const article = getArticleBySlug(params.slug, ['content', 'slug', 'title']);
 
   return {
     props: {
-      article
-    }
+      article,
+    },
   };
 };
 
-const Article: NextPage<{ article?: Article; }> = (props) => {
+const Article: NextPage<{ article?: Article }> = (props) => {
   const { article } = props;
   const router = useRouter();
 
@@ -56,26 +54,14 @@ const Article: NextPage<{ article?: Article; }> = (props) => {
   }
 
   return (
-    <>
-      <Head>
-        <title>
-          {`Docs: ${article!.title} | Material Kit Pro`}
-        </title>
-      </Head>
-      <Container
-        maxWidth="lg"
-        sx={{ pb: '120px' }}
-      >
+    <PageLayout metaTitle={`Docs: ${article!.title}`}>
+      <Container maxWidth='lg' sx={{ pb: '120px' }}>
         <DocsContent content={article!.content} />
       </Container>
-    </>
+    </PageLayout>
   );
 };
 
-Article.getLayout = (page) => (
-  <DocsLayout>
-    {page}
-  </DocsLayout>
-);
+Article.getLayout = (page) => <DocsLayout>{page}</DocsLayout>;
 
 export default Article;

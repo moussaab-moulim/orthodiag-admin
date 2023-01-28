@@ -13,14 +13,15 @@ import { JWTLogin } from '../../components/authentication/jwt-login';
 import { Logo } from '../../components/logo';
 import { useAuth } from '../../hooks/use-auth';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 type Platform = 'Amplify' | 'Auth0' | 'Firebase' | 'JWT';
 
-const platformIcons: { [key in Platform]: string; } = {
+const platformIcons: { [key in Platform]: string } = {
   Amplify: '/static/icons/amplify.svg',
   Auth0: '/static/icons/auth0.svg',
   Firebase: '/static/icons/firebase.svg',
-  JWT: '/static/icons/jwt.svg'
+  JWT: '/static/icons/jwt.svg',
 };
 
 const Login: NextPage = () => {
@@ -33,37 +34,31 @@ const Login: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Login | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Login`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.default',
           display: 'flex',
           flexDirection: 'column',
-          minHeight: '100vh'
+          minHeight: '100vh',
         }}
       >
         <AuthBanner />
         <Container
-          maxWidth="sm"
+          maxWidth='sm'
           sx={{
             py: {
               xs: '60px',
-              md: '120px'
-            }
+              md: '120px',
+            },
           }}
         >
           <Box
             sx={{
               alignItems: 'center',
-              backgroundColor: (theme) => theme.palette.mode === 'dark'
-                ? 'neutral.900'
-                : 'neutral.100',
+              backgroundColor: (theme) =>
+                theme.palette.mode === 'dark' ? 'neutral.900' : 'neutral.100',
               borderColor: 'divider',
               borderRadius: 1,
               borderStyle: 'solid',
@@ -77,61 +72,43 @@ const Login: NextPage = () => {
                 height: 32,
                 width: 'auto',
                 flexGrow: 0,
-                flexShrink: 0
-              }
+                flexShrink: 0,
+              },
             }}
           >
-            <Typography
-              color="textSecondary"
-              variant="caption"
-            >
+            <Typography color='textSecondary' variant='caption'>
               The app authenticates via {platform}
             </Typography>
-            <img
-              alt="Auth platform"
-              src={platformIcons[platform]}
-            />
+            <img alt='Auth platform' src={platformIcons[platform]} />
           </Box>
-          <Card
-            elevation={16}
-            sx={{ p: 4 }}
-          >
+          <Card elevation={16} sx={{ p: 4 }}>
             <Box
               sx={{
                 alignItems: 'center',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
-              <NextLink
-                href="/"
-                passHref
-              >
+              <NextLink href='/' passHref>
                 <a>
                   <Logo
                     sx={{
                       height: 40,
-                      width: 40
+                      width: 40,
                     }}
                   />
                 </a>
               </NextLink>
-              <Typography variant="h4">
-                Log in
-              </Typography>
-              <Typography
-                color="textSecondary"
-                sx={{ mt: 2 }}
-                variant="body2"
-              >
+              <Typography variant='h4'>Log in</Typography>
+              <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
                 Sign in on the internal platform
               </Typography>
             </Box>
             <Box
               sx={{
                 flexGrow: 1,
-                mt: 3
+                mt: 3,
               }}
             >
               {platform === 'Amplify' && <AmplifyLogin />}
@@ -149,10 +126,7 @@ const Login: NextPage = () => {
                 }
                 passHref
               >
-                <Link
-                  color="textSecondary"
-                  variant="body2"
-                >
+                <Link color='textSecondary' variant='body2'>
                   Create new account
                 </Link>
               </NextLink>
@@ -167,10 +141,7 @@ const Login: NextPage = () => {
                   }
                   passHref
                 >
-                  <Link
-                    color="textSecondary"
-                    variant="body2"
-                  >
+                  <Link color='textSecondary' variant='body2'>
                     Forgot password
                   </Link>
                 </NextLink>
@@ -179,14 +150,10 @@ const Login: NextPage = () => {
           </Card>
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
-Login.getLayout = (page) => (
-  <GuestGuard>
-    {page}
-  </GuestGuard>
-);
+Login.getLayout = (page) => <GuestGuard>{page}</GuestGuard>;
 
 export default Login;

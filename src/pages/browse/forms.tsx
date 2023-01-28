@@ -22,6 +22,7 @@ import { Form12 } from '../../components/widgets/forms/form-12';
 import { Form13 } from '../../components/widgets/forms/form-13';
 import { Form14 } from '../../components/widgets/forms/form-14';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const BrowseForms: NextPage = () => {
   useEffect(() => {
@@ -29,96 +30,62 @@ const BrowseForms: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Forms | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Forms`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <WidgetPreviewer
             element={<Form1 />}
-            name="Form with input fields and switches"
+            name='Form with input fields and switches'
           />
           <WidgetPreviewer
             element={<Form2 />}
-            name="Form with search bar and removable chips for filtering"
+            name='Form with search bar and removable chips for filtering'
           />
-          <WidgetPreviewer
-            element={<Form3 />}
-            name="Form with checkboxes"
-          />
-          <WidgetPreviewer
-            element={<Form4 />}
-            name="Basic input fields form"
-          />
+          <WidgetPreviewer element={<Form3 />} name='Form with checkboxes' />
+          <WidgetPreviewer element={<Form4 />} name='Basic input fields form' />
           <WidgetPreviewer
             element={<Form5 />}
-            name="Form with input fields and switches"
+            name='Form with input fields and switches'
           />
-          <WidgetPreviewer
-            element={<Form6 />}
-            name="Mixed input field forms"
-          />
-          <WidgetPreviewer
-            element={<Form7 />}
-            name="Basic input fields form"
-          />
-          <WidgetPreviewer
-            element={<Form8 />}
-            name="Mixed input fields form"
-          />
+          <WidgetPreviewer element={<Form6 />} name='Mixed input field forms' />
+          <WidgetPreviewer element={<Form7 />} name='Basic input fields form' />
+          <WidgetPreviewer element={<Form8 />} name='Mixed input fields form' />
           <WidgetPreviewer
             element={<Form9 />}
-            name="Form with radio button options"
+            name='Form with radio button options'
           />
-          <WidgetPreviewer
-            element={<Form10 />}
-            name="Basic form"
-          />
+          <WidgetPreviewer element={<Form10 />} name='Basic form' />
           <WidgetPreviewer
             element={<Form11 />}
-            name="Form with checkboxes and input fields"
+            name='Form with checkboxes and input fields'
           />
           <WidgetPreviewer
             element={<Form12 />}
-            name="Form with select and input fields"
+            name='Form with select and input fields'
           />
-          <WidgetPreviewer
-            element={<Form13 />}
-            name="Multi-section form"
-          />
-          <WidgetPreviewer
-            element={<Form14 />}
-            name="Mixed form"
-          />
-          <WidgetPreviewer
-            element={<Form15 />}
-            name="Basic input field"
-          />
+          <WidgetPreviewer element={<Form13 />} name='Multi-section form' />
+          <WidgetPreviewer element={<Form14 />} name='Mixed form' />
+          <WidgetPreviewer element={<Form15 />} name='Basic input field' />
           <WidgetPreviewer
             element={<Form16 />}
-            name="Form with input fields and checkbox"
+            name='Form with input fields and checkbox'
           />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseForms.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

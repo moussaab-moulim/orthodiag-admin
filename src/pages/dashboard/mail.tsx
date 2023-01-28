@@ -17,45 +17,44 @@ import {
   closeSidebar,
   getLabels,
   openComposer,
-  openSidebar
+  openSidebar,
 } from '../../slices/mail';
 import { useDispatch, useSelector } from '../../store';
+import { PageLayout } from '@components/page-layout';
 
-const MailInner = styled(
-  'div',
-  { shouldForwardProp: (prop) => prop !== 'open' }
-)<{ open?: boolean; }>(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    overflow: 'hidden',
+const MailInner = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<{ open?: boolean }>(({ theme, open }) => ({
+  flexGrow: 1,
+  overflow: 'hidden',
+  [theme.breakpoints.up('md')]: {
+    marginLeft: -280,
+  },
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
     [theme.breakpoints.up('md')]: {
-      marginLeft: -280
+      marginLeft: 0,
     },
     transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    ...(open && {
-      [theme.breakpoints.up('md')]: {
-        marginLeft: 0
-      },
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      })
-    })
-  })
-);
+  }),
+}));
 
 const Mail: NextPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const { labels, isComposeOpen, isSidebarOpen } = useSelector((state) => state.mail);
-  const mdUp = useMediaQuery(
-    (theme: Theme) => theme.breakpoints.up('md'),
-    { noSsr: true }
+  const { labels, isComposeOpen, isSidebarOpen } = useSelector(
+    (state) => state.mail
   );
+  const mdUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'), {
+    noSsr: true,
+  });
   const emailId = router.query.emailId as string | undefined;
   const label = router.query.label as string | undefined;
 
@@ -108,19 +107,14 @@ const Mail: NextPage = () => {
   };
 
   return (
-    <>
-      <Head>
-        <title>
-          Dashboard: Mail | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Dashboard: Mail`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           position: 'relative',
           height: '100%',
           width: '100%',
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       >
         <Box
@@ -131,7 +125,7 @@ const Mail: NextPage = () => {
             top: 0,
             right: 0,
             bottom: 0,
-            left: 0
+            left: 0,
           }}
         >
           <MailSidebar
@@ -143,37 +137,22 @@ const Mail: NextPage = () => {
             open={isSidebarOpen}
           />
           <MailInner open={isSidebarOpen}>
-            {
-              emailId
-                ? (
-                  <MailDetails
-                    label={label}
-                    emailId={emailId}
-                  />
-                )
-                : (
-                  <MailList
-                    onToggleSidebar={handleToggleSidebar}
-                    label={label}
-                  />
-                )
-            }
+            {emailId ? (
+              <MailDetails label={label} emailId={emailId} />
+            ) : (
+              <MailList onToggleSidebar={handleToggleSidebar} label={label} />
+            )}
           </MailInner>
         </Box>
       </Box>
-      <MailComposer
-        open={isComposeOpen}
-        onClose={handleComposerClose}
-      />
-    </>
+      <MailComposer open={isComposeOpen} onClose={handleComposerClose} />
+    </PageLayout>
   );
 };
 
 Mail.getLayout = (page) => (
   <AuthGuard>
-    <DashboardLayout>
-      {page}
-    </DashboardLayout>
+    <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 

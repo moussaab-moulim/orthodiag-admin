@@ -11,6 +11,7 @@ import { InputSwitch } from '../../components/widgets/inputs/input-switch';
 import { InputTextField } from '../../components/widgets/inputs/input-text-field';
 import { InputMixed } from '../../components/widgets/inputs/input-mixed';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const BrowseInputs: NextPage = () => {
   useEffect(() => {
@@ -18,52 +19,42 @@ const BrowseInputs: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Inputs | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Inputs`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <WidgetPreviewer
             element={<InputCheckbox />}
-            name="Checkbox with additional text"
+            name='Checkbox with additional text'
           />
           <WidgetPreviewer
             element={<InputRadio />}
-            name="Radio button with additional text"
+            name='Radio button with additional text'
           />
           <WidgetPreviewer
             element={<InputSwitch />}
-            name="Switch with top description"
+            name='Switch with top description'
           />
           <WidgetPreviewer
             element={<InputTextField />}
-            name="Text fields integrated in a form"
+            name='Text fields integrated in a form'
           />
-          <WidgetPreviewer
-            element={<InputMixed />}
-            name="Mixed input form"
-          />
+          <WidgetPreviewer element={<InputMixed />} name='Mixed input form' />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseInputs.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

@@ -17,6 +17,7 @@ import { Table9 } from '../../../components/widgets/tables/table-9';
 import { Table10 } from '../../../components/widgets/tables/table-10';
 import { Table11 } from '../../../components/widgets/tables/table-11';
 import { gtm } from '../../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const BrowseTables: NextPage = () => {
   useEffect(() => {
@@ -24,76 +25,51 @@ const BrowseTables: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Tables | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Tables`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <WidgetPreviewer
             element={<Table1 />}
-            name="Multilined with status chips"
+            name='Multilined with status chips'
           />
           <WidgetPreviewer
             element={<Table2 />}
-            name="Multilined with avatars"
+            name='Multilined with avatars'
           />
           <WidgetPreviewer
             element={<Table3 />}
-            name="Table with tabs, search bar and drop-down select box"
+            name='Table with tabs, search bar and drop-down select box'
           />
-          <WidgetPreviewer
-            element={<Table4 />}
-            name="Multiline"
-          />
+          <WidgetPreviewer element={<Table4 />} name='Multiline' />
           <WidgetPreviewer
             element={<Table5 />}
-            name="Table with search bar, select box and toggles"
+            name='Table with search bar, select box and toggles'
           />
           <WidgetPreviewer
             element={<Table6 />}
-            name="Table with search bar and select box"
+            name='Table with search bar and select box'
           />
-          <WidgetPreviewer
-            element={<Table7 />}
-            name="Basic table"
-          />
-          <WidgetPreviewer
-            element={<Table8 />}
-            name="Basic table"
-          />
-          <WidgetPreviewer
-            element={<Table9 />}
-            name="Basic table"
-          />
-          <WidgetPreviewer
-            element={<Table10 />}
-            name="Multilined table"
-          />
-          <WidgetPreviewer
-            element={<Table11 />}
-            name="Basic table"
-          />
+          <WidgetPreviewer element={<Table7 />} name='Basic table' />
+          <WidgetPreviewer element={<Table8 />} name='Basic table' />
+          <WidgetPreviewer element={<Table9 />} name='Basic table' />
+          <WidgetPreviewer element={<Table10 />} name='Multilined table' />
+          <WidgetPreviewer element={<Table11 />} name='Basic table' />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseTables.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

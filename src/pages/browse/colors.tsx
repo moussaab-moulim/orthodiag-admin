@@ -8,6 +8,7 @@ import { WidgetPreviewer } from '../../components/widget-previewer';
 import { ColorsMain } from '../../components/widgets/colors/colors-main';
 import { ColorsSeverity } from '../../components/widgets/colors/colors-severity';
 import { gtm } from '../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const BrowseColors: NextPage = () => {
   useEffect(() => {
@@ -15,40 +16,30 @@ const BrowseColors: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Colors | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Colors`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
-          <WidgetPreviewer
-            element={<ColorsMain />}
-            name="Main colors"
-          />
+        <Container maxWidth='lg'>
+          <WidgetPreviewer element={<ColorsMain />} name='Main colors' />
           <WidgetPreviewer
             element={<ColorsSeverity />}
-            name="Severity colors"
+            name='Severity colors'
           />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseColors.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 

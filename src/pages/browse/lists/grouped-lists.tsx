@@ -17,6 +17,7 @@ import { GroupedList9 } from '../../../components/widgets/grouped-lists/grouped-
 import { GroupedList10 } from '../../../components/widgets/grouped-lists/grouped-list-10';
 import { GroupedList11 } from '../../../components/widgets/grouped-lists/grouped-list-11';
 import { gtm } from '../../../lib/gtm';
+import { PageLayout } from '@components/page-layout';
 
 const BrowseGroupedLists: NextPage = () => {
   useEffect(() => {
@@ -24,76 +25,54 @@ const BrowseGroupedLists: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <Head>
-        <title>
-          Browse: Grouped Lists | Material Kit Pro
-        </title>
-      </Head>
+    <PageLayout metaTitle={`Browse: Grouped Lists`}>
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: 'background.paper',
           flexGrow: 1,
-          py: 8
+          py: 8,
         }}
       >
-        <Container maxWidth="lg">
-          <WidgetPreviewer
-            element={<GroupedList1 />}
-            name="List"
-          />
-          <WidgetPreviewer
-            element={<GroupedList2 />}
-            name="Basic list"
-          />
-          <WidgetPreviewer
-            element={<GroupedList3 />}
-            name="Basic list"
-          />
-          <WidgetPreviewer
-            element={<GroupedList4 />}
-            name="Basic list"
-          />
+        <Container maxWidth='lg'>
+          <WidgetPreviewer element={<GroupedList1 />} name='List' />
+          <WidgetPreviewer element={<GroupedList2 />} name='Basic list' />
+          <WidgetPreviewer element={<GroupedList3 />} name='Basic list' />
+          <WidgetPreviewer element={<GroupedList4 />} name='Basic list' />
           <WidgetPreviewer
             element={<GroupedList5 />}
-            name="Multiline list with donut chart"
+            name='Multiline list with donut chart'
           />
-          <WidgetPreviewer
-            element={<GroupedList6 />}
-            name="Basic list"
-          />
+          <WidgetPreviewer element={<GroupedList6 />} name='Basic list' />
           <WidgetPreviewer
             element={<GroupedList7 />}
-            name="Basic list with side avatars"
+            name='Basic list with side avatars'
           />
           <WidgetPreviewer
             element={<GroupedList8 />}
-            name="Basic list with side avatars"
+            name='Basic list with side avatars'
           />
           <WidgetPreviewer
             element={<GroupedList9 />}
-            name="Multiline list with rating bar"
+            name='Multiline list with rating bar'
           />
           <WidgetPreviewer
             element={<GroupedList10 />}
-            name="Basic list with side icon"
+            name='Basic list with side icon'
           />
           <WidgetPreviewer
             element={<GroupedList11 />}
-            name="Basic multiline list"
+            name='Basic multiline list'
           />
         </Container>
       </Box>
-    </>
+    </PageLayout>
   );
 };
 
 BrowseGroupedLists.getLayout = (page) => (
   <MainLayout>
-    <BrowseLayout>
-      {page}
-    </BrowseLayout>
+    <BrowseLayout>{page}</BrowseLayout>
   </MainLayout>
 );
 
