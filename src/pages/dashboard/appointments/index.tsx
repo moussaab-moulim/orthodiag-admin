@@ -73,9 +73,9 @@ const applyFilters = (appointments: Appointment[], filters: Filters) =>
     if (filters.query) {
       // Checks only the appointment number, but can be extended to support other fields, such as customer
       // name, email, etc.
-      const containsQuery = appointment!.number
-        .toLowerCase()
-        .includes(filters.query.toLowerCase());
+      const containsQuery =
+        appointment.number ??
+        ''.toLowerCase().includes(filters.query.toLowerCase());
 
       if (!containsQuery) {
         return false;
@@ -135,7 +135,7 @@ const AppointmentListInner = styled('div', {
 
 const AppointmentList: NextPage = () => {
   const isMounted = useMounted();
-  const rootRef = useRef<HTMLDivElement | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const queryRef = useRef<HTMLInputElement | null>(null);
   const [currentTab, setCurrentTab] = useState<string>('all');
   const [sort, setSort] = useState<'asc' | 'desc'>('desc');

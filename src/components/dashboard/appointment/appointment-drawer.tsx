@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { RefObject, useState } from 'react';
 import type { FC, MutableRefObject } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
@@ -28,7 +28,7 @@ import { Appointment } from '../../../types/appointment';
 import { Scrollbar } from '../../scrollbar';
 
 interface AppointmentDrawerProps {
-  containerRef?: MutableRefObject<HTMLDivElement> | null;
+  containerRef?: RefObject<HTMLDivElement> | null;
   open?: boolean;
   onClose?: () => void;
   appointment?: Appointment;
