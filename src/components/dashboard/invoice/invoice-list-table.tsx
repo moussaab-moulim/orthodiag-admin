@@ -13,7 +13,7 @@ import {
   TableCell,
   TablePagination,
   TableRow,
-  Typography
+  Typography,
 } from '@mui/material';
 import { ArrowRight as ArrowRightIcon } from '../../../icons/arrow-right';
 import type { Invoice, InvoiceStatus } from '../../../types/invoice';
@@ -24,7 +24,10 @@ interface InvoiceListTableProps {
   group?: boolean;
   invoices: Invoice[];
   invoicesCount: number;
-  onPageChange: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  onPageChange: (
+    event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => void;
   onRowsPerPageChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   page: number;
   rowsPerPage: number;
@@ -34,21 +37,22 @@ type GroupedInvoices = {
   [key in InvoiceStatus]: Invoice[];
 };
 
-const groupInvoices = (invoices: Invoice[]): GroupedInvoices => invoices.reduce(
-  (acc, invoice) => {
-    const { status } = invoice;
+const groupInvoices = (invoices: Invoice[]): GroupedInvoices =>
+  invoices.reduce(
+    (acc, invoice) => {
+      const { status } = invoice;
 
-    return {
-      ...acc,
-      [status]: [...acc[status], invoice]
-    };
-  },
-  {
-    canceled: [],
-    paid: [],
-    pending: []
-  }
-);
+      return {
+        ...acc,
+        [status]: [...acc[status], invoice],
+      };
+    },
+    {
+      canceled: [],
+      paid: [],
+      pending: [],
+    }
+  );
 
 interface InvoiceRowProps {
   invoice: Invoice;
@@ -62,51 +66,43 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
       key={invoice.id}
       sx={{
         boxShadow: 1,
-        transition: (theme) => theme.transitions.create('box-shadow', {
-          easing: theme.transitions.easing.easeOut
-        }),
+        transition: (theme) =>
+          theme.transitions.create('box-shadow', {
+            easing: theme.transitions.easing.easeOut,
+          }),
         '&:hover': {
-          boxShadow: 8
+          boxShadow: 8,
         },
         '& > td': {
           backgroundColor: 'background.paper',
-          borderBottom: 0
-        }
+          borderBottom: 0,
+        },
       }}
     >
-      <TableCell width="25%">
-        <NextLink
-          href="/dashboard/invoices/1"
-          passHref
-        >
+      <TableCell width='25%'>
+        <NextLink href='/dashboard/invoices/1' passHref>
           <Box
-            component="a"
+            component='a'
             sx={{
               alignItems: 'center',
               display: 'inline-flex',
               textDecoration: 'none',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
             }}
           >
             <Avatar
               sx={{
                 height: 42,
-                width: 42
+                width: 42,
               }}
             >
               {getInitials(invoice.customer.name)}
             </Avatar>
             <Box sx={{ ml: 2 }}>
-              <Typography
-                color="textPrimary"
-                variant="subtitle2"
-              >
+              <Typography color='textPrimary' variant='subtitle2'>
                 {invoice.number}
               </Typography>
-              <Typography
-                color="textSecondary"
-                variant="body2"
-              >
+              <Typography color='textSecondary' variant='body2'>
                 {invoice.customer.name}
               </Typography>
             </Box>
@@ -114,7 +110,7 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
         </NextLink>
       </TableCell>
       <TableCell>
-        <Typography variant="body2">
+        <Typography variant='body2'>
           {invoice.currency}
           {numeral(invoice.totalAmount).format('0,0.00')}
         </Typography>
@@ -123,16 +119,11 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}
         >
-          <Typography variant="subtitle2">
-            Issued
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body2"
-          >
+          <Typography variant='subtitle2'>Issued</Typography>
+          <Typography color='textSecondary' variant='body2'>
             {invoice.issueDate && format(invoice.issueDate, 'dd/MM/yyyy')}
           </Typography>
         </Box>
@@ -141,27 +132,19 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}
         >
-          <Typography variant="subtitle2">
-            Due
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body2"
-          >
+          <Typography variant='subtitle2'>Due</Typography>
+          <Typography color='textSecondary' variant='body2'>
             {invoice.dueDate && format(invoice.dueDate, 'dd/MM/yyyy')}
           </Typography>
         </Box>
       </TableCell>
-      <TableCell align="right">
-        <NextLink
-          href="/dashboard/invoices/1"
-          passHref
-        >
-          <IconButton component="a">
-            <ArrowRightIcon fontSize="small" />
+      <TableCell align='right'>
+        <NextLink href='/dashboard/invoices/1' passHref>
+          <IconButton component='a'>
+            <ArrowRightIcon fontSize='small' />
           </IconButton>
         </NextLink>
       </TableCell>
@@ -192,52 +175,41 @@ export const InvoiceListTable: FC<InvoiceListTableProps> = (props) => {
             borderSpacing: (theme) => `0 ${theme.spacing(3)}`,
             minWidth: 600,
             marginTop: (theme) => `-${theme.spacing(3)}`,
-            p: '1px'
+            p: '1px',
           }}
         >
-          {Boolean(group && groupedInvoices) && (
+          {group && groupedInvoices && (
             <TableBody>
-              {(Object.keys(groupedInvoices) as InvoiceStatus[]).map((status) => (
-                <Fragment key={status}>
-                  <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      sx={{ px: 0 }}
-                    >
-                      <Typography
-                        color="textSecondary"
-                        variant="h6"
-                      >
-                        {status.charAt(0).toUpperCase() + status.slice(1)}
-                        {' '}
-                        ({groupedInvoices[status].length})
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                  {groupedInvoices[status].map((invoice) => (
-                    <InvoiceRow
-                      invoice={invoice}
-                      key={invoice.id}
-                    />
-                  ))}
-                </Fragment>
-              ))}
+              {(Object.keys(groupedInvoices) as InvoiceStatus[]).map(
+                (status) => (
+                  <Fragment key={status}>
+                    <TableRow>
+                      <TableCell colSpan={5} sx={{ px: 0 }}>
+                        <Typography color='textSecondary' variant='h6'>
+                          {status.charAt(0).toUpperCase() + status.slice(1)} (
+                          {groupedInvoices[status].length})
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                    {groupedInvoices[status].map((invoice) => (
+                      <InvoiceRow invoice={invoice} key={invoice.id} />
+                    ))}
+                  </Fragment>
+                )
+              )}
             </TableBody>
           )}
           {!group && (
             <TableBody>
               {invoices.map((invoice) => (
-                <InvoiceRow
-                  invoice={invoice}
-                  key={invoice.id}
-                />
+                <InvoiceRow invoice={invoice} key={invoice.id} />
               ))}
             </TableBody>
           )}
         </Table>
       </Scrollbar>
       <TablePagination
-        component="div"
+        component='div'
         count={invoicesCount}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
@@ -256,5 +228,5 @@ InvoiceListTable.propTypes = {
   onPageChange: PropTypes.func.isRequired,
   onRowsPerPageChange: PropTypes.func,
   page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired
+  rowsPerPage: PropTypes.number.isRequired,
 };
