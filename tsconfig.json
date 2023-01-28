@@ -24,7 +24,7 @@
       "@slices/*": ["src/slices/*"],
       "@store/*": ["src/store/*"],
       "@theme/*": ["src/theme/*"],
-      "@types/*": ["src/types/*"],
+      "@interfaces/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"],
       "@contexts/*": ["src/contexts/*"],
       "@hocs/*": ["src/hocs/*"],

@@ -1,7 +1,7 @@
 {
-  "name": "@devias/material-kit-pro-react",
+  "name": "orthodiag-admin",
   "version": "5.1.0",
-  "author": "Devias",
+  "author": "moussaab-moulim",
   "private": true,
   "scripts": {
     "dev": "next",
