@@ -1,7 +1,6 @@
 import type { ChangeEvent, FC, MouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
-import moment from 'moment';
 import numeral from 'numeral';
 import {
   Box,
@@ -10,7 +9,7 @@ import {
   TableCell,
   TablePagination,
   TableRow,
-  Typography
+  Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import type { Appointment } from '../../../types/appointment';
@@ -19,7 +18,10 @@ import type { SeverityPillColor } from '../../severity-pill';
 
 interface AppointmentListTableProps {
   onOpenDrawer?: (appointmentId: string) => void;
-  onPageChange?: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  onPageChange?: (
+    event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => void;
   onRowsPerPageChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   appointments: Appointment[];
   appointmentsCount: number;
@@ -27,12 +29,12 @@ interface AppointmentListTableProps {
   rowsPerPage: number;
 }
 
-const severityMap: { [key: string]: SeverityPillColor; } = {
+const severityMap: { [key: string]: SeverityPillColor } = {
   approuved: 'success',
   complete: 'success',
   pending: 'info',
   canceled: 'warning',
-  rejected: 'error'
+  rejected: 'error',
 };
 
 export const AppointmentListTable: FC<AppointmentListTableProps> = (props) => {
@@ -61,57 +63,52 @@ export const AppointmentListTable: FC<AppointmentListTableProps> = (props) => {
               <TableCell
                 sx={{
                   alignItems: 'center',
-                  display: 'flex'
+                  display: 'flex',
                 }}
               >
                 <Box
                   sx={{
-                    backgroundColor: (theme) => theme.palette.mode === 'dark'
-                      ? 'neutral.800'
-                      : 'neutral.200',
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark'
+                        ? 'neutral.800'
+                        : 'neutral.200',
                     borderRadius: 2,
                     maxWidth: 'fit-content',
                     ml: 3,
-                    p: 1
+                    p: 1,
                   }}
                 >
-                  <Typography
-                    align="center"
-                    variant="subtitle2"
-                  >
-                    {moment(appointment.requestedDate).format("MMM").toUpperCase()}
+                  <Typography align='center' variant='subtitle2'>
+                    {format(
+                      Date.parse(appointment.requestedDate),
+                      'MMM'
+                    ).toUpperCase()}
                   </Typography>
-                  <Typography
-                    align="center"
-                    variant="h6"
-                  >
-                    {moment(appointment.requestedDate).format("d")}
+                  <Typography align='center' variant='h6'>
+                    {format(Date.parse(appointment.requestedDate), 'd')}
                   </Typography>
                 </Box>
                 <Box sx={{ ml: 2 }}>
-                  <Typography variant="subtitle2">
+                  <Typography variant='subtitle2'>
                     {appointment.number}
                   </Typography>
-                  <Typography
-                    color="textSecondary"
-                    variant="body2"
-                  > {appointment.fullName}
+                  <Typography color='textSecondary' variant='body2'>
+                    {' '}
+                    {appointment.fullName}
                   </Typography>
-                  <Typography
-                    color="textSecondary"
-                    variant="body2"
-                  > {appointment.email}
+                  <Typography color='textSecondary' variant='body2'>
+                    {' '}
+                    {appointment.email}
                   </Typography>
-                  <Typography
-                    color="textSecondary"
-                    variant="body2"
-                  >
+                  <Typography color='textSecondary' variant='body2'>
                     {appointment.phoneNumber}
                   </Typography>
                 </Box>
               </TableCell>
-              <TableCell align="right">
-                <SeverityPill color={severityMap[appointment.status] || 'warning'}>
+              <TableCell align='right'>
+                <SeverityPill
+                  color={severityMap[appointment.status] || 'warning'}
+                >
                   {appointment.status}
                 </SeverityPill>
               </TableCell>
@@ -120,9 +117,9 @@ export const AppointmentListTable: FC<AppointmentListTableProps> = (props) => {
         </TableBody>
       </Table>
       <TablePagination
-        component="div"
+        component='div'
         count={appointmentsCount}
-        onPageChange={onPageChange}
+        onPageChange={(event, page) => onPageChange?.(event, page)}
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -139,5 +136,5 @@ AppointmentListTable.propTypes = {
   appointments: PropTypes.array.isRequired,
   appointmentsCount: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired
+  rowsPerPage: PropTypes.number.isRequired,
 };
