@@ -3,7 +3,15 @@ import type { ChangeEvent, FC, MutableRefObject } from 'react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import { Box, Button, Drawer, IconButton, List, Typography, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  List,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import type { Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { chatApi } from '../../../__fake-api__/chat-api';
@@ -26,8 +34,8 @@ const ChatSidebarDesktop = styled(Drawer)({
   width: 380,
   '& .MuiDrawer-paper': {
     position: 'relative',
-    width: 380
-  }
+    width: 380,
+  },
 });
 
 const ChatSidebarMobile = styled(Drawer)({
@@ -37,8 +45,8 @@ const ChatSidebarMobile = styled(Drawer)({
     height: 'calc(100% - 64px)',
     maxWidth: '100%',
     top: 64,
-    width: 380
-  }
+    width: 380,
+  },
 });
 
 export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
@@ -61,7 +69,9 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
     setSearchQuery('');
   };
 
-  const handleSearchChange = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const handleSearchChange = async (
+    event: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
     try {
       const { value } = event.target;
 
@@ -105,9 +115,9 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
       // with the auth provider.
       // When implementing this app with a real database, replace this
       // ID with the ID from Auth Context.
-      threadKey = thread.participantIds.find((participantId) => (
-        participantId !== '5e86809283e28b96d2d38537'
-      ));
+      threadKey = thread.participantIds.find(
+        (participantId: any) => participantId !== '5e86809283e28b96d2d38537'
+      );
     }
 
     if (!mdUp) {
@@ -123,22 +133,17 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
         sx={{
           alignItems: 'center',
           display: 'flex',
-          p: 2
+          p: 2,
         }}
       >
-        <Typography variant="h5">
-          Chats
-        </Typography>
+        <Typography variant='h5'>Chats</Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <NextLink
-          href="/dashboard/chat?compose=true"
-          passHref
-        >
+        <NextLink href='/dashboard/chat?compose=true' passHref>
           <Button
-            component="a"
+            component='a'
             onClick={handleGroupClick}
             startIcon={<PlusIcon />}
-            variant="contained"
+            variant='contained'
           >
             Group
           </Button>
@@ -147,12 +152,12 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
           onClick={onClose}
           sx={{
             display: {
-              sm: 'none'
+              sm: 'none',
             },
-            ml: 2
+            ml: 2,
           }}
         >
-          <XIcon fontSize="small" />
+          <XIcon fontSize='small' />
         </IconButton>
       </Box>
       <ChatContactSearch
@@ -169,12 +174,12 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
           borderTopColor: 'divider',
           borderTopStyle: 'solid',
           borderTopWidth: 1,
-          display: isSearchFocused ? 'none' : 'block'
+          display: isSearchFocused ? 'none' : 'block',
         }}
       >
         <Scrollbar>
           <List disablePadding>
-            {threads.allIds.map((threadId) => (
+            {threads.allIds.map((threadId: any) => (
               <ChatThreadItem
                 active={activeThreadId === threadId}
                 key={threadId}
@@ -191,10 +196,10 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
   if (mdUp) {
     return (
       <ChatSidebarDesktop
-        anchor="left"
+        anchor='left'
         open={open}
         SlideProps={{ container: containerRef?.current }}
-        variant="persistent"
+        variant='persistent'
         {...other}
       >
         {content}
@@ -204,12 +209,12 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
 
   return (
     <ChatSidebarMobile
-      anchor="left"
+      anchor='left'
       ModalProps={{ container: containerRef?.current }}
       onClose={onClose}
       open={open}
       SlideProps={{ container: containerRef?.current }}
-      variant="temporary"
+      variant='temporary'
       {...other}
     >
       {content}
@@ -220,5 +225,5 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
 ChatSidebar.propTypes = {
   containerRef: PropTypes.any,
   onClose: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool,
 };
