@@ -18,14 +18,14 @@ interface MailState {
 const initialState: MailState = {
   emails: {
     byId: {},
-    allIds: []
+    allIds: [],
   },
   labels: [],
   isSidebarOpen: true,
-  isComposeOpen: false
+  isComposeOpen: false,
 };
 
-const slice = createSlice({
+export const mailSlice = createSlice({
   name: 'mail',
   initialState,
   reducers: {
@@ -58,42 +58,56 @@ const slice = createSlice({
     },
     closeCompose(state: MailState): void {
       state.isComposeOpen = false;
-    }
-  }
+    },
+  },
 });
 
-export const { reducer } = slice;
+export const { reducer } = mailSlice;
 
-export const getLabels = (): AppThunk => async (dispatch): Promise<void> => {
-  const data = await mailApi.getLabels();
+export const getLabels =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    const data = await mailApi.getLabels();
 
-  dispatch(slice.actions.getLabels(data));
-};
+    dispatch(mailSlice.actions.getLabels(data));
+  };
 
-export const getEmails = ({ label }: { label?: string; }): AppThunk => async (dispatch): Promise<void> => {
-  const data = await mailApi.getEmails({ label });
+export const getEmails =
+  ({ label }: { label?: string }): AppThunk =>
+  async (dispatch): Promise<void> => {
+    const data = await mailApi.getEmails({ label });
 
-  dispatch(slice.actions.getEmails(data));
-};
+    dispatch(mailSlice.actions.getEmails(data));
+  };
 
-export const getEmail = (emailId: string): AppThunk => async (dispatch): Promise<void> => {
-  const data = await mailApi.getEmail(emailId);
+export const getEmail =
+  (emailId: string): AppThunk =>
+  async (dispatch): Promise<void> => {
+    const data = await mailApi.getEmail(emailId);
 
-  dispatch(slice.actions.getEmail(data));
-};
+    dispatch(mailSlice.actions.getEmail(data));
+  };
 
-export const openSidebar = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(slice.actions.openSidebar());
-};
+export const openSidebar =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(mailSlice.actions.openSidebar());
+  };
 
-export const closeSidebar = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(slice.actions.closeSidebar());
-};
+export const closeSidebar =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(mailSlice.actions.closeSidebar());
+  };
 
-export const openComposer = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(slice.actions.openCompose());
-};
+export const openComposer =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(mailSlice.actions.openCompose());
+  };
 
-export const closeComposer = (): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(slice.actions.closeCompose());
-};
+export const closeComposer =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(mailSlice.actions.closeCompose());
+  };

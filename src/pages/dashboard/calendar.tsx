@@ -238,7 +238,7 @@ const Calendar: NextPage = () => {
   };
 
   const selectedEvent =
-    dialog.eventId && events.find((event) => event.id === dialog.eventId);
+    dialog.eventId && events.find((event: any) => event.id === dialog.eventId);
 
   return (
     <PageLayout metaTitle={`Dashboard: Calendar`}>

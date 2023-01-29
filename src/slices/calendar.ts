@@ -9,10 +9,10 @@ interface CalendarState {
 }
 
 const initialState: CalendarState = {
-  events: []
+  events: [],
 };
 
-const slice = createSlice({
+export const calendarSlice = createSlice({
   name: 'calendar',
   initialState,
   reducers: {
@@ -42,43 +42,62 @@ const slice = createSlice({
         return _event;
       });
     },
-    deleteEvent(
-      state: CalendarState,
-      action: PayloadAction<string>
-    ): void {
-      state.events = state.events.filter((event) => event.id !== action.payload);
-    }
-  }
+    deleteEvent(state: CalendarState, action: PayloadAction<string>): void {
+      state.events = state.events.filter(
+        (event) => event.id !== action.payload
+      );
+    },
+  },
 });
 
-export const { reducer } = slice;
+export const { reducer } = calendarSlice;
 
-export const getEvents = (): AppThunk => async (dispatch): Promise<void> => {
-  const data = await calendarApi.getEvents();
+export const getEvents =
+  (): AppThunk =>
+  async (dispatch): Promise<void> => {
+    const data = await calendarApi.getEvents();
 
-  dispatch(slice.actions.getEvents(data));
-};
+    dispatch(calendarSlice.actions.getEvents(data));
+  };
 
-export const createEvent = (createData: { allDay: boolean, description: string, end: number, start: number, title: string }): AppThunk => async (dispatch): Promise<void> => {
-  const data = await calendarApi.createEvent(createData);
+export const createEvent =
+  (createData: {
+    allDay: boolean;
+    description: string;
+    end: number;
+    start: number;
+    title: string;
+  }): AppThunk =>
+  async (dispatch): Promise<void> => {
+    const data = await calendarApi.createEvent(createData);
 
-  dispatch(slice.actions.createEvent(data));
-};
+    dispatch(calendarSlice.actions.createEvent(data));
+  };
 
-export const updateEvent = (
-  eventId: string,
-  update: { allDay?: boolean, description?: string, end?: number, start?: number, title?: string }
-): AppThunk => async (dispatch): Promise<void> => {
-  const data = await calendarApi.updateEvent({
-    eventId,
-    update
-  });
+export const updateEvent =
+  (
+    eventId: string,
+    update: {
+      allDay?: boolean;
+      description?: string;
+      end?: number;
+      start?: number;
+      title?: string;
+    }
+  ): AppThunk =>
+  async (dispatch): Promise<void> => {
+    const data = await calendarApi.updateEvent({
+      eventId,
+      update,
+    });
 
-  dispatch(slice.actions.updateEvent(data));
-};
+    dispatch(calendarSlice.actions.updateEvent(data));
+  };
 
-export const deleteEvent = (eventId: string): AppThunk => async (dispatch): Promise<void> => {
-  await calendarApi.deleteEvent(eventId);
+export const deleteEvent =
+  (eventId: string): AppThunk =>
+  async (dispatch): Promise<void> => {
+    await calendarApi.deleteEvent(eventId);
 
-  dispatch(slice.actions.deleteEvent(eventId));
-};
+    dispatch(calendarSlice.actions.deleteEvent(eventId));
+  };

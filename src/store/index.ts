@@ -4,13 +4,15 @@ import {
 } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
 import type { ThunkAction } from 'redux-thunk';
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import type { Action } from '@reduxjs/toolkit';
-import { rootReducer } from './root-reducer';
+import { rootMiddlewares, rootReducers } from './root-store-params';
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: combineReducers(rootReducers),
   devTools: process.env.REACT_APP_ENABLE_REDUX_DEV_TOOLS === 'true',
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(rootMiddlewares),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

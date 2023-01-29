@@ -3,7 +3,17 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { Box, Card, Container, Divider, Link, Typography } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Card,
+  CircularProgress,
+  Container,
+  Divider,
+  Link,
+  Typography,
+} from '@mui/material';
 import { GuestGuard } from '../../components/authentication/guest-guard';
 import { AuthBanner } from '../../components/authentication/auth-banner';
 import { AmplifyVerifyCode } from '../../components/authentication/amplify-verify-code';
@@ -11,6 +21,10 @@ import { Logo } from '../../components/logo';
 import { useAuth } from '../../hooks/use-auth';
 import { gtm } from '../../lib/gtm';
 import { PageLayout } from '@components/page-layout';
+import { useConfirmEmailMutation } from '@slices/authentication';
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 type Platform = 'Amplify' | 'Auth0' | 'Firebase' | 'JWT';
 
@@ -24,12 +38,19 @@ const platformIcons: { [key in Platform]: string } = {
 const VerifyCode: NextPage = () => {
   const router = useRouter();
   const { platform }: { platform: Platform } = useAuth();
-  const { disableGuard } = router.query;
-
+  const { disableGuard, token } = router.query;
+  const [confirmEmail, { isLoading, isError, error, isSuccess }] =
+    useConfirmEmailMutation();
+  console.log('error', error);
   useEffect(() => {
     gtm.push({ event: 'page_view' });
-  }, []);
-
+    if (token) {
+      confirmEmail(token as string);
+    } else {
+      router.replace('/404');
+    }
+  }, [token]);
+  const { t } = useTranslation();
   return (
     <PageLayout metaTitle={`Verify Code`}>
       <Box
@@ -98,36 +119,43 @@ const VerifyCode: NextPage = () => {
                   />
                 </a>
               </NextLink>
-              <Typography variant='h4'>Verify Code</Typography>
+              <Typography variant='h4'>{t('Email confirmation')}</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
-                Confirm registration using your verification code
+                {t('We are confirming your email')}
               </Typography>
             </Box>
+
+            <Divider sx={{ my: 3 }} />
+
             <Box
               sx={{
                 flexGrow: 1,
                 mt: 3,
               }}
             >
-              {platform === 'Amplify' && <AmplifyVerifyCode />}
+              {isLoading && (
+                <Alert severity='info' icon={<CircularProgress />}>
+                  Merci de patientez
+                </Alert>
+              )}
+              {isError && (
+                <Alert severity='error'>
+                  <AlertTitle>
+                    Un error est survenu:{' '}
+                    {(error as FetchBaseQueryError).status}
+                  </AlertTitle>
+                  {(error as any)?.data?.error === 'notFound'
+                    ? "Cette email est déjà confirmé ou n'existe pas"
+                    : 'inconnu'}
+                </Alert>
+              )}
+              {isSuccess && (
+                <Alert severity='success'>
+                  <AlertTitle>Votre email est confirmé avec succes</AlertTitle>
+                  Veuilliez fermer cette page
+                </Alert>
+              )}
             </Box>
-            <Divider sx={{ my: 3 }} />
-            {platform === 'Amplify' && (
-              <div>
-                <NextLink
-                  href={
-                    disableGuard
-                      ? `/authentication/login?disableGuard=${disableGuard}`
-                      : '/authentication/login'
-                  }
-                  passHref
-                >
-                  <Link color='textSecondary' variant='body2'>
-                    Did you not receive the code?
-                  </Link>
-                </NextLink>
-              </div>
-            )}
           </Card>
         </Container>
       </Box>

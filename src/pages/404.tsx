@@ -64,7 +64,7 @@ const NotFound: NextPage = () => {
               }}
             />
           </Box>
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               justifyContent: 'center',
@@ -76,7 +76,7 @@ const NotFound: NextPage = () => {
                 Back to Dashboard
               </Button>
             </NextLink>
-          </Box>
+          </Box> */}
         </Container>
       </Box>
     </PageLayout>
