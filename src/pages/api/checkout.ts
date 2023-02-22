@@ -33,8 +33,8 @@ export const checkoutSession = async (params: {
       },
     },
     mode: 'payment',
-    success_url: `${origin}/${toQueryParams({ success: true })}`,
-    cancel_url: `${origin}/${toQueryParams({ canceled: true })}`,
+    success_url: `${origin}${toQueryParams({ success: true })}`,
+    cancel_url: `${origin}${toQueryParams({ canceled: true })}`,
     automatic_tax: { enabled: true },
     customer_update: { address: 'auto' },
   });
