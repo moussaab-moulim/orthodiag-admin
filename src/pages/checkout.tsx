@@ -1,9 +1,21 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import type { NextPage } from 'next';
 import NextLink from 'next/link';
 import Head from 'next/head';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Container,
+  Divider,
+  Grid,
+  Typography,
+} from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 import { CheckoutBilling } from '../components/checkout/checkout-billing';
 import { CheckoutOrderSummary } from '../components/checkout/checkout-order-summary';
@@ -12,88 +24,40 @@ import { ArrowRight as ArrowRightIcon } from '../icons/arrow-right';
 import { Lock as LockIcon } from '../icons/lock';
 import { gtm } from '../lib/gtm';
 import { PageLayout } from '@components/page-layout';
+import { Logo } from '@components/logo';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { t } from 'i18next';
 
-interface Product {
-  id: string;
-  image: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
+import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next/types';
+import { apiConfig } from 'src/config';
+import { Pass } from '@interfaces/order';
+import { loadStripe } from '@stripe/stripe-js';
+import checkout, { checkoutSession } from './api/checkout';
+import { useSetPaidMutation } from '@slices/pass';
 
-const productsData: Product[] = [
-  {
-    id: '97375399bf10f57d0f0f7fd9',
-    image: '/static/mock-images/products/product_1.png',
-    name: 'Healthcare Erbology',
-    price: 23.99,
-    quantity: 1,
-  },
-  {
-    id: 'ece4069546ff025047b97735',
-    image: '/static/mock-images/products/product_2.png',
-    name: 'Makeup Lancome Rouge',
-    price: 95.0,
-    quantity: 1,
-  },
-];
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 const Checkout: NextPage = () => {
-  const [billing, setBilling] = useState({
-    address: '',
-    cardExpirationDate: '',
-    cardNumber: '',
-    cardOwner: '',
-    cardSecurityCode: '',
-    firstName: '',
-    lastName: '',
-    optionalAddress: '',
-    paymentMethod: 'visa',
-    state: '',
-    zip: '',
-  });
-  const [products, setProducts] = useState<Product[]>(productsData);
+  const router = useRouter();
+
+  const isSuccess = router.query.success;
+  const isError = router.query.canceled;
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
+    stripePromise.then((st) => console.log('st', st));
   }, []);
 
-  const handleBillingChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setBilling((prevBilling) => ({
-      ...prevBilling,
-      [event.target.name]: event.target.value,
-    }));
+  const handleClose = () => {
+    window.opener = null;
+    window.open('', '_self');
+    window.close();
   };
-
-  const handleProductQuantityChange = (
-    event: SelectChangeEvent<number>,
-    productId: string
-  ): void => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) => {
-        if (product.id === productId) {
-          return {
-            ...product,
-            quantity: event.target.value as number,
-          };
-        }
-
-        return product;
-      })
-    );
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-  };
-
-  const subtotal = products.reduce(
-    (accumulator, product) => accumulator + product.price * product.quantity,
-    0
-  );
-  const shippingTax = 12;
-  const total = subtotal + shippingTax;
-
   return (
     <PageLayout metaTitle='Checkout'>
       <Box
@@ -105,69 +69,121 @@ const Checkout: NextPage = () => {
         }}
       >
         <Container maxWidth='lg'>
-          <form onSubmit={handleSubmit}>
-            <NextLink href='/dashboard' passHref>
-              <Button
-                component='a'
-                startIcon={<ArrowLeftIcon fontSize='small' />}
-              >
-                Dashboard
-              </Button>
-            </NextLink>
-            <Typography variant='h3' sx={{ mt: 3 }}>
-              Checkout
-            </Typography>
-            <Box mt={6}>
-              <Grid container spacing={6}>
-                <Grid item md={7} xs={12}>
-                  <CheckoutBilling
-                    billing={billing}
-                    onChange={handleBillingChange}
+          <Card elevation={16} sx={{ p: 4 }}>
+            <Box
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
+            >
+              <NextLink href='/' passHref>
+                <a>
+                  <Logo
+                    sx={{
+                      height: 40,
+                      width: 40,
+                    }}
+                    variant='light'
                   />
-                </Grid>
-                <Grid item md={5} xs={12}>
-                  <CheckoutOrderSummary
-                    onQuantityChange={handleProductQuantityChange}
-                    products={products}
-                    shippingTax={shippingTax}
-                    subtotal={subtotal}
-                    total={total}
-                  />
-                </Grid>
-              </Grid>
+                </a>
+              </NextLink>
+              <Typography variant='h4'>Passe OrthoDiag</Typography>
+              {/*       <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
+                {t('We are confirming your email')}
+              </Typography> */}
             </Box>
-            <Box sx={{ mt: 6 }}>
-              <Box
-                sx={{
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <LockIcon fontWeight='small' sx={{ color: 'text.secondary' }} />
-                <Typography sx={{ ml: 2 }} variant='subtitle2'>
-                  Secure Checkout
-                </Typography>
-              </Box>
-              <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
-                Your purchases are secured by an industry best encryption
-                service – Braintree
-              </Typography>
+
+            <Divider sx={{ my: 3 }} />
+
+            <Box
+              sx={{
+                flexGrow: 1,
+                mt: 3,
+                display: 'flex',
+                flexFlow: 'column nowrap',
+
+                justifyContent: 'center',
+              }}
+            >
+              {isError && (
+                <Alert severity='error'>
+                  <AlertTitle>Un error est survenu:</AlertTitle>
+                  Commande annulée - veuillez ressayer ou contacter le support.
+                </Alert>
+              )}
+              {isSuccess && (
+                <Alert severity='success'>
+                  <AlertTitle>Commande passée!</AlertTitle>
+                  Vous recevrez un e-mail de confirmation. Veillez fermer cetter
+                  page et retourner vers l'application
+                </Alert>
+              )}
+
               <Button
                 color='primary'
                 endIcon={<ArrowRightIcon fontSize='small' />}
                 size='large'
-                sx={{ mt: 3 }}
-                type='submit'
+                sx={{ mt: 3, textAlign: 'center' }}
+                type='button'
                 variant='contained'
+                onClick={handleClose}
               >
-                Complete order
+                Fermer
               </Button>
             </Box>
-          </form>
+          </Card>
         </Container>
       </Box>
     </PageLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { locale, query } = context;
+  const origin = 'http://localhost:3001/checkout';
+  const { hash, canceled, success } = query;
+  if (hash && !success && !canceled) {
+    //fetch hash
+
+    const passResponse = await fetch(
+      `${apiConfig.apiUrl}/passes/checkout?hash=${hash}`
+    );
+
+    if (passResponse.status === 200) {
+      const pass: Pass = await passResponse.json();
+
+      try {
+        // Create Checkout Sessions from body params.
+        const session = await checkoutSession({
+          priceId: pass.passPlan.price.id,
+          customerId: pass.user.stripeCustomerId,
+          origin,
+          passId: pass.id,
+          hash: hash as string,
+        });
+        return {
+          redirect: {
+            statusCode: 303,
+            destination: session.url ?? `${origin}`,
+          },
+        };
+      } catch (err) {
+        console.error(err);
+        throw new Error(err.message);
+      }
+    }
+    if (passResponse.status === 404) {
+      return {
+        notFound: true,
+      };
+    }
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default Checkout;

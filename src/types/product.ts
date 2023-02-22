@@ -16,3 +16,17 @@ export interface Product {
   updatedAt: number;
   variants: number;
 }
+
+export interface PassPlan {
+  id: string;
+  name: string;
+  description: string;
+  images: string[];
+  active: boolean;
+  duration: number;
+  price: {
+    id: string;
+    amount: number;
+    currency: string;
+  };
+}
