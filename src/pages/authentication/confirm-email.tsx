@@ -44,6 +44,7 @@ const VerifyCode: NextPage = () => {
   console.log('error', error);
   useEffect(() => {
     gtm.push({ event: 'page_view' });
+    console.log(' toke ', token);
     if (token) {
       confirmEmail(token as string);
     } else {
