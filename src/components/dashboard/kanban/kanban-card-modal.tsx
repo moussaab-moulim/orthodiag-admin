@@ -13,7 +13,7 @@ import {
   FormGroup,
   Grid,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import { Archive as ArchiveIcon } from '../../../icons/archive';
 import { Check as CheckIcon } from '../../../icons/check';
@@ -21,7 +21,12 @@ import { DocumentText as DocumentTextIcon } from '../../../icons/document-text';
 import { Eye as EyeIcon } from '../../../icons/eye';
 import { EyeOff as EyeOffIcon } from '../../../icons/eye-off';
 import { Users as UsersIcon } from '../../../icons/users';
-import { addChecklist, deleteCard, moveCard, updateCard } from '../../../slices/kanban';
+import {
+  addChecklist,
+  deleteCard,
+  moveCard,
+  updateCard,
+} from '../../../slices/kanban';
 import { useDispatch, useSelector } from '../../../store';
 import type { Card, Column } from '../../../types/kanban';
 import { KanbanCardAction } from './kanban-card-action';
@@ -34,35 +39,31 @@ interface KanbanCardModalProps {
   open: boolean;
 }
 
-const labels = [
-  'Business',
-  'Planning',
-  'Frontend',
-  'Design'
-];
+const labels = ['Business', 'Planning', 'Frontend', 'Design'];
 
 export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
   const { card, column, onClose, open, ...other } = props;
   const dispatch = useDispatch();
   const { columns } = useSelector((state) => state.kanban);
 
-  const handleDetailsUpdate = debounce(async (update: { name?: string; description?: string; }) => {
-    try {
-      await dispatch(updateCard(card.id, update));
-      toast.success('Card updated!');
-    } catch (err) {
-      console.error(err);
-      toast.error('Something went wrong!');
-    }
-  }, 1000);
+  const handleDetailsUpdate = debounce(
+    async (update: { name?: string; description?: string }) => {
+      try {
+        await dispatch(updateCard(card.id, update));
+        toast.success('Card updated!');
+      } catch (err) {
+        console.error(err);
+        toast.error('Something went wrong!');
+      }
+    },
+    1000
+  );
 
-  const handleColumnChange = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const handleColumnChange = async (
+    event: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
     try {
-      await dispatch(moveCard(
-        card.id,
-        0,
-        event.target.value
-      ));
+      await dispatch(moveCard(card.id, 0, event.target.value));
       toast.success('Card moved!');
     } catch (err) {
       console.error(err);
@@ -110,7 +111,9 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
     }
   };
 
-  const handleLabelsChange = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const handleLabelsChange = async (
+    event: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
     try {
       let newValue = [...card.labels];
 
@@ -120,10 +123,7 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
         newValue = newValue.filter((item) => item !== event.target.value);
       }
 
-      await dispatch(updateCard(
-        card.id,
-        { labels: newValue }
-      ));
+      await dispatch(updateCard(card.id, { labels: newValue }));
       toast.success('Card updated!');
     } catch (err) {
       console.error(err);
@@ -132,47 +132,38 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
   };
 
   return (
-    <Dialog
-      fullWidth
-      maxWidth="md"
-      onClose={onClose}
-      open={open}
-      {...other}
-    >
+    <Dialog fullWidth maxWidth='md' onClose={onClose} open={open} {...other}>
       <Grid container>
-        <Grid
-          item
-          sm={8}
-          xs={12}
-        >
+        <Grid item sm={8} xs={12}>
           <Box
             sx={{
               py: 4,
-              px: 3
+              px: 3,
             }}
           >
             <TextField
               defaultValue={card.name}
               fullWidth
-              label="Task name"
-              onChange={(event): Promise<void> => handleDetailsUpdate({ name: event.target.value })}
+              label='Task name'
+              onChange={(event): Promise<void> =>
+                handleDetailsUpdate({ name: event.target.value })
+              }
             />
             <TextField
               defaultValue={card.description}
               fullWidth
-              label="Description"
+              label='Description'
               multiline
-              onChange={(event): Promise<void> => handleDetailsUpdate({ description: event.target.value })}
-              placeholder="Leave a message"
+              onChange={(event): Promise<void> =>
+                handleDetailsUpdate({ description: event.target.value })
+              }
+              placeholder='Leave a message'
               rows={6}
               sx={{ mt: 3 }}
             />
             {card.checklists.length > 0 && (
               <>
-                <Typography
-                  sx={{ my: 3 }}
-                  variant="h6"
-                >
+                <Typography sx={{ my: 3 }} variant='h6'>
                   Checklist
                 </Typography>
                 <div>
@@ -189,68 +180,55 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
             )}
           </Box>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={4}
-        >
+        <Grid item xs={12} sm={4}>
           <Box
             sx={{
               backgroundColor: 'background.default',
               px: 3,
               py: 4,
-              height: '100%'
+              height: '100%',
             }}
           >
-            <Typography
-              color="textSecondary"
-              variant="overline"
-            >
+            <Typography color='textSecondary' variant='overline'>
               Status
             </Typography>
             <TextField
               fullWidth
-              placeholder="Status"
+              placeholder='Status'
               onChange={handleColumnChange}
               select
               SelectProps={{
-                native: true
+                native: true,
               }}
               sx={{ mt: 2 }}
               value={card.columnId}
             >
               {Object.values(columns.byId).map((_column) => (
-                <option
-                  key={_column.id}
-                  value={_column.id}
-                >
+                <option key={_column.id} value={_column.id}>
                   {_column.name}
                 </option>
               ))}
             </TextField>
             <Box sx={{ mt: 2 }}>
-              <Typography
-                color="textSecondary"
-                variant="overline"
-              >
+              <Typography color='textSecondary' variant='overline'>
                 Add
               </Typography>
               <Box sx={{ mt: 2 }}>
                 <KanbanCardAction
-                  icon={<CheckIcon fontSize="small" />}
+                  icon={<CheckIcon fontSize='small' />}
                   onClick={handleAddChecklist}
                 >
                   Checklist
                 </KanbanCardAction>
                 <KanbanCardAction
                   disabled
-                  icon={<UsersIcon fontSize="small" />}
+                  icon={<UsersIcon fontSize='small' />}
                 >
                   Members
                 </KanbanCardAction>
                 <KanbanCardAction
                   disabled
-                  icon={<DocumentTextIcon fontSize="small" />}
+                  icon={<DocumentTextIcon fontSize='small' />}
                 >
                   Attachments
                 </KanbanCardAction>
@@ -258,37 +236,33 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
             </Box>
             <Box sx={{ mt: 3 }}>
               <Typography
-                color="textSecondary"
-                component="h4"
+                color='textSecondary'
+                component='h4'
                 sx={{
                   fontWeight: 600,
-                  mb: 2
+                  mb: 2,
                 }}
-                variant="overline"
+                variant='overline'
               >
                 Actions
               </Typography>
-              {
-                card.isSubscribed
-                  ? (
-                    <KanbanCardAction
-                      icon={<EyeOffIcon fontSize="small" />}
-                      onClick={handleUnsubscribe}
-                    >
-                      Unwatch
-                    </KanbanCardAction>
-                  )
-                  : (
-                    <KanbanCardAction
-                      icon={<EyeIcon fontSize="small" />}
-                      onClick={handleSubscribe}
-                    >
-                      Watch
-                    </KanbanCardAction>
-                  )
-              }
+              {card.isSubscribed ? (
+                <KanbanCardAction
+                  icon={<EyeOffIcon fontSize='small' />}
+                  onClick={handleUnsubscribe}
+                >
+                  Unwatch
+                </KanbanCardAction>
+              ) : (
+                <KanbanCardAction
+                  icon={<EyeIcon fontSize='small' />}
+                  onClick={handleSubscribe}
+                >
+                  Watch
+                </KanbanCardAction>
+              )}
               <KanbanCardAction
-                icon={<ArchiveIcon fontSize="small" />}
+                icon={<ArchiveIcon fontSize='small' />}
                 onClick={handleDelete}
               >
                 Archive
@@ -296,38 +270,34 @@ export const KanbanCardModal: FC<KanbanCardModalProps> = (props) => {
             </Box>
             <Box sx={{ mt: 2 }}>
               <Typography
-                color="textSecondary"
-                component="h4"
+                color='textSecondary'
+                component='h4'
                 sx={{ mb: 2 }}
-                variant="overline"
+                variant='overline'
               >
                 Labels
               </Typography>
               <Box
                 sx={{
                   backgroundColor: 'background.paper',
-                  borderRadius: 1
+                  borderRadius: 1,
                 }}
               >
                 <FormGroup>
                   {labels.map((label, index) => (
                     <Fragment key={label}>
                       <FormControlLabel
-                        control={(
+                        control={
                           <Checkbox
                             checked={card.labels.includes(label)}
                             onChange={handleLabelsChange}
                           />
-                        )}
-                        label={(
-                          <Typography variant="body2">
-                            {label}
-                          </Typography>
-                        )}
+                        }
+                        label={<Typography variant='body2'>{label}</Typography>}
                         sx={{
                           pl: 2,
                           pr: 1,
-                          py: 0.5
+                          py: 0.5,
                         }}
                         value={label}
                       />
@@ -350,9 +320,9 @@ KanbanCardModal.propTypes = {
   // @ts-ignore
   column: PropTypes.object.isRequired,
   onClose: PropTypes.func,
-  open: PropTypes.bool.isRequired
+  open: PropTypes.bool.isRequired,
 };
 
 KanbanCardModal.defaultProps = {
-  open: false
+  open: false,
 };

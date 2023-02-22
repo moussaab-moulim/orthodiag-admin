@@ -16,7 +16,10 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { RTL } from '../components/rtl';
 import { SettingsButton } from '../components/settings-button';
 import { SplashScreen } from '../components/splash-screen';
-import { SettingsConsumer, SettingsProvider } from '../contexts/settings-context';
+import {
+  SettingsConsumer,
+  SettingsProvider,
+} from '../contexts/settings-context';
 import { AuthConsumer, AuthProvider } from '../contexts/jwt-context';
 import { gtmConfig } from '../config';
 import { gtm } from '../lib/gtm';
@@ -28,7 +31,7 @@ import '../i18n';
 type EnhancedAppProps = AppProps & {
   Component: NextPage;
   emotionCache: EmotionCache;
-}
+};
 
 Router.events.on('routeChangeStart', nProgress.start);
 Router.events.on('routeChangeError', nProgress.done);
@@ -38,7 +41,7 @@ const clientSideEmotionCache = createEmotionCache();
 
 const App: FC<EnhancedAppProps> = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
+  const reduxStore = store();
   const getLayout = Component.getLayout ?? ((page) => page);
 
   useEffect(() => {
@@ -48,15 +51,10 @@ const App: FC<EnhancedAppProps> = (props) => {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>
-          Material Kit Pro
-        </title>
-        <meta
-          name="viewport"
-          content="initial-scale=1, width=device-width"
-        />
+        <title>Material Kit Pro</title>
+        <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-      <ReduxProvider store={store}>
+      <ReduxProvider store={reduxStore}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <AuthProvider>
             <SettingsProvider>
@@ -66,18 +64,20 @@ const App: FC<EnhancedAppProps> = (props) => {
                     theme={createTheme({
                       direction: settings.direction,
                       responsiveFontSizes: settings.responsiveFontSizes,
-                      mode: settings.theme
+                      mode: settings.theme,
                     })}
                   >
                     <RTL direction={settings.direction}>
                       <CssBaseline />
-                      <Toaster position="top-center" />
+                      <Toaster position='top-center' />
                       <SettingsButton />
                       <AuthConsumer>
-                        {
-                          (auth) => !auth.isInitialized
-                            ? <SplashScreen />
-                            : getLayout(<Component {...pageProps} />)
+                        {(auth) =>
+                          !auth.isInitialized ? (
+                            <SplashScreen />
+                          ) : (
+                            getLayout(<Component {...pageProps} />)
+                          )
                         }
                       </AuthConsumer>
                     </RTL>

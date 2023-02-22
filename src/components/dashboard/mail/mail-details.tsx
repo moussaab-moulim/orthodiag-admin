@@ -14,7 +14,7 @@ import {
   Link,
   TextField,
   Tooltip,
-  Typography
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
@@ -36,17 +36,15 @@ interface MailDetailsProps {
   label?: string;
 }
 
-const MarkdownWrapper = styled('div')(
-  ({ theme }) => ({
-    color: theme.palette.text.primary,
-    fontFamily: theme.typography.body1.fontFamily,
-    '& > p': {
-      fontSize: theme.typography.body1.fontSize,
-      lineHeight: theme.typography.body1.lineHeight,
-      marginBottom: theme.spacing(2)
-    }
-  })
-);
+const MarkdownWrapper = styled('div')(({ theme }) => ({
+  color: theme.palette.text.primary,
+  fontFamily: theme.typography.body1.fontFamily,
+  '& > p': {
+    fontSize: theme.typography.body1.fontSize,
+    lineHeight: theme.typography.body1.lineHeight,
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 export const MailDetails: FC<MailDetailsProps> = (props) => {
   const { emailId, label } = props;
@@ -65,9 +63,10 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
     return null;
   }
 
-  const backHref = (label && label !== 'inbox')
-    ? `/dashboard/mail?label=${label}`
-    : '/dashboard/mail';
+  const backHref =
+    label && label !== 'inbox'
+      ? `/dashboard/mail?label=${label}`
+      : '/dashboard/mail';
 
   return (
     <Box
@@ -77,7 +76,7 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
         flexDirection: 'column',
         flexGrow: 1,
         height: '100%',
-        overflowY: 'auto'
+        overflowY: 'auto',
       }}
     >
       <Box
@@ -86,16 +85,13 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
           backgroundColor: 'background.paper',
           display: 'flex',
           flexShrink: 0,
-          p: 2
+          p: 2,
         }}
       >
-        <NextLink
-          href={backHref}
-          passHref
-        >
-          <Tooltip title="Back">
-            <IconButton component="a">
-              <ArrowLeftIcon fontSize="small" />
+        <NextLink href={backHref} passHref>
+          <Tooltip title='Back'>
+            <IconButton component='a'>
+              <ArrowLeftIcon fontSize='small' />
             </IconButton>
           </Tooltip>
         </NextLink>
@@ -104,23 +100,23 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
           fullWidth
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon fontSize="small" />
+              <InputAdornment position='start'>
+                <SearchIcon fontSize='small' />
               </InputAdornment>
-            )
+            ),
           }}
-          placeholder="Search message"
-          size="small"
+          placeholder='Search message'
+          size='small'
           sx={{ width: 200 }}
         />
-        <Tooltip title="Previous email">
+        <Tooltip title='Previous email'>
           <IconButton>
-            <ChevronLeftIcon fontSize="small" />
+            <ChevronLeftIcon fontSize='small' />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Next email">
+        <Tooltip title='Next email'>
           <IconButton>
-            <ChevronRightIcon fontSize="small" />
+            <ChevronRightIcon fontSize='small' />
           </IconButton>
         </Tooltip>
       </Box>
@@ -131,59 +127,40 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
           display: 'flex',
           flexShrink: 0,
           justifyContent: 'space-between',
-          p: 3
+          p: 3,
         }}
       >
         <Box
           sx={{
             alignItems: 'center',
-            display: 'flex'
+            display: 'flex',
           }}
         >
           <Avatar
             src={email.from.avatar || undefined}
             sx={{
               height: 48,
-              width: 48
+              width: 48,
             }}
           >
             {getInitials(email.from.name)}
           </Avatar>
           <Box sx={{ ml: 2 }}>
-            <Typography
-              component="span"
-              variant="subtitle2"
-            >
+            <Typography component='span' variant='subtitle2'>
               {email.from.name}
-            </Typography>
-            {' '}
-            <Link
-              color="textSecondary"
-              component="span"
-              variant="body2"
-            >
+            </Typography>{' '}
+            <Link color='textSecondary' component='span' variant='body2'>
               {email.from.email}
             </Link>
-            <Typography
-              color="textSecondary"
-              variant="subtitle2"
-            >
-              To:
-              {' '}
+            <Typography color='textSecondary' variant='subtitle2'>
+              To:{' '}
               {email.to.map((person) => (
-                <Link
-                  color="inherit"
-                  key={person.email}
-                >
+                <Link color='inherit' key={person.email}>
                   {person.email}
                 </Link>
               ))}
             </Typography>
-            <Typography
-              color="textSecondary"
-              noWrap
-              variant="caption"
-            >
+            <Typography color='textSecondary' noWrap variant='caption'>
               {format(email.createdAt, 'MMMM d yyyy, h:mm:ss a')}
             </Typography>
           </Box>
@@ -194,29 +171,29 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
             alignItems: 'center',
             display: {
               xs: 'none',
-              sm: 'flex'
-            }
+              sm: 'flex',
+            },
           }}
         >
-          <Tooltip title="Reply">
+          <Tooltip title='Reply'>
             <IconButton>
-              <ReplyIcon fontSize="small" />
+              <ReplyIcon fontSize='small' />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Reply all">
+          <Tooltip title='Reply all'>
             <IconButton>
-              <ReplyAllIcon fontSize="small" />
+              <ReplyAllIcon fontSize='small' />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title='Delete'>
             <IconButton>
-              <TrashIcon fontSize="small" />
+              <TrashIcon fontSize='small' />
             </IconButton>
           </Tooltip>
         </Box>
-        <Tooltip title="More options">
+        <Tooltip title='More options'>
           <IconButton>
-            <DotsHorizontalIcon fontSize="small" />
+            <DotsHorizontalIcon fontSize='small' />
           </IconButton>
         </Tooltip>
       </Box>
@@ -226,28 +203,23 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
           backgroundColor: 'background.paper',
           flexGrow: 1,
           px: 3,
-          py: 6
+          py: 6,
         }}
       >
-        <Typography variant="h3">
-          {email.subject}
-        </Typography>
+        <Typography variant='h3'>{email.subject}</Typography>
         <Box sx={{ mt: 2 }}>
           <MarkdownWrapper>
             <Markdown children={email.message} />
             {email.attachments && (
               <Box sx={{ mt: 6 }}>
-                <Typography
-                  variant="h6"
-                  sx={{ mb: 2 }}
-                >
+                <Typography variant='h6' sx={{ mb: 2 }}>
                   {email.attachments.length} Attachments
                 </Typography>
                 <Box
                   sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
-                    m: -1
+                    m: -1,
                   }}
                 >
                   {email.attachments.map((attachment) => (
@@ -257,41 +229,26 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
                         alignItems: 'center',
                         cursor: 'pointer',
                         display: 'flex',
-                        m: 1
+                        m: 1,
                       }}
                     >
-                      {
-                        attachment.type === 'image'
-                          ? (
-                            <Avatar
-                              src={attachment.url}
-                              variant="rounded"
-                            />
-                          )
-                          : (
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                backgroundColor: 'primary.light'
-                              }}
-                            >
-                              <Typography variant="overline">
-                                PDF
-                              </Typography>
-                            </Avatar>
-                          )
-                      }
-                      <Box sx={{ ml: 1 }}>
-                        <Typography
-                          noWrap
-                          variant="subtitle2"
+                      {attachment.type === 'image' ? (
+                        <Avatar src={attachment.url} variant='rounded' />
+                      ) : (
+                        <Avatar
+                          variant='rounded'
+                          sx={{
+                            backgroundColor: 'primary.light',
+                          }}
                         >
+                          <Typography variant='overline'>PDF</Typography>
+                        </Avatar>
+                      )}
+                      <Box sx={{ ml: 1 }}>
+                        <Typography noWrap variant='subtitle2'>
                           {attachment.name}
                         </Typography>
-                        <Typography
-                          color="textSecondary"
-                          variant="body2"
-                        >
+                        <Typography color='textSecondary' variant='body2'>
                           {attachment.size}
                         </Typography>
                       </Box>
@@ -300,8 +257,8 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
                 </Box>
                 <Box sx={{ mt: 2 }}>
                   <Button
-                    startIcon={<DownloadIcon fontSize="small" />}
-                    size="small"
+                    startIcon={<DownloadIcon fontSize='small' />}
+                    size='small'
                   >
                     Download all
                   </Button>
@@ -319,5 +276,5 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
 
 MailDetails.propTypes = {
   emailId: PropTypes.string.isRequired,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
