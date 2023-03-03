@@ -5,33 +5,22 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Box, Card, Container, Divider, Link, Typography } from '@mui/material';
 import { GuestGuard } from '../../components/authentication/guest-guard';
-import { AuthBanner } from '../../components/authentication/auth-banner';
-import { AmplifyPasswordReset } from '../../components/authentication/amplify-password-reset';
+
 import { Logo } from '../../components/logo';
 import { useAuth } from '../../hooks/use-auth';
 import { gtm } from '../../lib/gtm';
 import { PageLayout } from '@components/page-layout';
+import { PasswordResetForm } from '@components/authentication/password-reset-form';
 
 type Platform = 'Amplify' | 'Auth0' | 'Firebase' | 'JWT';
 
-const platformIcons: { [key in Platform]: string } = {
-  Amplify: '/static/icons/amplify.svg',
-  Auth0: '/static/icons/auth0.svg',
-  Firebase: '/static/icons/firebase.svg',
-  JWT: '/static/icons/jwt.svg',
-};
-
 const PasswordReset: NextPage = () => {
-  const router = useRouter();
-  const { platform }: { platform: Platform } = useAuth();
-  const { disableGuard } = router.query;
-
   useEffect(() => {
     gtm.push({ event: 'page_view' });
   }, []);
 
   return (
-    <PageLayout metaTitle={`Password Reset`}>
+    <PageLayout metaTitle={`Réinitialiser le mot de passe`}>
       <Box
         component='main'
         sx={{
@@ -41,7 +30,6 @@ const PasswordReset: NextPage = () => {
           minHeight: '100vh',
         }}
       >
-        <AuthBanner />
         <Container
           maxWidth='sm'
           sx={{
@@ -51,33 +39,6 @@ const PasswordReset: NextPage = () => {
             },
           }}
         >
-          <Box
-            sx={{
-              alignItems: 'center',
-              backgroundColor: (theme) =>
-                theme.palette.mode === 'dark' ? 'neutral.900' : 'neutral.100',
-              borderColor: 'divider',
-              borderRadius: 1,
-              borderStyle: 'solid',
-              borderWidth: 1,
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              mb: 4,
-              p: 2,
-              '& > img': {
-                height: 32,
-                width: 'auto',
-                flexGrow: 0,
-                flexShrink: 0,
-              },
-            }}
-          >
-            <Typography color='textSecondary' variant='caption'>
-              The app authenticates via {platform}
-            </Typography>
-            <img alt='Auth platform' src={platformIcons[platform]} />
-          </Box>
           <Card elevation={16} sx={{ p: 4 }}>
             <Box
               sx={{
@@ -97,9 +58,11 @@ const PasswordReset: NextPage = () => {
                   />
                 </a>
               </NextLink>
-              <Typography variant='h4'>Password Reset</Typography>
+              <Typography variant='h4'>
+                Réinitialiser le mot de passe
+              </Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
-                Reset your account password using your code
+                Veuillez saisir votre nouveau mot de passe.
               </Typography>
             </Box>
             <Box
@@ -108,25 +71,9 @@ const PasswordReset: NextPage = () => {
                 mt: 3,
               }}
             >
-              {platform === 'Amplify' && <AmplifyPasswordReset />}
+              <PasswordResetForm />
             </Box>
             <Divider sx={{ my: 3 }} />
-            {platform === 'Amplify' && (
-              <div>
-                <NextLink
-                  href={
-                    disableGuard
-                      ? `/authentication/password-recovery?disableGuard=${disableGuard}`
-                      : '/authentication/password-recovery'
-                  }
-                  passHref
-                >
-                  <Link color='textSecondary' variant='body2'>
-                    Did you not receive the code?
-                  </Link>
-                </NextLink>
-              </div>
-            )}
           </Card>
         </Container>
       </Box>

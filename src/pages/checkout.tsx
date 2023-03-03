@@ -1,40 +1,28 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState, useEffect } from 'react';
-import type { ChangeEvent, FormEvent } from 'react';
+import { useEffect } from 'react';
 import type { NextPage } from 'next';
 import NextLink from 'next/link';
-import Head from 'next/head';
 import {
   Alert,
   AlertTitle,
   Box,
   Button,
   Card,
-  CircularProgress,
   Container,
   Divider,
-  Grid,
   Typography,
 } from '@mui/material';
-import type { SelectChangeEvent } from '@mui/material';
-import { CheckoutBilling } from '../components/checkout/checkout-billing';
-import { CheckoutOrderSummary } from '../components/checkout/checkout-order-summary';
-import { ArrowLeft as ArrowLeftIcon } from '../icons/arrow-left';
 import { ArrowRight as ArrowRightIcon } from '../icons/arrow-right';
-import { Lock as LockIcon } from '../icons/lock';
 import { gtm } from '../lib/gtm';
 import { PageLayout } from '@components/page-layout';
 import { Logo } from '@components/logo';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import { t } from 'i18next';
 
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
 import { apiConfig } from 'src/config';
 import { Pass } from '@interfaces/order';
 import { loadStripe } from '@stripe/stripe-js';
-import checkout, { checkoutSession } from './api/checkout';
-import { useSetPaidMutation } from '@slices/pass';
+import { checkoutSession } from './api/checkout';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.

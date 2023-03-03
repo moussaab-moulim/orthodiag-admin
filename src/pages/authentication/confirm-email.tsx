@@ -38,9 +38,10 @@ const platformIcons: { [key in Platform]: string } = {
 const VerifyCode: NextPage = () => {
   const router = useRouter();
   const { platform }: { platform: Platform } = useAuth();
-  const { disableGuard, token } = router.query;
+  const { token } = router.query;
   const [confirmEmail, { isLoading, isError, error, isSuccess }] =
     useConfirmEmailMutation();
+
   console.log('error', error);
   useEffect(() => {
     gtm.push({ event: 'page_view' });

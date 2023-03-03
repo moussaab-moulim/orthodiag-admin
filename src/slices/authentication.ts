@@ -24,7 +24,20 @@ export const authenticationApi = createApi({
         };
       },
     }),
+    resetPassword: build.mutation<void, { password: string; hash: string }>({
+      query({ password, hash }) {
+        return {
+          url: `/reset/password`,
+          method: 'POST',
+          body: {
+            password,
+            hash,
+          },
+        };
+      },
+    }),
   }),
 });
 
-export const { useConfirmEmailMutation } = authenticationApi;
+export const { useConfirmEmailMutation, useResetPasswordMutation } =
+  authenticationApi;
