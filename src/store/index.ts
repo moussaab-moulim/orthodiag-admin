@@ -12,22 +12,29 @@ import { chatSlice } from '@slices/chat';
 import { kanbanSlice } from '@slices/kanban';
 import { mailSlice } from '@slices/mail';
 import { passApi } from '@slices/pass';
+import { quizApi } from '@slices/quizReduxApi';
+import { createWrapper } from 'next-redux-wrapper';
+import { fileApi } from '@slices/fileReduxApi';
 
 export const store = () =>
   configureStore({
     reducer: {
       [authenticationApi.reducerPath]: authenticationApi.reducer,
       [passApi.reducerPath]: passApi.reducer,
+      [quizApi.reducerPath]: quizApi.reducer,
+      [fileApi.reducerPath]: fileApi.reducer,
       [kanbanSlice.name]: kanbanSlice.reducer,
       [calendarSlice.name]: calendarSlice.reducer,
       [chatSlice.name]: chatSlice.reducer,
       [mailSlice.name]: mailSlice.reducer,
     },
-    devTools: process.env.REACT_APP_ENABLE_REDUX_DEV_TOOLS === 'true',
+    devTools: process.env.NEXT_PUBLIC_ENABLE_REDUX_DEV_TOOLS === 'true',
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
         authenticationApi.middleware,
-        passApi.middleware
+        passApi.middleware,
+        quizApi.middleware,
+        fileApi.middleware
       ),
   });
 export type AppStore = ReturnType<typeof store>;
@@ -44,4 +51,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
-export const useDispatch: () => AppDispatch = () => useReduxDispatch;
+export const useDispatch: () => AppDispatch = useReduxDispatch;
+
+export const wrapper = createWrapper<AppStore>(store);

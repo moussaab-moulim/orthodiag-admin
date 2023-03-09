@@ -14,17 +14,12 @@ import { Logo } from '../../components/logo';
 import { useAuth } from '../../hooks/use-auth';
 import { gtm } from '../../lib/gtm';
 import { PageLayout } from '@components/page-layout';
+import { useTranslation } from 'react-i18next';
 
-type Platform = 'Amplify' | 'Auth0' | 'Firebase' | 'JWT';
-
-const platformIcons: { [key in Platform]: string } = {
-  Amplify: '/static/icons/amplify.svg',
-  Auth0: '/static/icons/auth0.svg',
-  Firebase: '/static/icons/firebase.svg',
-  JWT: '/static/icons/jwt.svg',
-};
+type Platform = 'JWT';
 
 const Login: NextPage = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { platform }: { platform: Platform } = useAuth();
   const { disableGuard } = router.query;
@@ -44,7 +39,6 @@ const Login: NextPage = () => {
           minHeight: '100vh',
         }}
       >
-        <AuthBanner />
         <Container
           maxWidth='sm'
           sx={{
@@ -54,33 +48,6 @@ const Login: NextPage = () => {
             },
           }}
         >
-          <Box
-            sx={{
-              alignItems: 'center',
-              backgroundColor: (theme) =>
-                theme.palette.mode === 'dark' ? 'neutral.900' : 'neutral.100',
-              borderColor: 'divider',
-              borderRadius: 1,
-              borderStyle: 'solid',
-              borderWidth: 1,
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              mb: 4,
-              p: 2,
-              '& > img': {
-                height: 32,
-                width: 'auto',
-                flexGrow: 0,
-                flexShrink: 0,
-              },
-            }}
-          >
-            <Typography color='textSecondary' variant='caption'>
-              The app authenticates via {platform}
-            </Typography>
-            <img alt='Auth platform' src={platformIcons[platform]} />
-          </Box>
           <Card elevation={16} sx={{ p: 4 }}>
             <Box
               sx={{
@@ -100,9 +67,9 @@ const Login: NextPage = () => {
                   />
                 </a>
               </NextLink>
-              <Typography variant='h4'>Log in</Typography>
+              <Typography variant='h4'> {t('Log in')}</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
-                Sign in on the internal platform
+                {t('Sign in on the internal platform ')}
               </Typography>
             </Box>
             <Box
@@ -111,13 +78,10 @@ const Login: NextPage = () => {
                 mt: 3,
               }}
             >
-              {platform === 'Amplify' && <AmplifyLogin />}
-              {platform === 'Auth0' && <Auth0Login />}
-              {platform === 'Firebase' && <FirebaseLogin />}
               {platform === 'JWT' && <JWTLogin />}
             </Box>
             <Divider sx={{ my: 3 }} />
-            <div>
+            {/* <div>
               <NextLink
                 href={
                   disableGuard
@@ -127,26 +91,25 @@ const Login: NextPage = () => {
                 passHref
               >
                 <Link color='textSecondary' variant='body2'>
-                  Create new account
+                  {t('Create new account')}
                 </Link>
               </NextLink>
-            </div>
-            {platform === 'Amplify' && (
-              <Box sx={{ mt: 1 }}>
-                <NextLink
-                  href={
-                    disableGuard
-                      ? `/authentication/password-recovery?disableGuard=${disableGuard}`
-                      : '/authentication/password-recovery'
-                  }
-                  passHref
-                >
-                  <Link color='textSecondary' variant='body2'>
-                    Forgot password
-                  </Link>
-                </NextLink>
-              </Box>
-            )}
+            </div> */}
+
+            <Box sx={{ mt: 1 }}>
+              <NextLink
+                href={
+                  disableGuard
+                    ? `/authentication/password-recovery?disableGuard=${disableGuard}`
+                    : '/authentication/password-recovery'
+                }
+                passHref
+              >
+                <Link color='textSecondary' variant='body2'>
+                  {t('Forgot password')}
+                </Link>
+              </NextLink>
+            </Box>
           </Card>
         </Container>
       </Box>

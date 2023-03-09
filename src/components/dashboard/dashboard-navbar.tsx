@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
-import type { FC } from "react";
-import PropTypes from "prop-types";
-import { useTranslation } from "react-i18next";
+import { useRef, useState } from 'react';
+import type { FC } from 'react';
+import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import {
   AppBar,
   Avatar,
@@ -11,45 +11,45 @@ import {
   IconButton,
   Toolbar,
   Tooltip,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import type { AppBarProps } from "@mui/material";
-import { Menu as MenuIcon } from "../../icons/menu";
-import { Bell as BellIcon } from "../../icons/bell";
-import { Search as SearchIcon } from "../../icons/search";
-import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
-import { Users as UsersIcon } from "../../icons/users";
-import { AccountPopover } from "./account-popover";
-import { ContactsPopover } from "./contacts-popover";
-import { ContentSearchDialog } from "./content-search-dialog";
-import { NotificationsPopover } from "./notifications-popover";
-import { LanguagePopover } from "./language-popover";
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import type { AppBarProps } from '@mui/material';
+import { Menu as MenuIcon } from '../../icons/menu';
+import { Bell as BellIcon } from '../../icons/bell';
+import { Search as SearchIcon } from '../../icons/search';
+import { UserCircle as UserCircleIcon } from '../../icons/user-circle';
+import { Users as UsersIcon } from '../../icons/users';
+import { AccountPopover } from './account-popover';
+import { ContactsPopover } from './contacts-popover';
+import { ContentSearchDialog } from './content-search-dialog';
+import { NotificationsPopover } from './notifications-popover';
+import { LanguagePopover } from './language-popover';
 
 interface DashboardNavbarProps extends AppBarProps {
   onOpenSidebar?: () => void;
 }
 
-type Language = "en" | "de" | "es" | "fr";
+type Language = 'en' | 'de' | 'es' | 'fr';
 
 const languages: Record<Language, string> = {
-  en: "/static/icons/uk_flag.svg",
-  de: "/static/icons/de_flag.svg",
-  es: "/static/icons/es_flag.svg",
-  fr: "/static/icons/fr_flag.svg",
+  en: '/static/icons/uk_flag.svg',
+  de: '/static/icons/de_flag.svg',
+  es: '/static/icons/es_flag.svg',
+  fr: '/static/icons/fr_flag.svg',
 };
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
-  ...(theme.palette.mode === "light"
+  ...(theme.palette.mode === 'light'
     ? {
         boxShadow: theme.shadows[3],
       }
     : {
         backgroundColor: theme.palette.background.paper,
         borderBottomColor: theme.palette.divider,
-        borderBottomStyle: "solid",
+        borderBottomStyle: 'solid',
         borderBottomWidth: 1,
-        boxShadow: "none",
+        boxShadow: 'none',
       }),
 }));
 
@@ -71,15 +71,15 @@ const LanguageButton = () => {
       <IconButton onClick={handleOpenPopover} ref={anchorRef} sx={{ ml: 1 }}>
         <Box
           sx={{
-            display: "flex",
+            display: 'flex',
             height: 20,
             width: 20,
-            "& img": {
-              width: "100%",
+            '& img': {
+              width: '100%',
             },
           }}
         >
-          <img alt="" src={languages[i18n.language as Language]} />
+          <img alt='' src={languages[i18n.language as Language]} />
         </Box>
       </IconButton>
       <LanguagePopover
@@ -104,9 +104,9 @@ const ContentSearchButton = () => {
 
   return (
     <>
-      <Tooltip title="Search">
+      <Tooltip title='Search'>
         <IconButton onClick={handleOpenSearchDialog} sx={{ ml: 1 }}>
-          <SearchIcon fontSize="small" />
+          <SearchIcon fontSize='small' />
         </IconButton>
       </Tooltip>
       <ContentSearchDialog
@@ -131,9 +131,9 @@ const ContactsButton = () => {
 
   return (
     <>
-      <Tooltip title="Contacts">
+      <Tooltip title='Contacts'>
         <IconButton onClick={handleOpenPopover} sx={{ ml: 1 }} ref={anchorRef}>
-          <UsersIcon fontSize="small" />
+          <UsersIcon fontSize='small' />
         </IconButton>
       </Tooltip>
       <ContactsPopover
@@ -166,10 +166,10 @@ const NotificationsButton = () => {
 
   return (
     <>
-      <Tooltip title="Notifications">
+      <Tooltip title='Notifications'>
         <IconButton ref={anchorRef} sx={{ ml: 1 }} onClick={handleOpenPopover}>
-          <Badge color="error" badgeContent={unread}>
-            <BellIcon fontSize="small" />
+          <Badge color='error' badgeContent={unread}>
+            <BellIcon fontSize='small' />
           </Badge>
         </IconButton>
       </Tooltip>
@@ -189,8 +189,8 @@ const AccountButton = () => {
   // To get the user from the authContext, you can use
   // `const { user } = useAuth();`
   const user = {
-    avatar: "/static/mock-images/avatars/avatar-anika_visser.png",
-    name: "Anika Visser",
+    avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
+    name: 'Anika Visser',
   };
 
   const handleOpenPopover = (): void => {
@@ -208,8 +208,8 @@ const AccountButton = () => {
         onClick={handleOpenPopover}
         ref={anchorRef}
         sx={{
-          alignItems: "center",
-          display: "flex",
+          alignItems: 'center',
+          display: 'flex',
           ml: 2,
         }}
       >
@@ -220,7 +220,7 @@ const AccountButton = () => {
           }}
           src={user.avatar}
         >
-          <UserCircleIcon fontSize="small" />
+          <UserCircleIcon fontSize='small' />
         </Avatar>
       </Box>
       <AccountPopover
@@ -243,7 +243,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
             lg: 280,
           },
           width: {
-            lg: "calc(100% - 280px)",
+            lg: 'calc(100% - 280px)',
           },
         }}
         {...other}
@@ -260,15 +260,17 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
             onClick={onOpenSidebar}
             sx={{
               display: {
-                xs: "inline-flex",
-                lg: "none",
+                xs: 'inline-flex',
+                lg: 'none',
               },
             }}
           >
-            <MenuIcon fontSize="small" />
+            <MenuIcon fontSize='small' />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
+          fd
           <LanguageButton />
+          fd
           <ContentSearchButton />
           <ContactsButton />
           <NotificationsButton />

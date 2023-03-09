@@ -4,7 +4,6 @@ import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
-import { Toaster } from 'react-hot-toast';
 import { Provider as ReduxProvider } from 'react-redux';
 import nProgress from 'nprogress';
 import { CacheProvider } from '@emotion/react';
@@ -23,11 +22,13 @@ import {
 import { AuthConsumer, AuthProvider } from '../contexts/jwt-context';
 import { gtmConfig } from '../config';
 import { gtm } from '../lib/gtm';
-import { store } from '../store';
+import { store, wrapper } from '../store';
 import { createTheme } from '../theme';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import '../i18n';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'reactflow/dist/style.css';
 type EnhancedAppProps = AppProps & {
   Component: NextPage;
   emotionCache: EmotionCache;
@@ -39,9 +40,10 @@ Router.events.on('routeChangeComplete', nProgress.done);
 
 const clientSideEmotionCache = createEmotionCache();
 
-const App: FC<EnhancedAppProps> = (props) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const reduxStore = store();
+const App: FC<EnhancedAppProps> = ({ Component, ...rest }) => {
+  const { store, props } = wrapper.useWrappedStore(rest);
+  const { emotionCache = clientSideEmotionCache, pageProps } = props;
+
   const getLayout = Component.getLayout ?? ((page) => page);
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const App: FC<EnhancedAppProps> = (props) => {
         <title>Material Kit Pro</title>
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-      <ReduxProvider store={reduxStore}>
+      <ReduxProvider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <AuthProvider>
             <SettingsProvider>
@@ -69,7 +71,17 @@ const App: FC<EnhancedAppProps> = (props) => {
                   >
                     <RTL direction={settings.direction}>
                       <CssBaseline />
-                      <Toaster position='top-center' />
+
+                      <ToastContainer
+                        position='top-center'
+                        autoClose={5000}
+                        hideProgressBar
+                        newestOnTop
+                        draggable={false}
+                        theme='colored'
+                        closeOnClick
+                        pauseOnHover
+                      />
                       <SettingsButton />
                       <AuthConsumer>
                         {(auth) =>

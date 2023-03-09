@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { FC } from 'react';
 import NextLink from 'next/link';
-import toast from 'react-hot-toast';
+import toast from 'react-toastify';
 import {
   Avatar,
   Box,
@@ -14,7 +14,7 @@ import {
   Input,
   Link,
   Paper,
-  Typography
+  Typography,
 } from '@mui/material';
 import { socialApi } from '../../../__fake-api__/social-api';
 import { useMounted } from '../../../hooks/use-mounted';
@@ -25,7 +25,7 @@ import type { Connection } from '../../../types/social';
 const connectStatusMap = {
   connected: 'Connected',
   not_connected: 'Connect',
-  pending: 'Pending'
+  pending: 'Pending',
 };
 
 export const SocialConnections: FC = (props) => {
@@ -46,125 +46,108 @@ export const SocialConnections: FC = (props) => {
   }, [getConnections]);
 
   const handleConnectToggle = (connectionId: string): void => {
-    setConnections((prevConnections) => prevConnections.map((connection) => {
-      if (connection.id === connectionId) {
-        const updatedConnection = { ...connection };
+    setConnections((prevConnections) =>
+      prevConnections.map((connection) => {
+        if (connection.id === connectionId) {
+          const updatedConnection = { ...connection };
 
-        updatedConnection.status = (
-          connection.status === 'connected' || connection.status === 'pending'
-            ? 'not_connected'
-            : 'pending'
-        );
+          updatedConnection.status =
+            connection.status === 'connected' || connection.status === 'pending'
+              ? 'not_connected'
+              : 'pending';
 
-        if (updatedConnection.status === 'pending') {
-          toast.success('Request sent!');
+          if (updatedConnection.status === 'pending') {
+            toast.success('Request sent!');
+          }
+
+          return updatedConnection;
         }
 
-        return updatedConnection;
-      }
-
-      return connection;
-    }));
+        return connection;
+      })
+    );
   };
 
   return (
     <Card {...props}>
-      <CardHeader title="Connections" />
+      <CardHeader title='Connections' />
       <Divider />
       <Box
         sx={{
           alignItems: 'center',
           display: 'flex',
           px: 3,
-          py: 2
+          py: 2,
         }}
       >
-        <SearchIcon fontSize="small" />
+        <SearchIcon fontSize='small' />
         <Box sx={{ ml: 2 }}>
           <Input
             disableUnderline
             onChange={(event): void => setSearch(event.target.value)}
-            placeholder="Search connections"
+            placeholder='Search connections'
             value={search}
           />
         </Box>
       </Box>
       <Divider />
       <Box sx={{ p: 3 }}>
-        <Grid
-          container
-          spacing={3}
-        >
+        <Grid container spacing={3}>
           {connections
-            .filter((connection) => connection.name.toLowerCase().includes(search))
+            .filter((connection) =>
+              connection.name.toLowerCase().includes(search)
+            )
             .map((connection) => (
-              <Grid
-                item
-                key={connection.id}
-                md={6}
-                xs={12}
-              >
-                <Paper
-                  sx={{ height: '100%' }}
-                  variant="outlined"
-                >
+              <Grid item key={connection.id} md={6} xs={12}>
+                <Paper sx={{ height: '100%' }} variant='outlined'>
                   <Box
                     sx={{
                       display: 'flex',
-                      p: 2
+                      p: 2,
                     }}
                   >
-                    <NextLink
-                      href="#"
-                      passHref
-                    >
+                    <NextLink href='#' passHref>
                       <Avatar
-                        component="a"
+                        component='a'
                         src={connection.avatar}
                         sx={{
                           height: 56,
-                          width: 56
+                          width: 56,
                         }}
                       />
                     </NextLink>
                     <Box
                       sx={{
                         flexGrow: 1,
-                        mx: 2
+                        mx: 2,
                       }}
                     >
-                      <NextLink
-                        href="#"
-                        passHref
-                      >
-                        <Link
-                          color="textPrimary"
-                          variant="subtitle2"
-                        >
+                      <NextLink href='#' passHref>
+                        <Link color='textPrimary' variant='subtitle2'>
                           {connection.name}
                         </Link>
                       </NextLink>
                       <Typography
-                        color="textSecondary"
+                        color='textSecondary'
                         gutterBottom
-                        variant="body2"
+                        variant='body2'
                       >
-                        {connection.commonConnections}
-                        {' '}
-                        connections in common
+                        {connection.commonConnections} connections in common
                       </Typography>
                       {connection.status !== 'rejected' && (
                         <Button
-                          onClick={(): void => handleConnectToggle(connection.id)}
-                          size="small"
-                          variant="outlined"
+                          onClick={(): void =>
+                            handleConnectToggle(connection.id)
+                          }
+                          size='small'
+                          variant='outlined'
                         >
                           {connectStatusMap[connection.status]}
                         </Button>
                       )}
                     </Box>
                     <IconButton>
-                      <DotsHorizontalIcon fontSize="small" />
+                      <DotsHorizontalIcon fontSize='small' />
                     </IconButton>
                   </Box>
                 </Paper>

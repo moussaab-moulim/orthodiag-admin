@@ -41,6 +41,7 @@ import { Logo } from '../logo';
 import { Scrollbar } from '../scrollbar';
 import { DashboardSidebarSection } from './dashboard-sidebar-section';
 import { OrganizationPopover } from './organization-popover';
+import { ContentPaste, Medication, Quiz, Sick } from '@mui/icons-material';
 
 interface DashboardSidebarProps {
   onClose?: () => void;
@@ -61,7 +62,172 @@ interface Section {
 }
 
 const getSections = (t: TFunction): Section[] => [
-  /*  {
+  {
+    title: t('Quiz'),
+    items: [
+      {
+        title: t('Quizes'),
+        icon: <Quiz fontSize='small' />,
+        path: '/dashboard/quiz/quizes',
+      },
+      {
+        title: t('Questions'),
+        icon: <ContentPaste fontSize='small' />,
+        path: '/dashboard/quiz/questions',
+      },
+      {
+        title: t('Problems'),
+        icon: <Sick fontSize='small' />,
+        path: '/dashboard/quiz/problems',
+      },
+      {
+        title: t('Treatments'),
+        icon: <Medication fontSize='small' />,
+        path: '/dashboard/quiz/treatments',
+      },
+    ],
+  },
+  {
+    title: t('Management'),
+    items: [
+      {
+        title: t('dashboard-sidebar-appointments'),
+        icon: <CalendarIcon fontSize='small' />,
+        path: '/dashboard/appointments',
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/appointments',
+          },
+          /* {
+            title: t('Details'),
+            path: '/dashboard/orders/1'
+          } */
+        ],
+      },
+    ],
+  },
+  {
+    title: t('Apps'),
+    items: [
+      /* {
+        title: t('Kanban'),
+        path: '/dashboard/kanban',
+        icon: <ClipboardListIcon fontSize="small" />
+      },
+      {
+        title: t('Mail'),
+        path: '/dashboard/mail',
+        icon: <MailIcon fontSize="small" />
+      },
+      {
+        title: t('Chat'),
+        path: '/dashboard/chat',
+        icon: <ChatAlt2Icon fontSize="small" />
+      }, */
+      {
+        title: t('Calendar'),
+        path: '/dashboard/calendar',
+        icon: <CalendarIcon fontSize='small' />,
+      },
+    ],
+  },
+  /*
+  {
+    title: t('Management'),
+    items: [
+       {
+        title: t('Customers'),
+        path: '/dashboard/customers',
+        icon: <UsersIcon fontSize="small" />,
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/customers'
+          },
+          {
+            title: t('Details'),
+            path: '/dashboard/customers/1'
+          },
+          {
+            title: t('Edit'),
+            path: '/dashboard/customers/1/edit'
+          }
+        ]
+      },
+      {
+        title: t('Products'),
+        path: '/dashboard/products',
+        icon: <ShoppingBagIcon fontSize="small" />,
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/products'
+          },
+          {
+            title: t('Create'),
+            path: '/dashboard/products/new'
+          }
+        ]
+      },
+      {
+        title: t('dashboard-sidebar-appointments'),
+        icon: <CalendarIcon fontSize='small' />,
+        path: '/dashboard/appointments',
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/appointments',
+          },
+          {
+            title: t('Details'),
+            path: '/dashboard/orders/1'
+          } 
+        ],
+      },
+         {
+        title: t('Invoices'),
+        path: '/dashboard/invoices',
+        icon: <ReceiptTaxIcon fontSize="small" />,
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/invoices'
+          },
+          {
+            title: t('Details'),
+            path: '/dashboard/invoices/1'
+          }
+        ]
+      } 
+    ],
+  },
+  {
+    title: t('Apps'),
+    items: [
+     {
+        title: t('Kanban'),
+        path: '/dashboard/kanban',
+        icon: <ClipboardListIcon fontSize="small" />
+      },
+      {
+        title: t('Mail'),
+        path: '/dashboard/mail',
+        icon: <MailIcon fontSize="small" />
+      },
+      {
+        title: t('Chat'),
+        path: '/dashboard/chat',
+        icon: <ChatAlt2Icon fontSize="small" />
+      }, 
+      {
+        title: t('Calendar'),
+        path: '/dashboard/calendar',
+        icon: <CalendarIcon fontSize='small' />,
+      },
+    ],
+  },
+    {
     title: t('General'),
     items: [
       {
@@ -105,100 +271,6 @@ const getSections = (t: TFunction): Section[] => [
       }
     ]
   }, */
-  {
-    title: t('Management'),
-    items: [
-      /*     {
-        title: t('Customers'),
-        path: '/dashboard/customers',
-        icon: <UsersIcon fontSize="small" />,
-        children: [
-          {
-            title: t('List'),
-            path: '/dashboard/customers'
-          },
-          {
-            title: t('Details'),
-            path: '/dashboard/customers/1'
-          },
-          {
-            title: t('Edit'),
-            path: '/dashboard/customers/1/edit'
-          }
-        ]
-      },
-      {
-        title: t('Products'),
-        path: '/dashboard/products',
-        icon: <ShoppingBagIcon fontSize="small" />,
-        children: [
-          {
-            title: t('List'),
-            path: '/dashboard/products'
-          },
-          {
-            title: t('Create'),
-            path: '/dashboard/products/new'
-          }
-        ]
-      }, */
-      {
-        title: t('dashboard-sidebar-appointments'),
-        icon: <CalendarIcon fontSize='small' />,
-        path: '/dashboard/appointments',
-        children: [
-          {
-            title: t('List'),
-            path: '/dashboard/appointments',
-          },
-          /* {
-            title: t('Details'),
-            path: '/dashboard/orders/1'
-          } */
-        ],
-      },
-      /*    {
-        title: t('Invoices'),
-        path: '/dashboard/invoices',
-        icon: <ReceiptTaxIcon fontSize="small" />,
-        children: [
-          {
-            title: t('List'),
-            path: '/dashboard/invoices'
-          },
-          {
-            title: t('Details'),
-            path: '/dashboard/invoices/1'
-          }
-        ]
-      } */
-    ],
-  },
-  {
-    title: t('Apps'),
-    items: [
-      /* {
-        title: t('Kanban'),
-        path: '/dashboard/kanban',
-        icon: <ClipboardListIcon fontSize="small" />
-      },
-      {
-        title: t('Mail'),
-        path: '/dashboard/mail',
-        icon: <MailIcon fontSize="small" />
-      },
-      {
-        title: t('Chat'),
-        path: '/dashboard/chat',
-        icon: <ChatAlt2Icon fontSize="small" />
-      }, */
-      {
-        title: t('Calendar'),
-        path: '/dashboard/calendar',
-        icon: <CalendarIcon fontSize='small' />,
-      },
-    ],
-  },
   /*   {
     title: t('Platforms'),
     items: [

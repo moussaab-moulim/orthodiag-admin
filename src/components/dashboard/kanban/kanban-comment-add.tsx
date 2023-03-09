@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ChangeEvent, FC, KeyboardEvent } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
+import toast from 'react-toastify';
 import { Avatar, Box, TextField } from '@mui/material';
 import { addComment } from '../../../slices/kanban';
 import { useDispatch } from '../../../store';
@@ -16,7 +16,7 @@ export const KanbanCommentAdd: FC<KanbanCommentAddProps> = (props) => {
   // To get the user from the authContext, you can use
   // `const { user } = useAuth();`
   const user = {
-    avatar: '/static/mock-images/avatars/avatar-anika_visser.png'
+    avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
   };
   const [message, setMessage] = useState<string>('');
 
@@ -24,7 +24,9 @@ export const KanbanCommentAdd: FC<KanbanCommentAddProps> = (props) => {
     setMessage(event.target.value);
   };
 
-  const handleKeyUp = async (event: KeyboardEvent<HTMLInputElement>): Promise<void> => {
+  const handleKeyUp = async (
+    event: KeyboardEvent<HTMLInputElement>
+  ): Promise<void> => {
     try {
       if (event.code === 'Enter' && message) {
         await dispatch(addComment(cardId, message));
@@ -41,20 +43,17 @@ export const KanbanCommentAdd: FC<KanbanCommentAddProps> = (props) => {
     <Box
       sx={{
         alignItems: 'center',
-        display: 'flex'
+        display: 'flex',
       }}
       {...other}
     >
-      <Avatar
-        src={user.avatar}
-        sx={{ mr: 2 }}
-      />
+      <Avatar src={user.avatar} sx={{ mr: 2 }} />
       <TextField
         fullWidth
         onChange={handleChange}
         onKeyUp={handleKeyUp}
-        placeholder="Write a comment..."
-        size="small"
+        placeholder='Write a comment...'
+        size='small'
         value={message}
       />
     </Box>
@@ -62,5 +61,5 @@ export const KanbanCommentAdd: FC<KanbanCommentAddProps> = (props) => {
 };
 
 KanbanCommentAdd.propTypes = {
-  cardId: PropTypes.string.isRequired
+  cardId: PropTypes.string.isRequired,
 };
