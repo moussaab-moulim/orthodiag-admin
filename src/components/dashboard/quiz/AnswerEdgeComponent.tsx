@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { FC, useState } from 'react';
 import {
   Box,
   Button,
@@ -23,6 +23,7 @@ import { useSettings } from '@hooks/use-settings';
 import { createTheme } from '@theme/index';
 import { Delete } from '@mui/icons-material';
 import { WithTooltip } from '@components/Tooltip';
+import { EditQuizAnswerModal } from './EditQuizAnswerModal';
 
 const foreignObjectSize = 150;
 export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
@@ -37,6 +38,8 @@ export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
   data,
   markerEnd,
 }) => {
+  const [editAnswerOpen, setEditAnswerOpen] = useState<boolean>(false);
+
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
@@ -51,6 +54,13 @@ export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
     mode: 'dark',
   });
 
+  const handleEditClick = () => {
+    setEditAnswerOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditAnswerOpen(false);
+  };
   return (
     <>
       <path
@@ -124,13 +134,18 @@ export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
                   </IconButton>
                 </Tooltip>
                 <Tooltip title='Modifier'>
-                  <IconButton>
+                  <IconButton onClick={handleEditClick}>
                     <PencilAlt fontSize='small' />
                   </IconButton>
                 </Tooltip>
               </Box>
             </Paper>
           </ThemeProvider>
+          <EditQuizAnswerModal
+            answer={data!}
+            open={editAnswerOpen}
+            onClose={handleEditClose}
+          />
         </Box>
       </foreignObject>
     </>

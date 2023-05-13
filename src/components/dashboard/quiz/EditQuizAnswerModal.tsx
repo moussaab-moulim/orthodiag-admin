@@ -19,15 +19,21 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import { useCreateQuizMutation } from '@slices/quizReduxApi';
 import { useCommon } from '@hooks/useCommon';
-interface CreateQuizModalProps {
+import { Answer } from '@interfaces/quiz';
+interface EditQuizAnswerModalProps {
   open: boolean;
   onClose: () => void;
+  answer: Answer;
+}
+interface AnswerForm {
+  label: string;
 }
 
-export const CreateQuizModal: FC<CreateQuizModalProps> = ({
+export const EditQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
+  answer,
   open,
   onClose,
-}: CreateQuizModalProps) => {
+}: EditQuizAnswerModalProps) => {
   const isMounted = () => true;
   const router = useRouter();
   const { t } = useTranslation();

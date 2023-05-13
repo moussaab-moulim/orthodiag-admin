@@ -25,9 +25,9 @@ const Loading = () => (
   </Box>
 );
 
-export const LoadingBackdrop: OverridableComponent<
-  BackdropTypeMap<{}, 'div'>
-> = (props: DefaultComponentProps<BackdropTypeMap<{}, 'div'>>) => {
+export const LoadingBackdrop: FC<
+  DefaultComponentProps<BackdropTypeMap<'div', {}>>
+> = (props: DefaultComponentProps<BackdropTypeMap<'div', {}>>) => {
   const { sx, ...rest } = props;
   return (
     <Backdrop

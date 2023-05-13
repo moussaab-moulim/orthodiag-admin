@@ -36,7 +36,6 @@ import {
 } from '@components/widgets/inputs/SelectWithSearchServer';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { usePaginatedState } from '@hooks/usePaginatedState';
-import error from 'next/error';
 import { EditQuestionForm } from './EditQuestionForm';
 interface EditQuizQuestionModalProps {
   open: boolean;

@@ -19,7 +19,6 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { QuillEditor } from '../../quill-editor';
 import { ArrowsExpand as ArrowsExpandIcon } from '../../../icons/arrows-expand';
 import { X as XIcon } from '../../../icons/x';
-import { InputTextField } from '../inputs/input-text-field';
 import { useTranslation } from 'react-i18next';
 import { useMounted } from '@hooks/use-mounted';
 import { useFormik } from 'formik';

@@ -24,7 +24,7 @@ import { PageLayout } from '@components/page-layout';
 import { QuizListTable } from '@components/dashboard/quiz/QuizListTable';
 import { TableErrorComponent } from '@components/ErroComponents';
 import { ErrorBoundary } from 'react-error-boundary';
-import { CreateQuizModal } from '@components/widgets/modals/CreateQuizModal';
+import { CreateQuizModal } from '@components/dashboard/quiz/CreateQuizModal';
 
 const QuizListPage: NextPage = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);

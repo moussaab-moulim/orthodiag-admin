@@ -314,11 +314,15 @@ function nodeMapper(
 
 function edgesGenerator(nodes: Node<NodeDataType>[]) {
   const edges: Edge<Answer>[] = [];
-
+  console.log('start nodes', nodes);
   nodes.forEach((node) => {
     node.data.answers.forEach((a) => {
       edges.push({
-        id: `${node.id}-${a.nextQuizNode!.id.toString()}`,
+        id: `${node.id}-${
+          a.nextQuizNode
+            ? a.nextQuizNode!.id.toString()
+            : `end-${node.id}-${a.id}`
+        }`,
         source: node.id.toString(),
         target: a.nextQuizNode
           ? a.nextQuizNode.id.toString()
