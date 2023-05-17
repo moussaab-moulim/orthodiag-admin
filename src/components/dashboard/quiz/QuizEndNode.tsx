@@ -1,19 +1,9 @@
 import { FC, useState } from 'react';
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { NodeDataType } from '@interfaces/quiz';
 import { OpenWith } from '@mui/icons-material';
 
-import { useCreateQuizNodeMutation } from '@slices/quizReduxApi';
-import { useCommon } from '@hooks/useCommon';
-import { t } from 'i18next';
 import { EditQuizQuestionModal } from './EditQuizQuestionModal';
 export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
   data,
@@ -22,6 +12,8 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
   targetPosition,
 }) => {
   const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(false);
+  const [isEditResultModalOpen, setIsEditResultModalOpen] = useState(false);
+
   const handleEditQuestionModalClose = () => {
     setIsEditQuestionModalOpen(false);
   };
@@ -53,6 +45,13 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
         <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
           <Button
             fullWidth
+            variant='outlined'
+            onClick={() => setIsEditResultModalOpen(true)}
+          >
+            Modifier Resultat
+          </Button>
+          <Button
+            fullWidth
             variant='contained'
             onClick={() => setIsEditQuestionModalOpen(true)}
           >
@@ -61,6 +60,13 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
         </Box>
       </Paper>
       {isEditQuestionModalOpen && (
+        <EditQuizQuestionModal
+          open={isEditQuestionModalOpen}
+          onClose={handleEditQuestionModalClose}
+          quizNode={data}
+        />
+      )}
+      {isEditResultModalOpen && (
         <EditQuizQuestionModal
           open={isEditQuestionModalOpen}
           onClose={handleEditQuestionModalClose}

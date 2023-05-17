@@ -313,7 +313,7 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
                   imagesSelectActions.onSelectLoadMore();
                 }}
                 multiple
-                loading={false}
+                loading={imagesFetching}
                 onSearch={(text) => {
                   imagesSelectActions.onSelectSearch(text, 'search');
                 }}

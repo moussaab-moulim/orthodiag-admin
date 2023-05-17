@@ -36,6 +36,13 @@ interface UpdateQuestion {
   images?: FileEntity[];
 }
 
+interface UpdateAnswer {
+  id: number;
+  label: string;
+
+  icon?: FileEntity;
+}
+
 interface CreateQuizNode {
   previousNode: { id: number };
 }
@@ -174,6 +181,17 @@ export const quizApi = createApi({
       },
       invalidatesTags: ['quiz/quizNode', 'quiz/question/infinite-scroll'],
     }),
+    updateAnswer: build.mutation<void, UpdateAnswer>({
+      query: ({ id, ...body }) => {
+        console.log('update body', body);
+        return {
+          url: `/answer/${id}`,
+          method: 'PATCH',
+          body,
+        };
+      },
+      invalidatesTags: ['quiz/quizNode'],
+    }),
   }),
 });
 
@@ -187,4 +205,5 @@ export const {
   useCreateQuizNodeMutation,
   useGetQuestionsInfiniteScrollQuery,
   useUpdateQuestionMutation,
+  useUpdateAnswerMutation,
 } = quizApi;

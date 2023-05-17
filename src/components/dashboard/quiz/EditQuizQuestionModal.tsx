@@ -131,7 +131,6 @@ export const EditQuizQuestionModal: FC<EditQuizQuestionModalProps> = ({
     }
   };
 
-  console.log('withc', watch());
   const mappedQuestions: SelectOption[] = useMemo(() => {
     const qs = (
       questions

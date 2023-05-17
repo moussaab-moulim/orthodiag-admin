@@ -28,6 +28,8 @@ import { Close } from '@mui/icons-material';
 import { LoadingSkeleton } from '@components/Loading';
 import { useTranslation } from 'react-i18next';
 import { FileEntity } from '@interfaces/quiz';
+import { WithTooltip } from '@components/Tooltip';
+import State from '@components/State';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -201,18 +203,14 @@ export const SelectWithSearchServer = <
                   width: '100%',
                 }}
               >
-                <Typography variant='body1' component='p'>
-                  {options.find((_opt) => _opt.value === selected)?.label ?? ''}
-                </Typography>
-                <IconButton
-                  size='small'
-                  onClick={() => handleDeleteItem(selected)}
-                  onMouseDown={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <Close fontSize='small' />
-                </IconButton>
+                <Chip
+                  label={
+                    options.find((_opt) => _opt.value === selected)?.label ?? ''
+                  }
+                  sx={{ overflow: 'hidden' }}
+                  onDelete={() => handleDeleteItem(selected)}
+                  onMouseDown={(event) => event.stopPropagation()}
+                />
               </Box>
             )}
           </Box>
@@ -253,7 +251,7 @@ export const SelectWithSearchServer = <
             )}
           </ListSubheader>
         )}
-        {selectedValues.map((option: SelectOption, i: number) => {
+        {selectedValues?.map((option: SelectOption, i: number) => {
           const icon = option.icon;
 
           return (

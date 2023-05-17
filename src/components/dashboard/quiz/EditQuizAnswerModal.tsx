@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { FC, useMemo } from 'react';
 import {
   Box,
   Button,
@@ -17,17 +17,46 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
-import { useCreateQuizMutation } from '@slices/quizReduxApi';
+import {
+  useCreateQuizMutation,
+  useUpdateAnswerMutation,
+} from '@slices/quizReduxApi';
 import { useCommon } from '@hooks/useCommon';
 import { Answer } from '@interfaces/quiz';
+import { Controller, useForm } from 'react-hook-form';
+import InputText from '@components/widgets/inputs/InputText';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { array, object, string } from 'yup';
+import {
+  SelectOption,
+  SelectWithSearchServer,
+} from '@components/widgets/inputs/SelectWithSearchServer';
+import { usePaginatedState } from '@hooks/usePaginatedState';
+import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
+import { Carousel } from 'react-responsive-carousel';
+import Image from 'next/image';
 interface EditQuizAnswerModalProps {
   open: boolean;
   onClose: () => void;
   answer: Answer;
 }
-interface AnswerForm {
-  label: string;
-}
+
+const initialValues = (answer?: Answer) => {
+  if (answer) {
+    return {
+      label: answer.label,
+      icon: answer.icon
+        ? { value: answer.icon?.id, label: answer.icon?.id, icon: answer.icon }
+        : null,
+    };
+  }
+
+  return {
+    label: '',
+    icon: null,
+  };
+};
+type IFormInputs = ReturnType<typeof initialValues>;
 
 export const EditQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
   answer,
@@ -38,72 +67,92 @@ export const EditQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
   const router = useRouter();
   const { t } = useTranslation();
 
-  const [createQuiz] = useCreateQuizMutation();
+  const [imagesSelectParams, imagesSelectActions] = usePaginatedState({
+    page: 1,
+    limit: 10,
+    merge: true,
+  });
+
+  const {
+    data: images,
+    isFetching: imagesFetching,
+    isSuccess: imagesSuccess,
+  } = useGetFilesInfiniteScrollQuery(imagesSelectParams);
+
+  const [updateQuizAnswer] = useUpdateAnswerMutation();
+
+  console.log('initialValues(answer)', initialValues(answer));
+  const {
+    handleSubmit,
+    formState: { isDirty, errors, isSubmitting },
+    control,
+    watch,
+    reset,
+  } = useForm<IFormInputs>({
+    mode: 'all',
+    defaultValues: initialValues(answer),
+    resolver: yupResolver(
+      object().shape({
+        label: string().required(t('Label is required')),
+        icon: object().nullable(),
+      })
+    ),
+  });
 
   const { showApiCallNotification } = useCommon();
-  const formik = useFormik({
-    initialValues: {
-      code: '',
-      name: '',
-      submit: null,
-    },
-    validationSchema: Yup.object({
-      code: Yup.string().required('Code is required'),
-      name: Yup.string().required('Password is required'),
-    }),
-    onSubmit: async (values, helpers): Promise<void> => {
-      try {
-        const quiz = await showApiCallNotification(
-          createQuiz({
-            code: values.code,
-            name: values.name,
-          }).unwrap(),
-          {
-            success: 'Creation operation failed',
-            pending: 'Creation operation pending',
 
-            error: {
-              render(err) {
-                return (
-                  <Grid container>
-                    <Grid item xs={12}>
-                      {t<string>(`Creation operation failed`)}:{' '}
-                      {err.data.status}
-                    </Grid>
-                    <Grid item xs={12}>
-                      {t<string>(err.data.data.message)}
-                    </Grid>
+  const mappedImages: SelectOption[] = useMemo(() => {
+    return (
+      images?.data?.map((image) => ({
+        label: image.id,
+        value: image.id,
+        icon: image,
+      })) ?? []
+    );
+  }, [images]);
+
+  const selectedIcon = watch('icon');
+  const onSubmit = (data: IFormInputs) => onSubmitHandler(data);
+  const onSubmitHandler = async (dataForm: IFormInputs) => {
+    try {
+      const apiAnswer = await showApiCallNotification(
+        updateQuizAnswer({
+          ...dataForm,
+          id: answer.id,
+          icon: dataForm.icon?.icon,
+        }).unwrap(),
+        {
+          success: 'Update operation Succesful',
+          pending: 'Update operation pending',
+
+          error: {
+            render(err) {
+              console.log('toast err', err);
+              return (
+                <Grid container>
+                  <Grid item xs={12}>
+                    {t<string>(`Update operation failed`)}: {err.data.status}
                   </Grid>
-                );
-              },
+                  <Grid item xs={12}>
+                    {t<string>(err.data.data.message)}
+                  </Grid>
+                </Grid>
+              );
             },
-          }
-        );
-
-        if (isMounted() && quiz) {
-          router.push(`quizes/${quiz.id}/edit`).catch(console.error);
-          onClose();
+          },
         }
-      } catch (err) {
-        console.error(err);
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-        if (isMounted()) {
-          helpers.setStatus({ success: false });
-          helpers.setErrors({
-            submit: err.data?.errors
-              ? Object.values(err.data?.errors).join(' | ')
-              : err.data.message,
-          });
-          helpers.setSubmitting(false);
-        }
-      }
-    },
-  });
   return (
     <Modal open={open} aria-labelledby='modal-modal-title'>
       <form
-        noValidate
-        onSubmit={formik.handleSubmit}
+        // noValidate
+        /// onSubmit={formik.handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         style={{ height: '100%' }}
       >
         <Box
@@ -124,18 +173,17 @@ export const EditQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
               mx: 'auto',
               outline: 'none',
               width: 600,
+              p: 3,
             }}
           >
             <Box
               sx={{
                 alignItems: 'center',
                 display: 'flex',
-                px: 2,
-                py: 1,
               }}
             >
               <Typography variant='h6' id='modal-modal-title'>
-                Ajouter un quiz
+                Modifier la réponse
               </Typography>
               <Box sx={{ flexGrow: 1 }} />
 
@@ -143,39 +191,87 @@ export const EditQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
                 <XIcon fontSize='small' />
               </IconButton>
             </Box>
-            <Box sx={{ px: 2 }}>
-              <TextField
-                autoFocus
-                error={Boolean(formik.touched.code && formik.errors.code)}
-                fullWidth
-                helperText={formik.touched.code && formik.errors.code}
-                label='Code'
-                margin='normal'
-                name='code'
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                type='text'
-                value={formik.values.code}
+            <Grid item xs={12} sx={{ mb: 3 }}>
+              <Typography sx={{ mb: 1 }} variant='subtitle2'>
+                Label
+              </Typography>
+              <Controller
+                name={'label'}
+                control={control}
+                // {...register(`prices.${index}.price`)}
+                render={({ field, fieldState: { error } }) => (
+                  <InputText
+                    field={field}
+                    sx={{ width: '100%' }}
+                    error={!!error}
+                    helperText={
+                      error?.message
+                        ? t<string>(error.message as unknown as string)
+                        : ''
+                    }
+                  />
+                )}
               />
+            </Grid>
 
-              <TextField
-                autoFocus
-                error={Boolean(formik.touched.name && formik.errors.name)}
-                fullWidth
-                helperText={formik.touched.name && formik.errors.name}
-                label='Name'
-                margin='normal'
-                name='name'
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                type='text'
-                value={formik.values.name}
-              />
-              {formik.errors.submit && (
-                <Box sx={{ mt: 3 }}>
-                  <FormHelperText error>{formik.errors.submit}</FormHelperText>
+            {selectedIcon && (
+              <Box
+                sx={{
+                  width: '400px',
+                  height: '400px',
+                  position: 'relative',
+                  borderRadius: 2,
+                  boxShadow: 1,
+                  overflow: 'hidden',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  '& .carousel-root': {
+                    flex: 1,
+                  },
+                  m: 'auto',
+                }}
+              >
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: '200px',
+                    position: 'relative',
+                  }}
+                >
+                  <Image
+                    src={selectedIcon.icon.path}
+                    alt={selectedIcon.icon.id}
+                    layout='fill'
+                    objectFit='contain'
+                  />
                 </Box>
-              )}
+              </Box>
+            )}
+            <Box sx={{ px: 2 }}>
+              <Controller
+                name='icon'
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <SelectWithSearchServer
+                    label={t('Selectionner un icon')}
+                    field={field}
+                    value={field.value}
+                    options={mappedImages}
+                    defaultValue={field.value}
+                    error={!!error}
+                    helperText={error?.message ? t<string>(error.message) : ''}
+                    hasMore={!!images && images.hasNextPage}
+                    onLaodMore={() => {
+                      imagesSelectActions.onSelectLoadMore();
+                    }}
+                    loading={imagesFetching}
+                    onSearch={(text) => {
+                      imagesSelectActions.onSelectSearch(text, 'search');
+                    }}
+                  />
+                )}
+              />
             </Box>
 
             <Box
@@ -188,13 +284,13 @@ export const EditQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
             >
               <Divider />
               <Button
-                disabled={formik.isSubmitting}
+                color='primary'
+                type='submit'
                 fullWidth
                 size='large'
-                type='submit'
                 variant='contained'
               >
-                {t('Ajouter')}
+                Sauvgarder
               </Button>
             </Box>
           </Paper>
