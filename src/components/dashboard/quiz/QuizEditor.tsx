@@ -328,7 +328,7 @@ function edgesGenerator(nodes: Node<NodeDataType>[]) {
           ? a.nextQuizNode.id.toString()
           : `end-${node.id}-${a.id}`,
         label: a.label,
-        data: a,
+        data: { ...a, hasSiblings: node.data.answers.length > 1 },
         type: 'answerEdge',
       });
     });

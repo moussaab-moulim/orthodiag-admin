@@ -25,10 +25,12 @@ import { Carousel } from 'react-responsive-carousel';
 import {
   useCreateQuizAnswerMutation,
   useCreateQuizNodeMutation,
+  useDeleteQuizNodeMutation,
 } from '@slices/quizReduxApi';
 import { useCommon } from '@hooks/useCommon';
 import { t } from 'i18next';
 import { EditQuizQuestionModal } from './EditQuizQuestionModal';
+import { DeleteQuizNodeModal } from './DeleteQuizNodeModal';
 export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
   data,
   xPos,
@@ -36,9 +38,10 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
   sourcePosition,
   targetPosition,
 }) => {
-  console.log('quiznod comp qustion', data.question);
+  console.log('quiznod comp qustion', data);
   const [createQuizNode] = useCreateQuizNodeMutation();
   const { showApiCallNotification } = useCommon();
+  const [deleteQuizNodeOpen, setDeleteQuizNodeOpen] = useState<boolean>(false);
 
   const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(false);
   const handleEditQuestionModalClose = () => {
@@ -66,7 +69,7 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
                     {t<string>(`Creation operation failed`)}: {err.data.status}
                   </Grid>
                   <Grid item xs={12}>
-                    {t<string>(err.data.data.message)}
+                    {t<string>(err?.data?.data?.message ?? `${err}`)}
                   </Grid>
                 </Grid>
               );
@@ -77,6 +80,10 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleDeleteClick = async () => {
+    setDeleteQuizNodeOpen(true);
   };
 
   return (
@@ -198,9 +205,11 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
         </Box>
 
         <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
-          <Button fullWidth variant='contained' disabled>
-            suprimer
-          </Button>
+          {!data.isRoot && (
+            <Button fullWidth variant='contained' onClick={handleDeleteClick}>
+              suprimer
+            </Button>
+          )}
           <Button fullWidth variant='contained' onClick={handleCreateQuizNode}>
             ajouter reponse
           </Button>
@@ -210,6 +219,14 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
         <EditQuizQuestionModal
           open={isEditQuestionModalOpen}
           onClose={handleEditQuestionModalClose}
+          quizNode={data}
+        />
+      )}
+
+      {deleteQuizNodeOpen && (
+        <DeleteQuizNodeModal
+          open={deleteQuizNodeOpen}
+          onClose={handleDeleteClick}
           quizNode={data}
         />
       )}

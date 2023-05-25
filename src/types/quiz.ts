@@ -38,7 +38,7 @@ export interface QuizNodeView {
 export interface QuizNodeTree {
   id: number;
   isInlineAnswers: boolean;
-  isRoot?: true;
+  isRoot?: boolean;
   question: Question | null;
 
   parentAnswer: Answer | null;
@@ -76,17 +76,19 @@ export interface Answer {
   label: string;
 
   nextQuizNode: QuizNodeTree | null;
+  parentQuizNode: QuizNodeTree | null;
 
   result: Result;
 
   icon?: FileEntity;
+
+  hasSiblings?: boolean;
 }
 
 export interface Result {
   id: number;
   problem: Problem[];
-  treatmentGroups: string[][];
-  treatments: Treatment[];
+  groupedTreatment: Treatment[][];
 }
 export interface Problem {
   id: number;

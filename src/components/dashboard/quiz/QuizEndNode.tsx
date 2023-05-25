@@ -5,17 +5,23 @@ import { NodeDataType } from '@interfaces/quiz';
 import { OpenWith } from '@mui/icons-material';
 
 import { EditQuizQuestionModal } from './EditQuizQuestionModal';
+import { EditQuizResultModal } from './EditQuizResultModal';
 export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
   data,
   xPos,
   yPos,
   targetPosition,
 }) => {
+  console.log('quiznod end comp ', data);
   const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(false);
   const [isEditResultModalOpen, setIsEditResultModalOpen] = useState(false);
 
   const handleEditQuestionModalClose = () => {
     setIsEditQuestionModalOpen(false);
+  };
+
+  const handleEditResultModalClose = () => {
+    setIsEditResultModalOpen(false);
   };
   return (
     <Box
@@ -59,14 +65,14 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
           </Button>
         </Box>
       </Paper>
-      {isEditQuestionModalOpen && (
-        <EditQuizQuestionModal
-          open={isEditQuestionModalOpen}
-          onClose={handleEditQuestionModalClose}
-          quizNode={data}
+      {isEditResultModalOpen && (
+        <EditQuizResultModal
+          open={isEditResultModalOpen}
+          onClose={handleEditResultModalClose}
+          answer={data.parentAnswer!}
         />
       )}
-      {isEditResultModalOpen && (
+      {isEditQuestionModalOpen && (
         <EditQuizQuestionModal
           open={isEditQuestionModalOpen}
           onClose={handleEditQuestionModalClose}

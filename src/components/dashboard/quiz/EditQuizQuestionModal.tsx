@@ -118,7 +118,7 @@ export const EditQuizQuestionModal: FC<EditQuizQuestionModalProps> = ({
                     {t<string>(`Update operation failed`)}: {err.data.status}
                   </Grid>
                   <Grid item xs={12}>
-                    {t<string>(err.data.data.message)}
+                    {t<string>(err?.data?.data?.message ?? `${err}`)}
                   </Grid>
                 </Grid>
               );
@@ -209,7 +209,7 @@ export const EditQuizQuestionModal: FC<EditQuizQuestionModalProps> = ({
                   onLaodMore={() => {
                     questionsSelectActions.onSelectLoadMore();
                   }}
-                  loading={false}
+                  loading={questionsFetching}
                   onSearch={(text) => {
                     questionsSelectActions.onSelectSearch(text, 'search');
                   }}

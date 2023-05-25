@@ -24,6 +24,7 @@ import { createTheme } from '@theme/index';
 import { Delete } from '@mui/icons-material';
 import { WithTooltip } from '@components/Tooltip';
 import { EditQuizAnswerModal } from './EditQuizAnswerModal';
+import { DeleteQuizAnswerModal } from './DeleteQuizAnswerModal';
 
 const foreignObjectSize = 150;
 export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
@@ -39,7 +40,7 @@ export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
   markerEnd,
 }) => {
   const [editAnswerOpen, setEditAnswerOpen] = useState<boolean>(false);
-
+  const [deleteAnswerOpen, setDeleteAnswerOpen] = useState<boolean>(false);
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
@@ -56,6 +57,13 @@ export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
 
   const handleEditClick = () => {
     setEditAnswerOpen(true);
+  };
+
+  const handleDeleteClick = () => {
+    setDeleteAnswerOpen(true);
+  };
+  const handleDeleteClose = () => {
+    setDeleteAnswerOpen(false);
   };
 
   const handleEditClose = () => {
@@ -129,7 +137,10 @@ export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
                 }}
               >
                 <Tooltip title='Supprimer'>
-                  <IconButton>
+                  <IconButton
+                    disabled={!data?.hasSiblings}
+                    onClick={handleDeleteClick}
+                  >
                     <Delete fontSize='small' />
                   </IconButton>
                 </Tooltip>
@@ -145,6 +156,11 @@ export const AnswerEdgeComponent: FC<EdgeProps<Answer>> = ({
             answer={data!}
             open={editAnswerOpen}
             onClose={handleEditClose}
+          />
+          <DeleteQuizAnswerModal
+            answer={data!}
+            onClose={handleDeleteClose}
+            open={deleteAnswerOpen}
           />
         </Box>
       </foreignObject>

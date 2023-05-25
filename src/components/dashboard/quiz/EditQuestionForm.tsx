@@ -149,7 +149,7 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
                     {t<string>(`Update operation failed`)}: {err.data.status}
                   </Grid>
                   <Grid item xs={12}>
-                    {t<string>(err.data.data.message)}
+                    {t<string>(err?.data?.data?.message ?? `${err}`)}
                   </Grid>
                 </Grid>
               );

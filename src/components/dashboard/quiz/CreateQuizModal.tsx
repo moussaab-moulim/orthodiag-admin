@@ -73,7 +73,7 @@ export const CreateQuizModal: FC<CreateQuizModalProps> = ({
                       {err.data.status}
                     </Grid>
                     <Grid item xs={12}>
-                      {t<string>(err.data.data.message)}
+                      {t<string>(err?.data?.data?.message ?? `${err}`)}
                     </Grid>
                   </Grid>
                 );
