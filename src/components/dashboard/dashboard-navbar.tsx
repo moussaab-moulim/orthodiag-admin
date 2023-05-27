@@ -24,6 +24,8 @@ import { ContactsPopover } from './contacts-popover';
 import { ContentSearchDialog } from './content-search-dialog';
 import { NotificationsPopover } from './notifications-popover';
 import { LanguagePopover } from './language-popover';
+import { useAuth } from '@hooks/use-auth';
+import { userAvatar } from '@utils/constants';
 
 interface DashboardNavbarProps extends AppBarProps {
   onOpenSidebar?: () => void;
@@ -31,10 +33,10 @@ interface DashboardNavbarProps extends AppBarProps {
 
 type Language = 'en' | 'de' | 'es' | 'fr';
 
-const languages: Record<Language, string> = {
+const languages: Partial<Record<Language, string>> = {
   en: '/static/icons/uk_flag.svg',
-  de: '/static/icons/de_flag.svg',
-  es: '/static/icons/es_flag.svg',
+  // de: '/static/icons/de_flag.svg',
+  // es: '/static/icons/es_flag.svg',
   fr: '/static/icons/fr_flag.svg',
 };
 
@@ -186,12 +188,14 @@ const NotificationsButton = () => {
 const AccountButton = () => {
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const [openPopover, setOpenPopover] = useState<boolean>(false);
-  // To get the user from the authContext, you can use
-  // `const { user } = useAuth();`
-  const user = {
+  //To get the user from the authContext, you can use
+
+  const { user } = useAuth();
+
+  /*   const user = {
     avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
     name: 'Anika Visser',
-  };
+  }; */
 
   const handleOpenPopover = (): void => {
     setOpenPopover(true);
@@ -218,7 +222,7 @@ const AccountButton = () => {
             height: 40,
             width: 40,
           }}
-          src={user.avatar}
+          src={user?.photo?.path}
         >
           <UserCircleIcon fontSize='small' />
         </Avatar>
@@ -268,12 +272,12 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
             <MenuIcon fontSize='small' />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
-          fd
+
           <LanguageButton />
-          fd
-          <ContentSearchButton />
-          <ContactsButton />
-          <NotificationsButton />
+
+          {/* <ContentSearchButton /> */}
+          {/* <ContactsButton /> */}
+          {/* <NotificationsButton /> */}
           <AccountButton />
         </Toolbar>
       </DashboardNavbarRoot>

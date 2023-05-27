@@ -51,3 +51,5 @@ export const backendFilterOperators: Record<string, string> = {
 export enum cookie {
   ESTABLISHMENT = 'establishment',
 }
+
+export const userAvatar = '/static/mock-images/avatars/avatar-user.png';

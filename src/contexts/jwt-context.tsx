@@ -125,7 +125,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 
         if (accessToken) {
           const user = await authApiMe(accessToken).unwrap();
-
+          console.log('user===>', user);
           dispatch({
             type: ActionType.INITIALIZE,
             payload: {

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import toast from 'react-toastify';
+import { toast } from 'react-toastify';
 import {
   Avatar,
   Box,
@@ -28,13 +28,12 @@ interface AccountPopoverProps {
 export const AccountPopover: FC<AccountPopoverProps> = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
   const router = useRouter();
-  const { logout } = useAuth();
-  // To get the user from the authContext, you can use
-  // `const { user } = useAuth();`
-  const user = {
+  const { logout, user } = useAuth();
+
+  /*   const user = {
     avatar: '/static/mock-images/avatars/avatar-anika_visser.png',
     name: 'Anika Visser',
-  };
+  }; */
 
   const handleLogout = async (): Promise<void> => {
     try {
@@ -69,7 +68,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
         }}
       >
         <Avatar
-          src={user.avatar}
+          src={user?.photo?.path}
           sx={{
             height: 40,
             width: 40,
@@ -82,15 +81,17 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             ml: 1,
           }}
         >
-          <Typography variant='body1'>{user.name}</Typography>
-          <Typography color='textSecondary' variant='body2'>
-            Acme Inc
+          <Typography variant='body1'>
+            {user?.firstName} {user?.lastName}
           </Typography>
+          {/*   <Typography color='textSecondary' variant='body2'>
+            Acme Inc
+          </Typography> */}
         </Box>
       </Box>
       <Divider />
       <Box sx={{ my: 1 }}>
-        <NextLink href='/dashboard/social/profile' passHref>
+        {/*   <NextLink href='/dashboard/social/profile' passHref>
           <MenuItem component='a'>
             <ListItemIcon>
               <UserCircleIcon fontSize='small' />
@@ -121,7 +122,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
               }
             />
           </MenuItem>
-        </NextLink>
+        </NextLink> */}
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

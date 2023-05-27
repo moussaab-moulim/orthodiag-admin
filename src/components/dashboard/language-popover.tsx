@@ -10,6 +10,7 @@ import {
   Popover,
   Typography,
 } from '@mui/material';
+import Image from 'next/image';
 
 interface LanguagePopoverProps {
   anchorEl: null | Element;
@@ -26,19 +27,19 @@ type LanguageOptions = {
   };
 };
 
-const languageOptions: LanguageOptions = {
+const languageOptions: Partial<LanguageOptions> = {
   en: {
     icon: '/static/icons/uk_flag.svg',
     label: 'English',
   },
-  de: {
+  /*  de: {
     icon: '/static/icons/de_flag.svg',
     label: 'German',
   },
   es: {
     icon: '/static/icons/es_flag.svg',
     label: 'Spanish',
-  },
+  }, */
   fr: {
     icon: '/static/icons/fr_flag.svg',
     label: 'Français',
@@ -82,16 +83,18 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
                 },
               }}
             >
-              <img
-                alt={languageOptions[language].label}
-                src={languageOptions[language].icon}
+              <Image
+                width={20}
+                height={20}
+                alt={languageOptions[language]?.label ?? ''}
+                src={languageOptions[language]?.icon ?? ''}
               />
             </Box>
           </ListItemIcon>
           <ListItemText
             primary={
               <Typography variant='subtitle2'>
-                {languageOptions[language].label}
+                {languageOptions[language]?.label ?? ''}
               </Typography>
             }
           />

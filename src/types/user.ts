@@ -1,8 +1,15 @@
+import { FileEntity } from './quiz';
+
 export interface User {
   id: string;
-  avatar?: string;
   email: string;
-  name: string;
-
-  [key: string]: any;
+  provider: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  conditionsAccepted: boolean;
+  phoneNumber: string;
+  photo: FileEntity;
+  role: { id: number; name: string };
+  status: { id: number; name: string };
 }
