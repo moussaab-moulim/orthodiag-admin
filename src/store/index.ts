@@ -15,6 +15,9 @@ import { passApi } from '@slices/pass';
 import { quizApi } from '@slices/quizReduxApi';
 import { createWrapper } from 'next-redux-wrapper';
 import { fileApi } from '@slices/fileReduxApi';
+import { problemApi } from '@slices/problemReduxApi';
+import { questionApi } from '@slices/questionReduxApi';
+import { treatmentApi } from '@slices/treatmentReduxApi';
 
 export const store = () =>
   configureStore({
@@ -27,6 +30,9 @@ export const store = () =>
       [calendarSlice.name]: calendarSlice.reducer,
       [chatSlice.name]: chatSlice.reducer,
       [mailSlice.name]: mailSlice.reducer,
+      [problemApi.reducerPath]: problemApi.reducer,
+      [questionApi.reducerPath]: questionApi.reducer,
+      [treatmentApi.reducerPath]: treatmentApi.reducer,
     },
     devTools: process.env.NEXT_PUBLIC_ENABLE_REDUX_DEV_TOOLS === 'true',
     middleware: (getDefaultMiddleware) =>
@@ -34,7 +40,10 @@ export const store = () =>
         authenticationApi.middleware,
         passApi.middleware,
         quizApi.middleware,
-        fileApi.middleware
+        fileApi.middleware,
+        problemApi.middleware,
+        questionApi.middleware,
+        treatmentApi.middleware
       ),
   });
 export type AppStore = ReturnType<typeof store>;

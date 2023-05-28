@@ -1,7 +1,8 @@
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import React, { Fragment, ReactElement } from 'react';
+import React, { Fragment, ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
+import { QuillEditor } from '@components/quill-editor';
 
 interface IProps {
   name?: string;
@@ -13,7 +14,7 @@ interface IProps {
   field: any;
   disabled?: boolean;
   type?: React.InputHTMLAttributes<unknown>['type'];
-  design?: 'wyswig' | 'default' | 'textarea';
+  design?: 'wyswig' | 'default' | 'textarea' | 'richtext';
   onChange?: (...event: any[]) => void;
   inputStartAdornment?: string | ReactElement;
   inputEndAdornment?: string | ReactElement;
@@ -48,6 +49,7 @@ const InputText = ({
   shrink,
 }: IProps) => {
   const router = useRouter();
+
   return (
     <FormControl id={id} sx={sx} error={error}>
       {((design) => {
@@ -80,6 +82,17 @@ const InputText = ({
                 variant={variant ?? 'outlined'}
                 inputProps={inputProps ?? {}}
                 InputLabelProps={{ shrink: shrink }}
+              />
+            );
+          case 'richtext':
+            return (
+              <QuillEditor
+                sx={{
+                  border: 'none',
+                  flexGrow: 1,
+                }}
+                {...field}
+                onChange={onChange ?? field.onChange}
               />
             );
 
