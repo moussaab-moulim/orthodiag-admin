@@ -95,7 +95,7 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
       })
     ),
   });
-
+  console.log('question', watch('description'));
   useEffect(() => {
     reset(initialQuestion(question));
   }, [question]);
@@ -235,6 +235,7 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
               // {...register(`prices.${index}.price`)}
               render={({ field, fieldState: { error } }) => (
                 <InputText
+                  design='richtext'
                   field={field}
                   sx={{ width: '100%' }}
                   multiline
@@ -271,7 +272,25 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
             <Carousel
               autoPlay={false}
               infiniteLoop={false}
-              showThumbs={true}
+              renderThumbs={() =>
+                watch('images').map((img, idx) => (
+                  <Box
+                    key={idx}
+                    sx={{
+                      width: '100%',
+                      height: 50,
+                      position: 'relative',
+                    }}
+                  >
+                    <Image
+                      src={img.icon?.path}
+                      layout='fill'
+                      objectFit='contain'
+                      alt={img.label}
+                    ></Image>
+                  </Box>
+                ))
+              }
               showIndicators={false}
             >
               {watch('images').map((i, index) => (
@@ -295,7 +314,7 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
             </Carousel>
           </Box>
         )}
-        <Box sx={{ px: 2 }}>
+        <Box sx={{ px: 2, mt: 4 }}>
           <Controller
             name='images'
             control={control}

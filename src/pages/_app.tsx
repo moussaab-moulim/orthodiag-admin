@@ -29,6 +29,8 @@ import '../i18n';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'reactflow/dist/style.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+
 type EnhancedAppProps = AppProps & {
   Component: NextPage;
   emotionCache: EmotionCache;

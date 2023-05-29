@@ -49,7 +49,7 @@ const InputText = ({
   shrink,
 }: IProps) => {
   const router = useRouter();
-
+  console.log('field.ref', field.ref);
   return (
     <FormControl id={id} sx={sx} error={error}>
       {((design) => {
@@ -87,11 +87,12 @@ const InputText = ({
           case 'richtext':
             return (
               <QuillEditor
+                type='markdown'
                 sx={{
-                  border: 'none',
                   flexGrow: 1,
                 }}
-                {...field}
+                field={field}
+                value={field.value}
                 onChange={onChange ?? field.onChange}
               />
             );
