@@ -79,7 +79,6 @@ export const problemApi = createApi({
     }),
     updateProblem: build.mutation<void, UpdateProblem>({
       query: ({ id, ...body }) => {
-        console.log('update body', body);
         return {
           url: `/problem/${id}`,
           method: 'PATCH',

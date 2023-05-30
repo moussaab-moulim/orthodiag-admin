@@ -51,7 +51,7 @@ const QuestionEdit: NextPage = () => {
           py: 8,
         }}
       >
-        {!isFetching ? (
+        {!isFetching && question ? (
           <Container>
             <Box sx={{ mb: 4 }}>
               <NextLink href='/dashboard/quiz/questions' passHref>
@@ -94,17 +94,17 @@ const QuestionEdit: NextPage = () => {
               </div>
             </Box>
             <Box mt={3}>
-              <EditQuestionForm question={question} />
+              <EditQuestionForm disabled={false} question={question} />
             </Box>
           </Container>
         ) : (
           <Container maxWidth='md'>
             <Grid container>
-              <Grid xs={12} item>
-                <LoadingSkeleton />{' '}
+              <Grid xs={12} sx={{ mb: 4 }} item>
+                <LoadingSkeleton sx={{ height: 100 }} />{' '}
               </Grid>
               <Grid xs={12} item>
-                <LoadingSkeleton />
+                <LoadingSkeleton sx={{ height: 400 }} />
               </Grid>
             </Grid>
           </Container>

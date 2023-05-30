@@ -51,7 +51,7 @@ const TreatmentEdit: NextPage = () => {
           py: 8,
         }}
       >
-        {!isFetching ? (
+        {!isFetching && treatment ? (
           <Container>
             <Box sx={{ mb: 4 }}>
               <NextLink href='/dashboard/quiz/treatments' passHref>
@@ -94,17 +94,17 @@ const TreatmentEdit: NextPage = () => {
               </div>
             </Box>
             <Box mt={3}>
-              <EditTreatmentForm treatment={treatment} />
+              <EditTreatmentForm treatment={treatment} disabled={false} />
             </Box>
           </Container>
         ) : (
           <Container maxWidth='md'>
             <Grid container>
-              <Grid xs={12} item>
-                <LoadingSkeleton />{' '}
+              <Grid xs={12} sx={{ mb: 4 }} item>
+                <LoadingSkeleton sx={{ height: 100 }} />{' '}
               </Grid>
               <Grid xs={12} item>
-                <LoadingSkeleton />
+                <LoadingSkeleton sx={{ height: 400 }} />
               </Grid>
             </Grid>
           </Container>

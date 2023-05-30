@@ -25,7 +25,7 @@ import { useRouter } from 'next/router';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { DataErrorComponent } from '@components/ErroComponents';
 import { LoadingSkeleton } from '@components/Loading';
-import { EditProblemForm } from '@components/dashboard/quiz/EditProblemForm';
+import { EditProblemForm } from '@components/dashboard/quiz/EditProblemFrom';
 
 const ProblemEdit: NextPage = () => {
   const router = useRouter();
@@ -51,7 +51,7 @@ const ProblemEdit: NextPage = () => {
           py: 8,
         }}
       >
-        {!isFetching ? (
+        {!isFetching && problem ? (
           <Container>
             <Box sx={{ mb: 4 }}>
               <NextLink href='/dashboard/quiz/problems' passHref>
@@ -64,7 +64,7 @@ const ProblemEdit: NextPage = () => {
                   }}
                 >
                   <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
-                  <Typography variant='subtitle2'>Problemes</Typography>
+                  <Typography variant='subtitle2'>Problems</Typography>
                 </Link>
               </NextLink>
             </Box>
@@ -94,17 +94,17 @@ const ProblemEdit: NextPage = () => {
               </div>
             </Box>
             <Box mt={3}>
-              <EditProblemForm problem={problem} />
+              <EditProblemForm problem={problem} disabled={false} />
             </Box>
           </Container>
         ) : (
           <Container maxWidth='md'>
             <Grid container>
-              <Grid xs={12} item>
-                <LoadingSkeleton />{' '}
+              <Grid xs={12} sx={{ mb: 4 }} item>
+                <LoadingSkeleton sx={{ height: 100 }} />{' '}
               </Grid>
               <Grid xs={12} item>
-                <LoadingSkeleton />
+                <LoadingSkeleton sx={{ height: 400 }} />
               </Grid>
             </Grid>
           </Container>

@@ -81,7 +81,6 @@ export const EditQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
 
   const [updateQuizAnswer] = useUpdateAnswerMutation();
 
-  console.log('initialValues(answer)', initialValues(answer));
   const {
     handleSubmit,
     formState: { isDirty, errors, isSubmitting },

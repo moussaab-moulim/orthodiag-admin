@@ -53,7 +53,6 @@ export const EditQuizQuestionModal: FC<EditQuizQuestionModalProps> = ({
   onClose,
   quizNode,
 }: EditQuizQuestionModalProps) => {
-  console.log('currentQuest', quizNode.question);
   const isMounted = () => true;
   const router = useRouter();
   const { t } = useTranslation();
@@ -98,7 +97,6 @@ export const EditQuizQuestionModal: FC<EditQuizQuestionModalProps> = ({
   } = useGetQuestionsInfiniteScrollQuery(questionsSelectParams);
 
   const handleQuestionSelected = async (event: any) => {
-    console.log('selcted question', event);
     try {
       const answer = await showApiCallNotification(
         updateQuizNode({
@@ -145,7 +143,7 @@ export const EditQuizQuestionModal: FC<EditQuizQuestionModalProps> = ({
 
     return qs;
   }, [questions, quizNode]);
-  console.log('mapped', mappedQuestions);
+
   return (
     <Modal
       open={open}

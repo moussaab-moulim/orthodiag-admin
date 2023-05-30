@@ -129,9 +129,6 @@ const getLayoutedElements = (
     return node;
   });
 
-  console.log('LayoutNodes', nodes);
-  console.log('LayoutEdges', edges);
-
   return { nodes, edges };
 };
 
@@ -152,14 +149,11 @@ export const QuizEditor: FC<QuizEditorProps> = (props) => {
   const [edges, setEdges] = useState<Edge<Answer>[]>([]);
 
   const [displayMode, setDisplayMode] = useState<string>('LR');
-  console.log('dis', displayMode);
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
-    console.log('noode changes', changes);
     return setNodes((nds) => applyNodeChanges(changes, nds));
   }, []);
   const onEdgesChange = useCallback((changes: EdgeChange[]) => {
-    console.log('edges changes', changes);
     return setEdges((eds) => applyEdgeChanges(changes, eds));
   }, []);
 
@@ -173,8 +167,7 @@ export const QuizEditor: FC<QuizEditorProps> = (props) => {
 
       const { nodes: layoutedNodes, edges: layoutedEdges } =
         getLayoutedElements(initNodes, initEdges, displayMode);
-      console.log('iniit Nodes', initNodes);
-      console.log('Layout Nodes', layoutedNodes);
+
       setNodes(layoutedNodes);
       setEdges(layoutedEdges);
     }
@@ -313,7 +306,7 @@ function nodeMapper(
 
 function edgesGenerator(nodes: Node<NodeDataType>[]) {
   const edges: Edge<Answer>[] = [];
-  console.log('start nodes', nodes);
+
   nodes.forEach((node) => {
     node.data.answers.forEach((a) => {
       edges.push({

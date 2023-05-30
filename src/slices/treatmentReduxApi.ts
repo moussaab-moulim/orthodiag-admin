@@ -53,8 +53,9 @@ export const treatmentApi = createApi({
   ],
   endpoints: (build) => ({
     getTreatmentes: build.query<Paginated<Treatment>, PageParams>({
-      //   query: (params: PageParams) => `/treatment${toQueryParams({ ...params })}`,
-      query: (params: PageParams) => `${toQueryParams({ ...params })}`,
+      query: (params: PageParams) =>
+        `/treatment${toQueryParams({ ...params })}`,
+      //query: (params: PageParams) => `${toQueryParams({ ...params })}`,
 
       keepUnusedDataFor: 30,
       transformResponse: (value) => {
@@ -85,7 +86,6 @@ export const treatmentApi = createApi({
     }),
     updateTreatment: build.mutation<void, UpdateTreatment>({
       query: ({ id, ...body }) => {
-        console.log('update body', body);
         return {
           url: `/treatment/${id}`,
           method: 'PATCH',

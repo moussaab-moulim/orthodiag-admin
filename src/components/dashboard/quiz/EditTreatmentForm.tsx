@@ -40,27 +40,12 @@ interface EditTreatmentFormProps {
   disabled: boolean;
 }
 
-const htmlToMarkdown = (htmlText: string) => {
-  const file = remark()
-    .use(rehypeParse, { emitParseErrors: true, duplicateAttribute: false })
-    .use(rehypeRemark)
-    .use(remarkStringify)
-    .processSync(htmlText);
-
-  return String(file);
-};
-
-const markdownToHtml = (markdownText: string) => {
-  const file = remark().use(remarkHtml).processSync(markdownText);
-  return String(file);
-};
-
 const initialTreatment = (treatment?: Treatment) => {
   if (treatment) {
     return {
       code: treatment.code,
       name: treatment.name,
-      description: markdownToHtml(treatment.description),
+      description: treatment.description,
       images: treatment.images.map((i) => ({
         label: i.id,
         value: i.id,
@@ -71,7 +56,7 @@ const initialTreatment = (treatment?: Treatment) => {
 
   return {
     code: '',
-    treatment: '',
+    name: '',
     description: '',
     images: [],
   };
@@ -109,7 +94,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
     resolver: yupResolver(
       object().shape({
         code: string().required(t('Code is required')),
-        treatment: string().required(t('Treatment is required')),
+        name: string().required(t('Name is required')),
 
         description: string(),
         images: array(),
@@ -150,6 +135,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
   const onSubmit = (data: IFormInputs) => onSubmitHandler(data);
 
   const onSubmitHandler = async (dataForm: IFormInputs) => {
+    console.log('dataForm', dataForm);
     try {
       const answer = await showApiCallNotification(
         updateQuizTreatment({
@@ -157,7 +143,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
           id: treatment.id,
           images: dataForm.images.map((im) => im.icon!),
           //send description as markdown
-          description: htmlToMarkdown(dataForm.description),
+          description: dataForm.description,
         }).unwrap(),
         {
           success: 'Update operation Succesful',
@@ -300,7 +286,25 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
             <Carousel
               autoPlay={false}
               infiniteLoop={false}
-              showThumbs={true}
+              renderThumbs={() =>
+                watch('images').map((img, idx) => (
+                  <Box
+                    key={idx}
+                    sx={{
+                      width: '100%',
+                      height: 50,
+                      position: 'relative',
+                    }}
+                  >
+                    <Image
+                      src={img.icon?.path}
+                      layout='fill'
+                      objectFit='contain'
+                      alt={img.label}
+                    ></Image>
+                  </Box>
+                ))
+              }
               showIndicators={false}
             >
               {watch('images').map((i, index) => (

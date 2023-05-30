@@ -47,8 +47,6 @@ interface EditQuizResultModalProps {
 }
 
 const initialValues = (result?: Result) => {
-  console.log('props Result', result);
-
   if (result) {
     return {
       problem: result.problem.map((prb) => ({
@@ -122,8 +120,6 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
     reset(initialValues(result));
   }, [result]);
 
-  console.log('treatmentGroups', treatmentGroups);
-
   const [problemsSelectParams, problemsSelectActions] = usePaginatedState({
     page: 1,
     limit: 10,
@@ -158,14 +154,6 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
   const onSubmit = (data: IFormInputs) => onSubmitHandler(data);
   const onSubmitHandler = async (dataForm: IFormInputs) => {
     try {
-      console.log('final form results', {
-        id: answer.result.id,
-        answer: { id: answer.id },
-        treatments: dataForm.treatments.map((grp) =>
-          grp.map((trt) => ({ id: Number(trt.value) }))
-        ),
-        problem: dataForm.problem.map((prb) => ({ id: Number(prb.value) })),
-      });
       const apiAnswer = await showApiCallNotification(
         updateResult({
           id: answer.result.id,
@@ -341,7 +329,6 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
                     size='small'
                     variant='outlined'
                     onClick={() => {
-                      console.log('appending');
                       append([[]]);
                     }}
                   >

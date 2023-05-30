@@ -95,7 +95,7 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
       })
     ),
   });
-  console.log('question', watch('description'));
+
   useEffect(() => {
     reset(initialQuestion(question));
   }, [question]);

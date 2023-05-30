@@ -94,7 +94,7 @@ export const SelectWithSearchServer = <
       } else return [];
     }
   }, [field.value]);
-  console.log('defaultValue', defaultValue);
+
   const [searchText, setSearchText] = useState<string>('');
 
   const debounceOnSearch = useDebouncedCallback((value: string) => {

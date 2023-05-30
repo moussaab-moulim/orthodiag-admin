@@ -73,12 +73,6 @@ export const fileApi = createApi({
         return endpointName;
       },
       merge: (currentCacheData, responseData, otherArgs) => {
-        console.log(
-          'currentCacheData.hasNextPage',
-          currentCacheData.hasNextPage,
-          'responseData.hasNextPage',
-          responseData.hasNextPage
-        );
         if (otherArgs.arg['merge'] === false) {
           currentCacheData.data = responseData.data;
         } else {
@@ -88,10 +82,6 @@ export const fileApi = createApi({
         currentCacheData.totalCount = responseData.totalCount;
       },
       transformResponse: (value) => {
-        console.log(
-          'paginatedDto',
-          paginatedDto(value as NestPaginated<FileEntity>)
-        );
         return paginatedDto(value as NestPaginated<FileEntity>);
       },
       forceRefetch({ currentArg, previousArg }) {

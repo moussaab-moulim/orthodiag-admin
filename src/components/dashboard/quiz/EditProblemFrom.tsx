@@ -41,28 +41,12 @@ interface EditProblemFormProps {
   disabled: boolean;
 }
 
-const htmlToMarkdown = (htmlText: string) => {
-  const file = remark()
-    .use(rehypeParse, { emitParseErrors: true, duplicateAttribute: false })
-    .use(rehypeRemark)
-    .use(remarkStringify)
-    .processSync(htmlText);
-
-  return String(file);
-};
-
-const markdownToHtml = (markdownText: string) => {
-  const file = remark().use(remarkHtml).processSync(markdownText);
-  console.log('file ', file);
-  return String(file);
-};
-
 const initialProblem = (problem?: Problem) => {
   if (problem) {
     return {
       code: problem.code,
       name: problem.name,
-      description: markdownToHtml(problem.description),
+      description: problem.description,
       images: problem.images.map((i) => ({
         label: i.id,
         value: i.id,
@@ -73,7 +57,7 @@ const initialProblem = (problem?: Problem) => {
 
   return {
     code: '',
-    problem: '',
+    name: '',
     description: '',
     images: [],
   };
@@ -111,7 +95,7 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
     resolver: yupResolver(
       object().shape({
         code: string().required(t('Code is required')),
-        problem: string().required(t('Problem is required')),
+        name: string().required(t('Name is required')),
 
         description: string(),
         images: array(),
@@ -150,15 +134,18 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
   }, [problem, images]);
 
   const onSubmit = (data: IFormInputs) => onSubmitHandler(data);
-
+  console.log('watch', watch());
   const onSubmitHandler = async (dataForm: IFormInputs) => {
+    console.log('submitting', dataForm);
+
     try {
       const answer = await showApiCallNotification(
         updateQuizProblem({
           ...dataForm,
           id: problem.id,
+          name: dataForm.name,
           images: dataForm.images.map((im) => im.icon!),
-          description: htmlToMarkdown(dataForm.description),
+          description: dataForm.description,
         }).unwrap(),
         {
           success: 'Update operation Succesful',
@@ -185,7 +172,7 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
       console.error(err);
     }
   };
-
+  console.log('errors', errors);
   return (
     <Box
       sx={{
@@ -296,7 +283,25 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
             <Carousel
               autoPlay={false}
               infiniteLoop={false}
-              showThumbs={true}
+              renderThumbs={() =>
+                watch('images').map((img, idx) => (
+                  <Box
+                    key={idx}
+                    sx={{
+                      width: '100%',
+                      height: 50,
+                      position: 'relative',
+                    }}
+                  >
+                    <Image
+                      src={img.icon?.path}
+                      layout='fill'
+                      objectFit='contain'
+                      alt={img.label}
+                    ></Image>
+                  </Box>
+                ))
+              }
               showIndicators={false}
             >
               {watch('images').map((i, index) => (
@@ -320,7 +325,7 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
             </Carousel>
           </Box>
         )}
-        <Box sx={{ px: 2 }}>
+        <Box sx={{ px: 2, mt: 4 }}>
           <Controller
             name='images'
             control={control}

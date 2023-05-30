@@ -38,7 +38,6 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
   sourcePosition,
   targetPosition,
 }) => {
-  console.log('quiznod comp qustion', data);
   const [createQuizNode] = useCreateQuizNodeMutation();
   const { showApiCallNotification } = useCommon();
   const [deleteQuizNodeOpen, setDeleteQuizNodeOpen] = useState<boolean>(false);
@@ -50,8 +49,6 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
 
   const handleCreateQuizNode = async () => {
     try {
-      console.log('pos', { positionX: xPos, positionY: yPos });
-
       const answer = await showApiCallNotification(
         createQuizNode({
           previousNode: { id: data.id },

@@ -49,7 +49,7 @@ const InputText = ({
   shrink,
 }: IProps) => {
   const router = useRouter();
-  console.log('field.ref', field.ref);
+
   return (
     <FormControl id={id} sx={sx} error={error}>
       {((design) => {

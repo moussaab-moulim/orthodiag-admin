@@ -159,7 +159,6 @@ export const quizApi = createApi({
 
     deleteQuizNode: build.mutation<void, number>({
       query: (id) => {
-        console.log('data.id', id);
         return {
           url: `/quizNode/${id}`,
           method: 'DELETE',
@@ -223,7 +222,6 @@ export const quizApi = createApi({
         currentCacheData.totalCount = responseData.totalCount;
       },
       transformResponse: (value) => {
-        console.log('api before transform', value);
         return paginatedDto(value as NestPaginated<Question>);
       },
       forceRefetch({ currentArg, previousArg }) {
@@ -233,7 +231,6 @@ export const quizApi = createApi({
 
     updateQuestion: build.mutation<void, UpdateQuestion>({
       query: ({ id, ...body }) => {
-        console.log('update body', body);
         return {
           url: `/question/${id}`,
           method: 'PATCH',

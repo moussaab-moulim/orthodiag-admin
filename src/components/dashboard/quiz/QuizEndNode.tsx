@@ -12,7 +12,6 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
   yPos,
   targetPosition,
 }) => {
-  console.log('quiznod end comp ', data);
   const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(false);
   const [isEditResultModalOpen, setIsEditResultModalOpen] = useState(false);
 
