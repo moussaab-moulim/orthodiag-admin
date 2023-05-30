@@ -27,16 +27,20 @@ import { usePaginatedState } from '@hooks/usePaginatedState';
 import { PageParams } from '@interfaces/common';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
 import { useCommon } from '@hooks/useCommon';
-import { useUpdateTreatmentMutation } from '@slices/treatmentReduxApi';
+import {
+  useCreateTreatmentMutation,
+  useUpdateTreatmentMutation,
+} from '@slices/treatmentReduxApi';
 import { remark } from 'remark';
 import remarkHtml from 'remark-html';
 
 import rehypeParse from 'rehype-parse';
 import rehypeRemark from 'rehype-remark';
 import remarkStringify from 'remark-stringify';
+import { useRouter } from 'next/router';
 
 interface EditTreatmentFormProps {
-  treatment: Treatment;
+  treatment?: Treatment;
   disabled: boolean;
 }
 
@@ -66,6 +70,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
   treatment,
   disabled,
 }) => {
+  const router = useRouter();
   const { t } = useTranslation();
   const { showApiCallNotification } = useCommon();
   const [imagesSelectParams, imagesSelectActions] = usePaginatedState({
@@ -81,6 +86,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
   } = useGetFilesInfiniteScrollQuery(imagesSelectParams);
 
   const [updateQuizTreatment] = useUpdateTreatmentMutation();
+  const [createQuizTreatment] = useCreateTreatmentMutation();
 
   const {
     handleSubmit,
@@ -137,35 +143,68 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
   const onSubmitHandler = async (dataForm: IFormInputs) => {
     console.log('dataForm', dataForm);
     try {
-      const answer = await showApiCallNotification(
-        updateQuizTreatment({
-          ...dataForm,
-          id: treatment.id,
-          images: dataForm.images.map((im) => im.icon!),
-          //send description as markdown
-          description: dataForm.description,
-        }).unwrap(),
-        {
-          success: 'Update operation Succesful',
-          pending: 'Update operation pending',
+      if (!treatment) {
+        //create
 
-          error: {
-            render(err) {
-              console.log('toast err', err);
-              return (
-                <Grid container>
-                  <Grid item xs={12}>
-                    {t<string>(`Update operation failed`)}: {err.data.status}
+        const answer = await showApiCallNotification(
+          createQuizTreatment({
+            ...dataForm,
+            images: dataForm.images.map((im) => im.icon!),
+          }).unwrap(),
+          {
+            success: 'Creation operation Succesful',
+            pending: 'Creation operation pending',
+
+            error: {
+              render(err) {
+                console.log('toast err', err);
+                return (
+                  <Grid container>
+                    <Grid item xs={12}>
+                      {t<string>(`Creation operation failed`)}:{' '}
+                      {err.data.status}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {t<string>(err?.data?.data?.message ?? `${err}`)}
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    {t<string>(err.data.data.message)}
-                  </Grid>
-                </Grid>
-              );
+                );
+              },
             },
-          },
-        }
-      );
+          }
+        );
+        router.push(`${router.route.replace('/new', `/${answer.id}/edit`)}`);
+      } else {
+        const answer = await showApiCallNotification(
+          updateQuizTreatment({
+            ...dataForm,
+            id: treatment.id,
+            images: dataForm.images.map((im) => im.icon!),
+            //send description as markdown
+            description: dataForm.description,
+          }).unwrap(),
+          {
+            success: 'Update operation Succesful',
+            pending: 'Update operation pending',
+
+            error: {
+              render(err) {
+                console.log('toast err', err);
+                return (
+                  <Grid container>
+                    <Grid item xs={12}>
+                      {t<string>(`Update operation failed`)}: {err.data.status}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {t<string>(err.data.data.message)}
+                    </Grid>
+                  </Grid>
+                );
+              },
+            },
+          }
+        );
+      }
     } catch (err) {
       console.error(err);
     }

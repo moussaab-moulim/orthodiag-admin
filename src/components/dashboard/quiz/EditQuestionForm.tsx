@@ -27,10 +27,13 @@ import { usePaginatedState } from '@hooks/usePaginatedState';
 import { PageParams } from '@interfaces/common';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
 import { useCommon } from '@hooks/useCommon';
+
+import { useRouter } from 'next/router';
 import { useUpdateQuestionMutation } from '@slices/quizReduxApi';
+import { useCreateQuestionMutation } from '@slices/questionReduxApi';
 
 interface EditQuestionFormProps {
-  question: Question;
+  question?: Question;
   disabled: boolean;
 }
 
@@ -62,6 +65,7 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
 }) => {
   const { t } = useTranslation();
   const { showApiCallNotification } = useCommon();
+  const router = useRouter();
   const [imagesSelectParams, imagesSelectActions] = usePaginatedState({
     page: 1,
     limit: 10,
@@ -75,7 +79,7 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
   } = useGetFilesInfiniteScrollQuery(imagesSelectParams);
 
   const [updateQuizQuestion] = useUpdateQuestionMutation();
-
+  const [createQuizQuestion] = useCreateQuestionMutation();
   const {
     handleSubmit,
     formState: { isDirty, errors, isSubmitting },
@@ -130,33 +134,67 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
 
   const onSubmitHandler = async (dataForm: IFormInputs) => {
     try {
-      const answer = await showApiCallNotification(
-        updateQuizQuestion({
-          ...dataForm,
-          id: question.id,
-          images: dataForm.images.map((im) => im.icon!),
-        }).unwrap(),
-        {
-          success: 'Update operation Succesful',
-          pending: 'Update operation pending',
+      if (!question) {
+        //create
 
-          error: {
-            render(err) {
-              console.log('toast err', err);
-              return (
-                <Grid container>
-                  <Grid item xs={12}>
-                    {t<string>(`Update operation failed`)}: {err.data.status}
+        const answer = await showApiCallNotification(
+          createQuizQuestion({
+            ...dataForm,
+            images: dataForm.images.map((im) => im.icon!),
+          }).unwrap(),
+          {
+            success: 'Creation operation Succesful',
+            pending: 'Creation operation pending',
+
+            error: {
+              render(err) {
+                console.log('toast err', err);
+                return (
+                  <Grid container>
+                    <Grid item xs={12}>
+                      {t<string>(`Creation operation failed`)}:{' '}
+                      {err.data.status}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {t<string>(err?.data?.data?.message ?? `${err}`)}
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    {t<string>(err?.data?.data?.message ?? `${err}`)}
-                  </Grid>
-                </Grid>
-              );
+                );
+              },
             },
-          },
-        }
-      );
+          }
+        );
+        router.push(`${router.route.replace('/new', `/${answer.id}/edit`)}`);
+      } else {
+        //edit
+        const answer = await showApiCallNotification(
+          updateQuizQuestion({
+            ...dataForm,
+            id: question.id,
+            images: dataForm.images.map((im) => im.icon!),
+          }).unwrap(),
+          {
+            success: 'Update operation Succesful',
+            pending: 'Update operation pending',
+
+            error: {
+              render(err) {
+                console.log('toast err', err);
+                return (
+                  <Grid container>
+                    <Grid item xs={12}>
+                      {t<string>(`Update operation failed`)}: {err.data.status}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {t<string>(err?.data?.data?.message ?? `${err}`)}
+                    </Grid>
+                  </Grid>
+                );
+              },
+            },
+          }
+        );
+      }
     } catch (err) {
       console.error(err);
     }

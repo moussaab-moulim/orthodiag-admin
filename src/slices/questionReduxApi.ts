@@ -93,7 +93,21 @@ export const questionApi = createApi({
       },
       invalidatesTags: ['quiz/question', 'quiz/question/infinite-scroll'],
     }),
+    createQuestion: build.mutation<Question, Omit<UpdateQuestion, 'id'>>({
+      query: ({ ...body }) => {
+        return {
+          url: `/question`,
+          method: 'Post',
+          body,
+        };
+      },
+      invalidatesTags: ['quiz/question', 'quiz/question/infinite-scroll'],
+    }),
   }),
 });
 
-export const { useGetQuestionsQuery, useGetQuestionQuery } = questionApi;
+export const {
+  useGetQuestionsQuery,
+  useGetQuestionQuery,
+  useCreateQuestionMutation,
+} = questionApi;

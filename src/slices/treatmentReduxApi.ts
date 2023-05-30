@@ -94,6 +94,17 @@ export const treatmentApi = createApi({
       },
       invalidatesTags: ['quiz/treatment', 'quiz/treatment/infinite-scroll'],
     }),
+
+    createTreatment: build.mutation<Treatment, Omit<UpdateTreatment, 'id'>>({
+      query: ({ ...body }) => {
+        return {
+          url: `/treatment`,
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['quiz/treatment', 'quiz/treatment/infinite-scroll'],
+    }),
   }),
 });
 
@@ -101,4 +112,5 @@ export const {
   useGetTreatmentesQuery,
   useGetTreatmentQuery,
   useUpdateTreatmentMutation,
+  useCreateTreatmentMutation,
 } = treatmentApi;

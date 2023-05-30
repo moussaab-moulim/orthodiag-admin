@@ -25,18 +25,16 @@ import { ProblemListTable } from '@components/dashboard/quiz/ProblemListTable';
 import { TableErrorComponent } from '@components/ErroComponents';
 import { ErrorBoundary } from 'react-error-boundary';
 import { CreateQuizModal } from '@components/dashboard/quiz/CreateQuizModal';
+import { useRouter } from 'next/router';
 
 const ProblemListPage: NextPage = () => {
-  const [addModalOpen, setAddModalOpen] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     gtm.push({ event: 'page_view' });
   }, []);
 
   const handleAddClick = () => {
-    setAddModalOpen(true);
-  };
-  const handleModalClose = () => {
-    setAddModalOpen(false);
+    router.push(`${router.route}/new`);
   };
   return (
     <PageLayout metaTitle={`Dashboard: Problems List`}>
@@ -54,18 +52,13 @@ const ProblemListPage: NextPage = () => {
                 <Typography variant='h4'>Problems</Typography>
               </Grid>
               <Grid item>
-                {/*   <Button
+                <Button
                   startIcon={<PlusIcon fontSize='small' />}
                   variant='contained'
                   onClick={handleAddClick}
                 >
                   Ajouter
-                </Button> */}
-
-                <CreateQuizModal
-                  open={addModalOpen}
-                  onClose={handleModalClose}
-                />
+                </Button>
               </Grid>
             </Grid>
           </Box>

@@ -25,19 +25,18 @@ import { TreatmentListTable } from '@components/dashboard/quiz/TreatmentListTabl
 import { TableErrorComponent } from '@components/ErroComponents';
 import { ErrorBoundary } from 'react-error-boundary';
 import { CreateQuizModal } from '@components/dashboard/quiz/CreateQuizModal';
+import { useRouter } from 'next/router';
 
 const TreatmentListPage: NextPage = () => {
-  const [addModalOpen, setAddModalOpen] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     gtm.push({ event: 'page_view' });
   }, []);
 
   const handleAddClick = () => {
-    setAddModalOpen(true);
+    router.push(`${router.route}/new`);
   };
-  const handleModalClose = () => {
-    setAddModalOpen(false);
-  };
+
   return (
     <PageLayout metaTitle={`Dashboard: Treatments List`}>
       <Box
@@ -54,18 +53,13 @@ const TreatmentListPage: NextPage = () => {
                 <Typography variant='h4'>Treatments</Typography>
               </Grid>
               <Grid item>
-                {/*   <Button
+                <Button
                   startIcon={<PlusIcon fontSize='small' />}
                   variant='contained'
                   onClick={handleAddClick}
                 >
                   Ajouter
-                </Button> */}
-
-                <CreateQuizModal
-                  open={addModalOpen}
-                  onClose={handleModalClose}
-                />
+                </Button>
               </Grid>
             </Grid>
           </Box>

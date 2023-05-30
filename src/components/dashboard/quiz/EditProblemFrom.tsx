@@ -27,7 +27,10 @@ import { usePaginatedState } from '@hooks/usePaginatedState';
 import { PageParams } from '@interfaces/common';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
 import { useCommon } from '@hooks/useCommon';
-import { useUpdateProblemMutation } from '@slices/problemReduxApi';
+import {
+  useCreateProblemMutation,
+  useUpdateProblemMutation,
+} from '@slices/problemReduxApi';
 
 import { remark } from 'remark';
 import remarkHtml from 'remark-html';
@@ -35,9 +38,10 @@ import remarkHtml from 'remark-html';
 import rehypeParse from 'rehype-parse';
 import rehypeRemark from 'rehype-remark';
 import remarkStringify from 'remark-stringify';
+import { useRouter } from 'next/router';
 
 interface EditProblemFormProps {
-  problem: Problem;
+  problem?: Problem;
   disabled: boolean;
 }
 
@@ -82,7 +86,8 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
   } = useGetFilesInfiniteScrollQuery(imagesSelectParams);
 
   const [updateQuizProblem] = useUpdateProblemMutation();
-
+  const [createQuizProblem] = useCreateProblemMutation();
+  const router = useRouter();
   const {
     handleSubmit,
     formState: { isDirty, errors, isSubmitting },
@@ -139,35 +144,70 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
     console.log('submitting', dataForm);
 
     try {
-      const answer = await showApiCallNotification(
-        updateQuizProblem({
-          ...dataForm,
-          id: problem.id,
-          name: dataForm.name,
-          images: dataForm.images.map((im) => im.icon!),
-          description: dataForm.description,
-        }).unwrap(),
-        {
-          success: 'Update operation Succesful',
-          pending: 'Update operation pending',
+      if (!problem) {
+        //create
+        const answer = await showApiCallNotification(
+          createQuizProblem({
+            ...dataForm,
 
-          error: {
-            render(err) {
-              console.log('toast err', err);
-              return (
-                <Grid container>
-                  <Grid item xs={12}>
-                    {t<string>(`Update operation failed`)}: {err.data.status}
+            images: dataForm.images.map((im) => im.icon!),
+          }).unwrap(),
+          {
+            success: 'Creation operation Succesful',
+            pending: 'Creation operation pending',
+
+            error: {
+              render(err) {
+                console.log('toast err', err);
+                return (
+                  <Grid container>
+                    <Grid item xs={12}>
+                      {t<string>(`Creation operation failed`)}:{' '}
+                      {err.data.status}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {t<string>(err.data?.data?.message)}
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    {t<string>(err.data.data.message)}
-                  </Grid>
-                </Grid>
-              );
+                );
+              },
             },
-          },
-        }
-      );
+          }
+        );
+
+        router.push(`${router.route.replace('/new', `/${answer.id}/edit`)}`);
+      } else {
+        //edit
+        const answer = await showApiCallNotification(
+          updateQuizProblem({
+            ...dataForm,
+            id: problem.id,
+            name: dataForm.name,
+            images: dataForm.images.map((im) => im.icon!),
+            description: dataForm.description,
+          }).unwrap(),
+          {
+            success: 'Update operation Succesful',
+            pending: 'Update operation pending',
+
+            error: {
+              render(err) {
+                console.log('toast err', err);
+                return (
+                  <Grid container>
+                    <Grid item xs={12}>
+                      {t<string>(`Update operation failed`)}: {err.data.status}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {t<string>(err.data.data.message)}
+                    </Grid>
+                  </Grid>
+                );
+              },
+            },
+          }
+        );
+      }
     } catch (err) {
       console.error(err);
     }

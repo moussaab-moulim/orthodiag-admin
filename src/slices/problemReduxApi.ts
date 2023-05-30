@@ -87,6 +87,16 @@ export const problemApi = createApi({
       },
       invalidatesTags: ['quiz/problem', 'quiz/problem/infinite-scroll'],
     }),
+    createProblem: build.mutation<Problem, Omit<UpdateProblem, 'id'>>({
+      query: ({ ...body }) => {
+        return {
+          url: `/problem`,
+          method: 'Post',
+          body,
+        };
+      },
+      invalidatesTags: ['quiz/problem', 'quiz/problem/infinite-scroll'],
+    }),
   }),
 });
 
@@ -94,4 +104,5 @@ export const {
   useGetProblemesQuery,
   useGetProblemQuery,
   useUpdateProblemMutation,
+  useCreateProblemMutation,
 } = problemApi;

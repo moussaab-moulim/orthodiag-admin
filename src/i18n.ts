@@ -50,6 +50,7 @@ const resources = {
       documentation: 'Documentation',
       'email-confirmation': 'Email confirmation',
       'we-are-confirming-your-email': 'We are confirming your email',
+      'new-question': 'New question',
     },
   },
   fr: {
@@ -100,6 +101,7 @@ const resources = {
       documentation: 'Documentation',
       'email-confirmation': "Confirmation d'email",
       'we-are-confirming-your-email': 'Nous confirmons votre email',
+      'new-question': 'New question',
     },
   },
 };
