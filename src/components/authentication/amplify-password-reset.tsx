@@ -3,13 +3,19 @@ import type { ClipboardEvent, FC, KeyboardEvent } from 'react';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { Box, Button, FormHelperText, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormHelperText,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useAuth } from '../../hooks/use-auth';
 import { useMounted } from '../../hooks/use-mounted';
 
 export const AmplifyPasswordReset: FC = (props) => {
   const isMounted = useMounted();
-  const { passwordReset } = useAuth();
+  //const { passwordReset } = useAuth();
   const router = useRouter();
   const itemsRef = useRef<HTMLInputElement[]>([]);
   const [username, setUsername] = useState('');
@@ -20,34 +26,29 @@ export const AmplifyPasswordReset: FC = (props) => {
       email: username,
       password: '',
       passwordConfirm: '',
-      submit: null
+      submit: null,
     },
     validationSchema: Yup.object({
-      code: Yup
-        .array()
-        .of(Yup.string().required('Code is required')),
-      email: Yup
-        .string()
+      code: Yup.array().of(Yup.string().required('Code is required')),
+      email: Yup.string()
         .email('Must be a valid email')
         .max(255)
         .required('Email is required'),
-      password: Yup
-        .string()
+      password: Yup.string()
         .min(7, 'Must be at least 7 characters')
         .max(255)
         .required('Required'),
-      passwordConfirm: Yup
-        .string()
+      passwordConfirm: Yup.string()
         .oneOf([Yup.ref('password'), null], 'Passwords must match')
-        .required('Required')
+        .required('Required'),
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await passwordReset(
+        /*   await passwordReset(
           values.email,
           values.code.join(''),
           values.password
-        );
+        ); */
 
         if (isMounted()) {
           router.push('/authentication/login').catch(console.error);
@@ -61,7 +62,7 @@ export const AmplifyPasswordReset: FC = (props) => {
           helpers.setSubmitting(false);
         }
       }
-    }
+    },
   });
 
   useEffect(() => {
@@ -74,7 +75,10 @@ export const AmplifyPasswordReset: FC = (props) => {
     }
   }, []);
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>, index: number): void => {
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLDivElement>,
+    index: number
+  ): void => {
     if (event.code === 'Enter') {
       if (formik.values.code[index]) {
         formik.setFieldValue(`code[${index}]`, '');
@@ -120,44 +124,31 @@ export const AmplifyPasswordReset: FC = (props) => {
   };
 
   return (
-    <form
-      noValidate
-      onSubmit={formik.handleSubmit}
-      {...props}
-    >
-      {
-        !username
-          ? (
-            <TextField
-              autoFocus
-              error={Boolean(formik.touched.email && formik.errors.email)}
-              fullWidth
-              helperText={formik.touched.email && formik.errors.email}
-              label="Email Address"
-              margin="normal"
-              name="email"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              type="email"
-              value={formik.values.email}
-            />
-          )
-          : (
-            <TextField
-              disabled
-              fullWidth
-              margin="normal"
-              value={username}
-            />
-          )
-      }
+    <form noValidate onSubmit={formik.handleSubmit} {...props}>
+      {!username ? (
+        <TextField
+          autoFocus
+          error={Boolean(formik.touched.email && formik.errors.email)}
+          fullWidth
+          helperText={formik.touched.email && formik.errors.email}
+          label='Email Address'
+          margin='normal'
+          name='email'
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+          type='email'
+          value={formik.values.email}
+        />
+      ) : (
+        <TextField disabled fullWidth margin='normal' value={username} />
+      )}
       <Typography
-        color="textSecondary"
+        color='textSecondary'
         sx={{
           mb: 2,
-          mt: 3
+          mt: 3,
         }}
-        variant="subtitle2"
+        variant='subtitle2'
       >
         Verification code
       </Typography>
@@ -166,18 +157,18 @@ export const AmplifyPasswordReset: FC = (props) => {
           columnGap: '16px',
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
-          py: 1
+          py: 1,
         }}
       >
         {[1, 2, 3, 4, 5, 6].map((ref, index) => (
           <TextField
             error={Boolean(
-              Array.isArray(formik.touched.code)
-              && formik.touched.code.length === 6
-              && formik.errors.code
+              Array.isArray(formik.touched.code) &&
+                formik.touched.code.length === 6 &&
+                formik.errors.code
             )}
             fullWidth
-            inputRef={(el) => itemsRef.current[index] = el}
+            inputRef={(el) => (itemsRef.current[index] = el)}
             // eslint-disable-next-line react/no-array-index-key
             key={`code-${index}`}
             name={`code[${index}]`}
@@ -189,64 +180,62 @@ export const AmplifyPasswordReset: FC = (props) => {
               display: 'inline-block',
               textAlign: 'center',
               '& .MuiInputBase-input': {
-                textAlign: 'center'
-              }
+                textAlign: 'center',
+              },
             }}
           />
         ))}
       </Box>
-      {
-        Boolean(
-          Array.isArray(formik.touched.code)
-          && formik.touched.code.length === 6
-          && formik.errors.code
-        ) && (
-          <FormHelperText
-            error
-            sx={{ mx: '14px' }}
-          >
-            {Array.isArray(formik.errors.code) && formik.errors.code.find((x) => x !== undefined)}
-          </FormHelperText>
-        )
-      }
+      {Boolean(
+        Array.isArray(formik.touched.code) &&
+          formik.touched.code.length === 6 &&
+          formik.errors.code
+      ) && (
+        <FormHelperText error sx={{ mx: '14px' }}>
+          {Array.isArray(formik.errors.code) &&
+            formik.errors.code.find((x) => x !== undefined)}
+        </FormHelperText>
+      )}
       <TextField
         error={Boolean(formik.touched.password && formik.errors.password)}
         fullWidth
         helperText={formik.touched.password && formik.errors.password}
-        label="Password"
-        margin="normal"
-        name="password"
+        label='Password'
+        margin='normal'
+        name='password'
         onBlur={formik.handleBlur}
         onChange={formik.handleChange}
-        type="password"
+        type='password'
         value={formik.values.password}
       />
       <TextField
-        error={Boolean(formik.touched.passwordConfirm && formik.errors.passwordConfirm)}
+        error={Boolean(
+          formik.touched.passwordConfirm && formik.errors.passwordConfirm
+        )}
         fullWidth
-        helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
-        label="Password Confirmation"
-        margin="normal"
-        name="passwordConfirm"
+        helperText={
+          formik.touched.passwordConfirm && formik.errors.passwordConfirm
+        }
+        label='Password Confirmation'
+        margin='normal'
+        name='passwordConfirm'
         onBlur={formik.handleBlur}
         onChange={formik.handleChange}
-        type="password"
+        type='password'
         value={formik.values.passwordConfirm}
       />
       {formik.errors.submit && (
         <Box sx={{ mt: 3 }}>
-          <FormHelperText error>
-            {formik.errors.submit}
-          </FormHelperText>
+          <FormHelperText error>{formik.errors.submit}</FormHelperText>
         </Box>
       )}
       <Box sx={{ mt: 3 }}>
         <Button
           disabled={formik.isSubmitting}
           fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
+          size='large'
+          type='submit'
+          variant='contained'
         >
           Reset Password
         </Button>
