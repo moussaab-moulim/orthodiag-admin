@@ -8,23 +8,22 @@ import { useMounted } from '../../hooks/use-mounted';
 
 export const AmplifyPasswordRecovery: FC = (props) => {
   const isMounted = useMounted();
-  const { passwordRecovery } = useAuth();
+  // const { passwordRecovery } = useAuth();
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: '',
-      submit: null
+      submit: null,
     },
     validationSchema: Yup.object({
-      email: Yup
-        .string()
+      email: Yup.string()
         .email('Must be a valid email')
         .max(255)
-        .required('Email is required')
+        .required('Email is required'),
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await passwordRecovery(values.email);
+        // await passwordRecovery(values.email);
 
         if (isMounted()) {
           sessionStorage.setItem('username', values.email);
@@ -39,42 +38,36 @@ export const AmplifyPasswordRecovery: FC = (props) => {
           helpers.setSubmitting(false);
         }
       }
-    }
+    },
   });
 
   return (
-    <form
-      noValidate
-      onSubmit={formik.handleSubmit}
-      {...props}
-    >
+    <form noValidate onSubmit={formik.handleSubmit} {...props}>
       <TextField
         autoFocus
         error={Boolean(formik.touched.email && formik.errors.email)}
         fullWidth
         helperText={formik.touched.email && formik.errors.email}
-        label="Email Address"
-        margin="normal"
-        name="email"
+        label='Email Address'
+        margin='normal'
+        name='email'
         onBlur={formik.handleBlur}
         onChange={formik.handleChange}
-        type="email"
+        type='email'
         value={formik.values.email}
       />
       {formik.errors.submit && (
         <Box sx={{ mt: 3 }}>
-          <FormHelperText error>
-            {formik.errors.submit}
-          </FormHelperText>
+          <FormHelperText error>{formik.errors.submit}</FormHelperText>
         </Box>
       )}
       <Box sx={{ mt: 3 }}>
         <Button
           disabled={formik.isSubmitting}
           fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
+          size='large'
+          type='submit'
+          variant='contained'
         >
           Recover Password
         </Button>

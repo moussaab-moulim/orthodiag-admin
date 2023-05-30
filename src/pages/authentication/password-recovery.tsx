@@ -105,7 +105,7 @@ const PasswordRecovery: NextPage = () => {
                 mt: 3,
               }}
             >
-              {platform === 'Amplify' && <AmplifyPasswordRecovery />}
+              {/*    {platform === 'Amplify' && <AmplifyPasswordRecovery />} */}
             </Box>
           </Card>
         </Container>
