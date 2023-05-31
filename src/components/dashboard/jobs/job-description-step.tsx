@@ -20,30 +20,26 @@ export const JobDescriptionStep: FC<JobDescriptionStepProps> = (props) => {
 
   return (
     <div {...other}>
-      <Typography variant="h6">
-        How would you describe the job post?
-      </Typography>
+      <Typography variant='h6'>How would you describe the job post?</Typography>
       <QuillEditor
         onChange={handleChange}
-        placeholder="Write something"
+        placeholder='Write something'
         sx={{
           height: 400,
-          mt: 3
+          mt: 3,
         }}
         value={content}
+        field={undefined}
       />
       <Box sx={{ mt: 2 }}>
         <Button
-          endIcon={(<ArrowRightIcon fontSize="small" />)}
+          endIcon={<ArrowRightIcon fontSize='small' />}
           onClick={onNext}
-          variant="contained"
+          variant='contained'
         >
           Create Job
         </Button>
-        <Button
-          onClick={onBack}
-          sx={{ ml: 2 }}
-        >
+        <Button onClick={onBack} sx={{ ml: 2 }}>
           Back
         </Button>
       </Box>
@@ -53,5 +49,5 @@ export const JobDescriptionStep: FC<JobDescriptionStepProps> = (props) => {
 
 JobDescriptionStep.propTypes = {
   onBack: PropTypes.func,
-  onNext: PropTypes.func
+  onNext: PropTypes.func,
 };

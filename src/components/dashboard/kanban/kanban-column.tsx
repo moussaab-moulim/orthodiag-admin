@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import {
   Box,
@@ -12,10 +12,14 @@ import {
   Input,
   Menu,
   MenuItem,
-  OutlinedInput
+  OutlinedInput,
 } from '@mui/material';
 import { DotsHorizontal as DotsHorizontalIcon } from '../../../icons/dots-horizontal';
-import { clearColumn, deleteColumn, updateColumn } from '../../../slices/kanban';
+import {
+  clearColumn,
+  deleteColumn,
+  updateColumn,
+} from '../../../slices/kanban';
 import { useDispatch, useSelector } from '../../../store';
 import type { RootState } from '../../../store';
 import type { Column } from '../../../types/kanban';
@@ -117,8 +121,8 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
           overflowY: 'hidden',
           width: {
             xs: 300,
-            sm: 380
-          }
+            sm: 380,
+          },
         }}
       >
         <Box
@@ -127,86 +131,75 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
             display: 'flex',
             justifyContent: 'space-between',
             pr: 2,
-            py: 1
+            py: 1,
           }}
         >
-          {
-            isRenaming
-              ? (
-                <ClickAwayListener onClickAway={handleRename}>
-                  <OutlinedInput
-                    autoFocus
-                    fullWidth
-                    onBlur={handleRename}
-                    onChange={handleChange}
-                    value={name}
-                    sx={{
-                      backgroundColor: 'background.paper',
-                      '& .MuiInputBase-input': {
-                        px: 2,
-                        py: 1
-                      }
-                    }}
-                  />
-                </ClickAwayListener>
-              )
-              : (
-                <Input
-                  disableUnderline
-                  fullWidth
-                  onClick={handleRenameInit}
-                  value={column.name}
-                  sx={{
-                    borderColor: 'transparent',
-                    borderRadius: 1,
-                    borderStyle: 'solid',
-                    borderWidth: 1,
-                    cursor: 'text',
-                    m: '-1px',
-                    '&:hover': {
-                      backgroundColor: 'action.selected'
-                    },
-                    '& .MuiInputBase-input': {
-                      fontWeight: 500,
-                      px: 2,
-                      py: 1
-                    }
-                  }}
-                />
-              )
-          }
+          {isRenaming ? (
+            <ClickAwayListener onClickAway={handleRename}>
+              <OutlinedInput
+                autoFocus
+                fullWidth
+                onBlur={handleRename}
+                onChange={handleChange}
+                value={name}
+                sx={{
+                  backgroundColor: 'background.paper',
+                  '& .MuiInputBase-input': {
+                    px: 2,
+                    py: 1,
+                  },
+                }}
+              />
+            </ClickAwayListener>
+          ) : (
+            <Input
+              disableUnderline
+              fullWidth
+              onClick={handleRenameInit}
+              value={column.name}
+              sx={{
+                borderColor: 'transparent',
+                borderRadius: 1,
+                borderStyle: 'solid',
+                borderWidth: 1,
+                cursor: 'text',
+                m: '-1px',
+                '&:hover': {
+                  backgroundColor: 'action.selected',
+                },
+                '& .MuiInputBase-input': {
+                  fontWeight: 500,
+                  px: 2,
+                  py: 1,
+                },
+              }}
+            />
+          )}
           <Box
             sx={{
               alignItems: 'center',
-              display: 'flex'
+              display: 'flex',
             }}
           >
-            <Chip
-              sx={{ ml: 2 }}
-              label={column.cardIds.length}
-            />
+            <Chip sx={{ ml: 2 }} label={column.cardIds.length} />
             <IconButton
               sx={{ ml: 2 }}
-              edge="end"
+              edge='end'
               onClick={handleMenuOpen}
               ref={moreRef}
             >
-              <DotsHorizontalIcon fontSize="small" />
+              <DotsHorizontalIcon fontSize='small' />
             </IconButton>
           </Box>
         </Box>
         <Box
           sx={{
-            backgroundColor: (theme) => theme.palette.mode === 'dark'
-              ? 'neutral.800'
-              : 'neutral.200',
-            borderRadius: 1
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'dark' ? 'neutral.800' : 'neutral.200',
+            borderRadius: 1,
           }}
         >
-          <Droppable
-            droppableId={column.id}
-            type="card"
-          >
+          <Droppable droppableId={column.id} type='card'>
             {(provided): JSX.Element => (
               <Box
                 ref={provided.innerRef}
@@ -215,15 +208,11 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
                   minHeight: 80,
                   overflowY: 'auto',
                   px: 2,
-                  py: 1
+                  py: 1,
                 }}
               >
                 {column.cardIds.map((cardId, index) => (
-                  <Draggable
-                    draggableId={cardId}
-                    index={index}
-                    key={cardId}
-                  >
+                  <Draggable draggableId={cardId} index={index} key={cardId}>
                     {(_provided, snapshot): JSX.Element => (
                       <KanbanCard
                         cardId={cardId}
@@ -245,9 +234,8 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
           </Droppable>
           <Divider
             sx={{
-              borderColor: (theme) => theme.palette.mode === 'dark'
-                ? 'neutral.700'
-                : 'neutral.300'
+              borderColor: (theme) =>
+                theme.palette.mode === 'dark' ? 'neutral.700' : 'neutral.300',
             }}
           />
           <Box sx={{ p: 2 }}>
@@ -258,18 +246,14 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
           anchorEl={moreRef.current}
           anchorOrigin={{
             horizontal: 'center',
-            vertical: 'bottom'
+            vertical: 'bottom',
           }}
           keepMounted
           onClose={handleMenuClose}
           open={openMenu}
         >
-          <MenuItem onClick={handleClear}>
-            Clear
-          </MenuItem>
-          <MenuItem onClick={handleDelete}>
-            Delete
-          </MenuItem>
+          <MenuItem onClick={handleClear}>Clear</MenuItem>
+          <MenuItem onClick={handleDelete}>Delete</MenuItem>
         </Menu>
       </Box>
     </div>
@@ -277,5 +261,5 @@ export const KanbanColumn: FC<KanbanColumnProps> = (props) => {
 };
 
 KanbanColumn.propTypes = {
-  columnId: PropTypes.string.isRequired
+  columnId: PropTypes.string.isRequired,
 };

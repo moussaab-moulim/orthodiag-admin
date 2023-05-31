@@ -42,10 +42,9 @@ const VerifyCode: NextPage = () => {
   const [confirmEmail, { isLoading, isError, error, isSuccess }] =
     useConfirmEmailMutation();
 
-  console.log('error', error);
   useEffect(() => {
     gtm.push({ event: 'page_view' });
-    console.log(' toke ', token);
+
     if (token) {
       confirmEmail(token as string);
     } else {

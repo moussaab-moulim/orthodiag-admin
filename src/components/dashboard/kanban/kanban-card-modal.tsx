@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 // @ts-ignore
 import debounce from 'lodash.debounce';
 import {

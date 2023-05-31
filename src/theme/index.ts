@@ -1,5 +1,8 @@
 import type { Direction, Theme } from '@mui/material';
-import { createTheme as createMuiTheme, responsiveFontSizes } from '@mui/material/styles';
+import {
+  createTheme as createMuiTheme,
+  responsiveFontSizes,
+} from '@mui/material/styles';
 import { baseThemeOptions } from './base-theme-options';
 import { darkThemeOptions } from './dark-theme-options';
 import { lightThemeOptions } from './light-theme-options';
@@ -19,10 +22,26 @@ interface Neutral {
 declare module '@mui/material/styles' {
   interface Palette {
     neutral?: Neutral;
+    states?: {
+      yellow: string;
+      orange: string;
+      grey: string;
+      blue: string;
+      green: string;
+      red: string;
+    };
   }
 
   interface PaletteOptions {
     neutral?: Neutral;
+    states?: {
+      yellow: string;
+      orange: string;
+      grey: string;
+      blue: string;
+      green: string;
+      red: string;
+    };
   }
 }
 
@@ -37,7 +56,7 @@ export const createTheme = (config: ThemeConfig): Theme => {
     baseThemeOptions,
     config.mode === 'dark' ? darkThemeOptions : lightThemeOptions,
     {
-      direction: config.direction
+      direction: config.direction,
     }
   );
 

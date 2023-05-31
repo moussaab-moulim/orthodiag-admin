@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import {
   Box,
   Button,
@@ -12,7 +12,7 @@ import {
   Input,
   LinearProgress,
   OutlinedInput,
-  Typography
+  Typography,
 } from '@mui/material';
 import type { Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -92,135 +92,116 @@ export const KanbanChecklist: FC<KanbanChecklistProps> = (props) => {
   };
 
   const totalCheckItems = checklist.checkItems.length;
-  const completedCheckItems = (
-    checklist
-      .checkItems
-      .filter((checkItem) => checkItem.state === 'complete')
+  const completedCheckItems = checklist.checkItems.filter(
+    (checkItem) => checkItem.state === 'complete'
   ).length;
-  const completePercentage = totalCheckItems === 0
-    ? 100
-    : (completedCheckItems / totalCheckItems) * 100;
+  const completePercentage =
+    totalCheckItems === 0 ? 100 : (completedCheckItems / totalCheckItems) * 100;
 
   return (
     <KanbanChecklistRoot {...other}>
-      <Card variant="outlined">
+      <Card variant='outlined'>
         <Box sx={{ p: 3 }}>
           <Box
             sx={{
               alignItems: 'center',
-              display: 'flex'
+              display: 'flex',
             }}
           >
-            {
-              editingName
-                ? (
-                  <Box
-                    sx={{
-                      alignItems: 'center',
-                      display: 'flex',
-                      width: '100%'
-                    }}
-                  >
-                    <OutlinedInput
-                      onChange={handleNameChange}
-                      value={name}
-                      sx={{
-                        flexGrow: 1,
-                        '& .MuiInputBase-input': {
-                          px: 2,
-                          py: 1
-                        }
-                      }}
-                    />
-                    <Button
-                      onClick={handleNameSave}
-                      size="small"
-                      sx={{ ml: 2 }}
-                      variant="contained"
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      onClick={handleCancel}
-                      size="small"
-                      sx={{ ml: 2 }}
-                    >
-                      Cancel
-                    </Button>
-                  </Box>
-                )
-                : (
-                  <Box
-                    sx={{
-                      alignItems: 'center',
-                      display: 'flex',
-                      flexGrow: 1
-                    }}
-                  >
-                    <Input
-                      disableUnderline
-                      fullWidth
-                      onClick={handleNameEdit}
-                      value={checklist.name}
-                      sx={{
-                        borderColor: 'transparent',
-                        borderRadius: 1,
-                        borderStyle: 'solid',
-                        borderWidth: 1,
-                        cursor: 'text',
-                        m: '-1px',
-                        '&:hover': {
-                          backgroundColor: 'action.selected'
-                        },
-                        '& .MuiInputBase-input': {
-                          fontWeight: 500,
-                          px: 2,
-                          py: 1
-                        }
-                      }}
-                    />
-                    <IconButton
-                      onClick={handleDelete}
-                      sx={{ ml: 2 }}
-                      size="small"
-                    >
-                      <TrashIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                )
-            }
+            {editingName ? (
+              <Box
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  width: '100%',
+                }}
+              >
+                <OutlinedInput
+                  onChange={handleNameChange}
+                  value={name}
+                  sx={{
+                    flexGrow: 1,
+                    '& .MuiInputBase-input': {
+                      px: 2,
+                      py: 1,
+                    },
+                  }}
+                />
+                <Button
+                  onClick={handleNameSave}
+                  size='small'
+                  sx={{ ml: 2 }}
+                  variant='contained'
+                >
+                  Save
+                </Button>
+                <Button onClick={handleCancel} size='small' sx={{ ml: 2 }}>
+                  Cancel
+                </Button>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  flexGrow: 1,
+                }}
+              >
+                <Input
+                  disableUnderline
+                  fullWidth
+                  onClick={handleNameEdit}
+                  value={checklist.name}
+                  sx={{
+                    borderColor: 'transparent',
+                    borderRadius: 1,
+                    borderStyle: 'solid',
+                    borderWidth: 1,
+                    cursor: 'text',
+                    m: '-1px',
+                    '&:hover': {
+                      backgroundColor: 'action.selected',
+                    },
+                    '& .MuiInputBase-input': {
+                      fontWeight: 500,
+                      px: 2,
+                      py: 1,
+                    },
+                  }}
+                />
+                <IconButton onClick={handleDelete} sx={{ ml: 2 }} size='small'>
+                  <TrashIcon fontSize='small' />
+                </IconButton>
+              </Box>
+            )}
           </Box>
           <Box
             sx={{
               alignItems: 'center',
               display: 'flex',
-              mt: 3
+              mt: 3,
             }}
           >
-            <Typography
-              color="textSecondary"
-              variant="caption"
-            >
-              {Math.round(completePercentage)}
-              %
+            <Typography color='textSecondary' variant='caption'>
+              {Math.round(completePercentage)}%
             </Typography>
             <Box
               sx={{
                 flexGrow: 1,
-                ml: 2
+                ml: 2,
               }}
             >
               <LinearProgress
-                color="primary"
+                color='primary'
                 sx={{
                   borderRadius: 1,
                   height: 8,
                   '& .MuiLinearProgress-bar': {
-                    borderRadius: 'inherit'
-                  }
+                    borderRadius: 'inherit',
+                  },
                 }}
                 value={completePercentage}
-                variant="determinate"
+                variant='determinate'
               />
             </Box>
           </Box>
@@ -241,10 +222,7 @@ export const KanbanChecklist: FC<KanbanChecklistProps> = (props) => {
           </Fragment>
         ))}
         <CardActions>
-          <KanbanCheckItemAdd
-            cardId={card.id}
-            checklistId={checklist.id}
-          />
+          <KanbanCheckItemAdd cardId={card.id} checklistId={checklist.id} />
         </CardActions>
       </Card>
     </KanbanChecklistRoot>
@@ -256,5 +234,5 @@ KanbanChecklist.propTypes = {
   card: PropTypes.object.isRequired,
   // @ts-ignore
   checklist: PropTypes.object.isRequired,
-  sx: PropTypes.object
+  sx: PropTypes.object,
 };

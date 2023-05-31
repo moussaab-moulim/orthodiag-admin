@@ -131,7 +131,7 @@ const Checkout: NextPage = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { locale, query } = context;
   const origin = `http://${context.req.headers.host}/checkout`;
-  console.log('originnn', origin);
+
   const { hash, canceled, success } = query;
   if (hash && !success && !canceled) {
     //fetch hash

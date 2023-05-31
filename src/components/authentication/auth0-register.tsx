@@ -8,14 +8,14 @@ import { useMounted } from '../../hooks/use-mounted';
 export const Auth0Register: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { loginWithRedirect } = useAuth();
+  //const { loginWithRedirect } = useAuth();
   const [error, setError] = useState<string | null>(null);
 
   const handleRegister = async (): Promise<void> => {
     try {
-      await loginWithRedirect({
+      /*  await loginWithRedirect({
         returnUrl: (router.query.returnUrl as string | undefined) || '/dashboard'
-      });
+      }); */
     } catch (err) {
       console.error(err);
 
@@ -29,21 +29,16 @@ export const Auth0Register: FC = (props) => {
     <div {...props}>
       {error && (
         <Box sx={{ my: 3 }}>
-          <FormHelperText error>
-            {error}
-          </FormHelperText>
+          <FormHelperText error>{error}</FormHelperText>
         </Box>
       )}
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
-        <Button
-          onClick={handleRegister}
-          variant="contained"
-        >
+        <Button onClick={handleRegister} variant='contained'>
           Register
         </Button>
       </Box>
