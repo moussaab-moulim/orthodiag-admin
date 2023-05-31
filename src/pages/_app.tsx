@@ -55,7 +55,7 @@ const App: FC<EnhancedAppProps> = ({ Component, ...rest }) => {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>Material Kit Pro</title>
+        <title>Orthodiag admin</title>
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
       <ReduxProvider store={store}>
