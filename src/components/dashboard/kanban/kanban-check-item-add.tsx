@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Box, Button, OutlinedInput } from '@mui/material';
 import { Plus as PlusIcon } from '../../../icons/plus';
 import { addCheckItem } from '../../../slices/kanban';

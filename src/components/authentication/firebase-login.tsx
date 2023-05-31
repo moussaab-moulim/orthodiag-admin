@@ -17,7 +17,7 @@ import { useMounted } from '../../hooks/use-mounted';
 export const FirebaseLogin: FC = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
-  const { signInWithEmailAndPassword, signInWithGoogle } = useAuth();
+  //const { signInWithEmailAndPassword, signInWithGoogle } = useAuth();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -33,7 +33,7 @@ export const FirebaseLogin: FC = (props) => {
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await signInWithEmailAndPassword(values.email, values.password);
+        // await signInWithEmailAndPassword(values.email, values.password);
 
         if (isMounted()) {
           const returnUrl =
@@ -54,7 +54,7 @@ export const FirebaseLogin: FC = (props) => {
 
   const handleGoogleClick = async (): Promise<void> => {
     try {
-      await signInWithGoogle();
+      // await signInWithGoogle();
 
       if (isMounted()) {
         const returnUrl =

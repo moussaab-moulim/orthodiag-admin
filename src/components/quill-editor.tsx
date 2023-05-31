@@ -15,12 +15,12 @@ import { RefCallBack } from 'react-hook-form';
 import { Converter } from 'showdown';
 import TurndownService from 'turndown';
 interface QuillEditorProps {
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   placeholder?: string;
   sx?: SxProps<Theme>;
-  value: string;
+  value?: string;
   type?: 'html' | 'markdown';
-  field: any;
+  field?: any;
 }
 
 const Quill = dynamic(() => import('react-quill'), { ssr: false });
@@ -148,16 +148,13 @@ export const QuillEditor: VoidFunctionComponent<QuillEditorProps> = (props) => {
         {...field}
         onChange={(_value) =>
           type === 'markdown'
-            ? onChange(htmlToMarkdown(_value))
-            : onChange(_value)
+            ? onChange?.(htmlToMarkdown(_value))
+            : onChange?.(_value)
         }
         placeholder={placeholder}
-        value={type === 'markdown' ? markdownToHtml(value) : value}
+        value={type === 'markdown' ? markdownToHtml(value ?? '') : value}
         bounds={refInput.current || undefined}
       />
     </QuillEditorRoot>
   );
 };
-function unified() {
-  throw new Error('Function not implemented.');
-}

@@ -111,9 +111,6 @@ const Register: NextPage = () => {
                 mt: 3,
               }}
             >
-              {platform === 'Amplify' && <AmplifyRegister />}
-              {platform === 'Auth0' && <Auth0Register />}
-              {platform === 'Firebase' && <FirebaseRegister />}
               {platform === 'JWT' && <JWTRegister />}
             </Box>
             <Divider sx={{ my: 3 }} />

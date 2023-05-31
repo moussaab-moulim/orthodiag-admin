@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ChangeEvent, FC, KeyboardEvent } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Avatar, Box, TextField } from '@mui/material';
 import { addComment } from '../../../slices/kanban';
 import { useDispatch } from '../../../store';

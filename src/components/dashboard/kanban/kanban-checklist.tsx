@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-toastify';
+import { toast } from 'react-toastify';
 import {
   Box,
   Button,

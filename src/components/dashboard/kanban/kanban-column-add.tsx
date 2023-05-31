@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
-import toast from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Box, Button, Link, OutlinedInput, Typography } from '@mui/material';
 import { Plus as PlusIcon } from '../../../icons/plus';
 import { createColumn } from '../../../slices/kanban';

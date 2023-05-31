@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import PropTypes from 'prop-types';
-import toast from 'react-toastify';
+import { toast } from 'react-toastify';
 import { addMinutes } from 'date-fns';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';

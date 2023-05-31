@@ -108,26 +108,8 @@ const VerifyCode: NextPage = () => {
                 flexGrow: 1,
                 mt: 3,
               }}
-            >
-              {platform === 'Amplify' && <AmplifyVerifyCode />}
-            </Box>
+            ></Box>
             <Divider sx={{ my: 3 }} />
-            {platform === 'Amplify' && (
-              <div>
-                <NextLink
-                  href={
-                    disableGuard
-                      ? `/authentication/login?disableGuard=${disableGuard}`
-                      : '/authentication/login'
-                  }
-                  passHref
-                >
-                  <Link color='textSecondary' variant='body2'>
-                    Did you not receive the code?
-                  </Link>
-                </NextLink>
-              </div>
-            )}
           </Card>
         </Container>
       </Box>

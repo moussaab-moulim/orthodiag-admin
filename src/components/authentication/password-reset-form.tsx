@@ -19,7 +19,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 export const PasswordResetForm: FC = (props) => {
   const isMounted = useMounted();
-  const { passwordReset } = useAuth();
+  //const { passwordReset } = useAuth();
   const router = useRouter();
   const [resetPassword, { isLoading, isError, error, isSuccess }] =
     useResetPasswordMutation();

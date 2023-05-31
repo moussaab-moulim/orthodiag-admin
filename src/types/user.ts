@@ -12,4 +12,6 @@ export interface User {
   photo: FileEntity;
   role: { id: number; name: string };
   status: { id: number; name: string };
+
+  [key: string]: any;
 }

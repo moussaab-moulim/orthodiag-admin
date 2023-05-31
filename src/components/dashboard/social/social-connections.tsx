@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { FC } from 'react';
 import NextLink from 'next/link';
-import toast from 'react-toastify';
+import { toast } from 'react-toastify';
 import {
   Avatar,
   Box,
