@@ -68,9 +68,9 @@ const Overview: NextPage = () => {
           <Box sx={{ mb: 4 }}>
             <Grid container justifyContent='space-between' spacing={3}>
               <Grid item>
-                <Typography variant='h4'>Good Morning</Typography>
+                <Typography variant='h4'>Orthodiag admin</Typography>
               </Grid>
-              <Grid
+              {/*      <Grid
                 item
                 sx={{
                   display: 'flex',
@@ -96,10 +96,10 @@ const Overview: NextPage = () => {
                   <MenuItem value='month'>Last month</MenuItem>
                   <MenuItem value='year'>Last year</MenuItem>
                 </TextField>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
-          <Grid container spacing={4}>
+          {/*    <Grid container spacing={4}>
             {displayBanner && (
               <Grid item xs={12}>
                 <OverviewBanner onDismiss={handleDismissBanner} />
@@ -277,7 +277,7 @@ const Overview: NextPage = () => {
                 </CardActions>
               </Card>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Container>
       </Box>
     </PageLayout>
