@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import Image from "next/image";
+import Image from 'next/image';
 
 type Variant = 'light' | 'primary';
 
@@ -16,12 +16,14 @@ export const Logo = styled((props: LogoProps) => {
   return (
     <Image
       src='/static/logo.png'
+      alt='logo'
       width={90}
       height={90}
       style={{
-        maxWidth: "100%",
-        height: "auto"
-      }} />
+        maxWidth: '100%',
+        height: 'auto',
+      }}
+    />
   );
 })``;
 
