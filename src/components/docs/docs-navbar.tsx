@@ -21,7 +21,7 @@ export const DocsNavbar: FC<DocsNavbarProps> = ({ onOpenSidebar }) => (
     }}
   >
     <Toolbar sx={{ height: 64 }}>
-      <NextLink href='/' passHref>
+      <NextLink href='/'>
         <Logo
           sx={{
             height: 40,

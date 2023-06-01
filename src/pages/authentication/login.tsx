@@ -57,7 +57,7 @@ const Login: NextPage = () => {
                 justifyContent: 'center',
               }}
             >
-              <NextLink href='/' passHref>
+              <NextLink href='/'>
                 <Logo
                   sx={{
                     height: 40,

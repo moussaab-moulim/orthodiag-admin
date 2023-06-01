@@ -87,8 +87,7 @@ const VerifyCode: NextPage = () => {
                 justifyContent: 'center',
               }}
             >
-              <NextLink href='/' passHref legacyBehavior>
-
+              <NextLink href='/'>
                 <Logo
                   sx={{
                     height: 40,
@@ -96,7 +95,6 @@ const VerifyCode: NextPage = () => {
                   }}
                   variant='light'
                 />
-
               </NextLink>
               <Typography variant='h4'>Verify Code</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
