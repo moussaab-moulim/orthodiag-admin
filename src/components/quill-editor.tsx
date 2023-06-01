@@ -14,6 +14,7 @@ import remarkStringify from 'remark-stringify';
 import { RefCallBack } from 'react-hook-form';
 import { Converter } from 'showdown';
 import TurndownService from 'turndown';
+import { LoadingSkeleton } from './Loading';
 interface QuillEditorProps {
   onChange?: (value: string) => void;
   placeholder?: string;
@@ -23,7 +24,10 @@ interface QuillEditorProps {
   field?: any;
 }
 
-const Quill = dynamic(() => import('react-quill'), { ssr: false });
+const Quill = dynamic(() => import('react-quill'), {
+  ssr: false,
+  loading: () => <LoadingSkeleton />,
+});
 
 const QuillEditorRoot = styled('div')(({ theme }) => ({
   border: 1,

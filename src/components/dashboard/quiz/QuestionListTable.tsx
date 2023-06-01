@@ -119,15 +119,15 @@ function useQuestionColumns() {
   const open2 = Boolean(anchorEl2);
 
   const questionColumns: GridColDef<Question>[] = [
-    // {
-    //   field: "id",
-    //   headerName: t("id"),
-    //   hideable: true,
-    //   renderCell: (row) => (
-    //     <TableCellWithTooltip value={row.row.id.toString()} />
-    //   ),
-    //   width: 56,
-    // },
+    {
+      field: 'id',
+      headerName: t('id'),
+      hideable: true,
+      renderCell: (row) => (
+        <TableCellWithTooltip value={row.row.id.toString()} />
+      ),
+      width: 100,
+    },
 
     {
       field: 'code',

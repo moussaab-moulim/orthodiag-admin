@@ -120,15 +120,15 @@ function useProblemColumns() {
   const open2 = Boolean(anchorEl2);
 
   const problemColumns: GridColDef<Problem>[] = [
-    // {
-    //   field: "id",
-    //   headerName: t("id"),
-    //   hideable: true,
-    //   renderCell: (row) => (
-    //     <TableCellWithTooltip value={row.row.id.toString()} />
-    //   ),
-    //   width: 56,
-    // },
+    {
+      field: 'id',
+      headerName: t('id'),
+      hideable: true,
+      renderCell: (row) => (
+        <TableCellWithTooltip value={row.row.id.toString()} />
+      ),
+      width: 100,
+    },
 
     {
       field: 'code',

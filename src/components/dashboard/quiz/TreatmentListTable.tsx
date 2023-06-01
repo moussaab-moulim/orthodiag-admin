@@ -121,15 +121,15 @@ function useTreatmentColumns() {
   const open2 = Boolean(anchorEl2);
 
   const treatmentColumns: GridColDef<Treatment>[] = [
-    // {
-    //   field: "id",
-    //   headerName: t("id"),
-    //   hideable: true,
-    //   renderCell: (row) => (
-    //     <TableCellWithTooltip value={row.row.id.toString()} />
-    //   ),
-    //   width: 56,
-    // },
+    {
+      field: 'id',
+      headerName: t('id'),
+      hideable: true,
+      renderCell: (row) => (
+        <TableCellWithTooltip value={row.row.id.toString()} />
+      ),
+      width: 100,
+    },
 
     {
       field: 'code',
