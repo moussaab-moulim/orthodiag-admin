@@ -12,7 +12,7 @@ import {
   TableCell,
   TableHead,
   TablePagination,
-  TableRow
+  TableRow,
 } from '@mui/material';
 import { customerApi } from '../../../__fake-api__/customer-api';
 import { useMounted } from '../../../hooks/use-mounted';
@@ -44,59 +44,42 @@ export const CustomerInvoices: FC = (props) => {
 
   return (
     <Card {...props}>
-      <CardHeader
-        action={<MoreMenu />}
-        title="Recent Invoices"
-      />
+      <CardHeader action={<MoreMenu />} title='Recent Invoices' />
       <Divider />
       <Scrollbar>
         <Table sx={{ minWidth: 600 }}>
           <TableHead>
             <TableRow>
-              <TableCell>
-                ID
-              </TableCell>
-              <TableCell>
-                Date
-              </TableCell>
-              <TableCell>
-                Total
-              </TableCell>
-              <TableCell>
-                Status
-              </TableCell>
-              <TableCell align="right">
-                Actions
-              </TableCell>
+              <TableCell>ID</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Total</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell align='right'>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {invoices.map((invoice) => (
               <TableRow key={invoice.id}>
-                <TableCell>
-                  #
-                  {invoice.id}
-                </TableCell>
+                <TableCell>#{invoice.id}</TableCell>
                 <TableCell>
                   {format(invoice.issueDate, 'MMM dd,yyyy')}
                 </TableCell>
+                <TableCell>{invoice.amount}</TableCell>
                 <TableCell>
-                  {invoice.amount}
-                </TableCell>
-                <TableCell>
-                  <SeverityPill color={invoice.status === 'paid' ? 'success' : 'error'}>
+                  <SeverityPill
+                    color={invoice.status === 'paid' ? 'success' : 'error'}
+                  >
                     {invoice.status}
                   </SeverityPill>
                 </TableCell>
-                <TableCell align="right">
-                  <NextLink
-                    href="/dashboard/invoices/1"
-                    passHref
+                <TableCell align='right'>
+                  <IconButton
+                    component='a'
+                    href='/dashboard/invoices/1'
+                    LinkComponent={NextLink}
                   >
-                    <IconButton component="a">
-                      <ArrowRightIcon fontSize="small" />
-                    </IconButton>
-                  </NextLink>
+                    <ArrowRightIcon fontSize='small' />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
@@ -104,12 +87,10 @@ export const CustomerInvoices: FC = (props) => {
         </Table>
       </Scrollbar>
       <TablePagination
-        component="div"
+        component='div'
         count={invoices.length}
-        onPageChange={(): void => {
-        }}
-        onRowsPerPageChange={(): void => {
-        }}
+        onPageChange={(): void => {}}
+        onRowsPerPageChange={(): void => {}}
         page={0}
         rowsPerPage={5}
         rowsPerPageOptions={[5, 10, 25]}

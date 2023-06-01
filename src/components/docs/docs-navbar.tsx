@@ -17,65 +17,57 @@ export const DocsNavbar: FC<DocsNavbarProps> = ({ onOpenSidebar }) => (
       borderBottomColor: 'divider',
       borderBottomStyle: 'solid',
       borderBottomWidth: 1,
-      color: 'text.secondary'
+      color: 'text.secondary',
     }}
   >
     <Toolbar sx={{ height: 64 }}>
-      <NextLink
-        href="/"
-        passHref
-      >
-        <a>
-          <Logo
-            sx={{
-              height: 40,
-              width: 40
-            }}
-          />
-        </a>
+      <NextLink href='/' passHref>
+        <Logo
+          sx={{
+            height: 40,
+            width: 40,
+          }}
+        />
       </NextLink>
       <Box sx={{ flexGrow: 1 }} />
-      <NextLink
-        href="/dashboard"
-        passHref
+
+      <Link
+        href='/dashboard'
+        component={NextLink}
+        color='textSecondary'
+        underline='none'
+        variant='subtitle2'
       >
-        <Link
-          color="textSecondary"
-          underline="none"
-          variant="subtitle2"
-        >
-          Live Demo
-        </Link>
-      </NextLink>
-      <NextLink
-        href="/browse"
-        passHref
+        Live Demo
+      </Link>
+
+      <Link
+        component={NextLink}
+        href='/browse'
+        color='textSecondary'
+        sx={{ ml: 2 }}
+        underline='none'
+        variant='subtitle2'
       >
-        <Link
-          color="textSecondary"
-          sx={{ ml: 2 }}
-          underline="none"
-          variant="subtitle2"
-        >
-          Components
-        </Link>
-      </NextLink>
+        Components
+      </Link>
+
       <IconButton
-        color="inherit"
+        color='inherit'
         onClick={onOpenSidebar}
         sx={{
           display: {
-            lg: 'none'
+            lg: 'none',
           },
-          ml: 2
+          ml: 2,
         }}
       >
-        <MenuIcon fontSize="small" />
+        <MenuIcon fontSize='small' />
       </IconButton>
     </Toolbar>
   </AppBar>
 );
 
 DocsNavbar.propTypes = {
-  onOpenSidebar: PropTypes.func
+  onOpenSidebar: PropTypes.func,
 };

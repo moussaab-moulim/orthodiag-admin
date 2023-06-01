@@ -80,34 +80,33 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
       }}
     >
       <TableCell width='25%'>
-        <NextLink href='/dashboard/invoices/1' passHref>
-          <Box
-            component='a'
+        <Box
+          component={NextLink}
+          href='/dashboard/invoices/1'
+          sx={{
+            alignItems: 'center',
+            display: 'inline-flex',
+            textDecoration: 'none',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <Avatar
             sx={{
-              alignItems: 'center',
-              display: 'inline-flex',
-              textDecoration: 'none',
-              whiteSpace: 'nowrap',
+              height: 42,
+              width: 42,
             }}
           >
-            <Avatar
-              sx={{
-                height: 42,
-                width: 42,
-              }}
-            >
-              {getInitials(invoice.customer.name)}
-            </Avatar>
-            <Box sx={{ ml: 2 }}>
-              <Typography color='textPrimary' variant='subtitle2'>
-                {invoice.number}
-              </Typography>
-              <Typography color='textSecondary' variant='body2'>
-                {invoice.customer.name}
-              </Typography>
-            </Box>
+            {getInitials(invoice.customer.name)}
+          </Avatar>
+          <Box sx={{ ml: 2 }}>
+            <Typography color='textPrimary' variant='subtitle2'>
+              {invoice.number}
+            </Typography>
+            <Typography color='textSecondary' variant='body2'>
+              {invoice.customer.name}
+            </Typography>
           </Box>
-        </NextLink>
+        </Box>
       </TableCell>
       <TableCell>
         <Typography variant='body2'>
@@ -142,11 +141,9 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
         </Box>
       </TableCell>
       <TableCell align='right'>
-        <NextLink href='/dashboard/invoices/1' passHref>
-          <IconButton component='a'>
-            <ArrowRightIcon fontSize='small' />
-          </IconButton>
-        </NextLink>
+        <IconButton component={NextLink} href='/dashboard/invoices/1'>
+          <ArrowRightIcon fontSize='small' />
+        </IconButton>
       </TableCell>
     </TableRow>
   );

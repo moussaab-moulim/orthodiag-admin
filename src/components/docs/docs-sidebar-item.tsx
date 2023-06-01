@@ -53,15 +53,17 @@ export const DocsSidebarItem: FC<DocsSidebarItemProps> = (props) => {
           display: 'block',
           mb: 0.5,
           py: 0,
-          px: 2
+          px: 2,
         }}
         {...other}
       >
         <Button
           endIcon={
-            !open
-              ? <ChevronRightIcon fontSize="small" />
-              : <ChevronDownIcon fontSize="small" />
+            !open ? (
+              <ChevronRightIcon fontSize='small' />
+            ) : (
+              <ChevronDownIcon fontSize='small' />
+            )
           }
           disableRipple
           onClick={handleToggle}
@@ -75,25 +77,20 @@ export const DocsSidebarItem: FC<DocsSidebarItemProps> = (props) => {
             textTransform: 'none',
             width: '100%',
             '&:hover': {
-              backgroundColor: 'rgba(255,255,255, 0.08)'
+              backgroundColor: 'rgba(255,255,255, 0.08)',
             },
             '& .MuiButton-startIcon': {
-              color: active ? 'secondary.main' : 'action.active'
+              color: active ? 'secondary.main' : 'action.active',
             },
             '& .MuiButton-endIcon': {
-              color: 'action.active'
-            }
+              color: 'action.active',
+            },
           }}
         >
-          <Box sx={{ flexGrow: 1 }}>
-            {title}
-          </Box>
+          <Box sx={{ flexGrow: 1 }}>{title}</Box>
           {info}
         </Button>
-        <Collapse
-          in={open}
-          sx={{ mt: 0.5 }}
-        >
+        <Collapse in={open} sx={{ mt: 0.5 }}>
           {children}
         </Collapse>
       </ListItem>
@@ -108,46 +105,41 @@ export const DocsSidebarItem: FC<DocsSidebarItemProps> = (props) => {
         display: 'flex',
         mb: 0.5,
         py: 0,
-        px: 2
+        px: 2,
       }}
     >
-      <NextLink
+      <Button
         href={path as string}
-        passHref
+        LinkComponent={NextLink}
+        component='a'
+        startIcon={icon}
+        endIcon={chip}
+        disableRipple
+        sx={{
+          borderRadius: 1,
+          color: 'text.primary',
+          justifyContent: 'flex-start',
+          pl: `${paddingLeft}px`,
+          pr: 3,
+          textAlign: 'left',
+          textTransform: 'none',
+          width: '100%',
+          ...(active && {
+            backgroundColor: 'rgba(255,255,255, 0.08)',
+            color: 'secondary.main',
+            fontWeight: 'fontWeightBold',
+          }),
+          '& .MuiButton-startIcon': {
+            color: active ? 'secondary.main' : 'action.active',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(255,255,255, 0.08)',
+          },
+        }}
       >
-        <Button
-          component="a"
-          startIcon={icon}
-          endIcon={chip}
-          disableRipple
-          sx={{
-            borderRadius: 1,
-            color: 'text.primary',
-            justifyContent: 'flex-start',
-            pl: `${paddingLeft}px`,
-            pr: 3,
-            textAlign: 'left',
-            textTransform: 'none',
-            width: '100%',
-            ...(active && {
-              backgroundColor: 'rgba(255,255,255, 0.08)',
-              color: 'secondary.main',
-              fontWeight: 'fontWeightBold'
-            }),
-            '& .MuiButton-startIcon': {
-              color: active ? 'secondary.main' : 'action.active'
-            },
-            '&:hover': {
-              backgroundColor: 'rgba(255,255,255, 0.08)'
-            }
-          }}
-        >
-          <Box sx={{ flexGrow: 1 }}>
-            {title}
-          </Box>
-          {info}
-        </Button>
-      </NextLink>
+        <Box sx={{ flexGrow: 1 }}>{title}</Box>
+        {info}
+      </Button>
     </ListItem>
   );
 };
@@ -160,10 +152,10 @@ DocsSidebarItem.propTypes = {
   info: PropTypes.node,
   open: PropTypes.bool,
   path: PropTypes.string,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };
 
 DocsSidebarItem.defaultProps = {
   active: false,
-  open: false
+  open: false,
 };

@@ -49,7 +49,7 @@ import { TableErrorComponent } from '@components/ErroComponents';
 import { useGetTreatmentesQuery } from '@slices/treatmentReduxApi';
 import { Table5 } from '@components/widgets/tables/table-5';
 import { Table3 } from '@components/widgets/tables/table-3';
-import Image from "next/image";
+import Image from 'next/image';
 
 interface TreatmentListTableProps {}
 
@@ -172,9 +172,10 @@ function useTreatmentColumns() {
               alt='Image of the treatment'
               src={row.row.images[0].path}
               style={{
-                maxWidth: "100%",
-                height: "auto"
-              }} />
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
             <Popover
               id={`mouse-over-popover-${row.row.id}`}
               sx={{
@@ -200,9 +201,10 @@ function useTreatmentColumns() {
                 alt='Image of the treatment'
                 src={row.row.images[0].path}
                 style={{
-                  maxWidth: "100%",
-                  height: "auto"
-                }} />
+                  maxWidth: '100%',
+                  height: 'auto',
+                }}
+              />
             </Popover>
           </Box>
         ) : (
@@ -277,11 +279,13 @@ function useTreatmentColumns() {
       type: 'actions',
       flex: 1,
       renderCell: (row) => (
-        <NextLink href={`treatments/${row.row.id}/edit`} passHref>
-          <IconButton component='a'>
-            <PencilAltIcon fontSize='small' />
-          </IconButton>
-        </NextLink>
+        <IconButton
+          component='a'
+          LinkComponent={NextLink}
+          href={`treatments/${row.row.id}/edit`}
+        >
+          <PencilAltIcon fontSize='small' />
+        </IconButton>
       ),
     },
   ];

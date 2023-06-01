@@ -138,16 +138,18 @@ export const ChatSidebar: FC<ChatSidebarProps> = (props) => {
       >
         <Typography variant='h5'>Chats</Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <NextLink href='/dashboard/chat?compose=true' passHref>
-          <Button
-            component='a'
-            onClick={handleGroupClick}
-            startIcon={<PlusIcon />}
-            variant='contained'
-          >
-            Group
-          </Button>
-        </NextLink>
+
+        <Button
+          LinkComponent={NextLink}
+          component='a'
+          href='/dashboard/chat?compose=true'
+          onClick={handleGroupClick}
+          startIcon={<PlusIcon />}
+          variant='contained'
+        >
+          Group
+        </Button>
+
         <IconButton
           onClick={onClose}
           sx={{

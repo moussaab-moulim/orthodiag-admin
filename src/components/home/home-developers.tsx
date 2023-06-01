@@ -10,18 +10,12 @@ export const HomeDevelopers: FC = (props) => {
     <Box
       sx={{
         backgroundColor: 'background.default',
-        py: 15
+        py: 15,
       }}
       {...props}
     >
-      <Container maxWidth="lg">
-        <Grid
-          alignItems="center"
-          container
-          justifyContent="center"
-          spacing={3}
-
-        >
+      <Container maxWidth='lg'>
+        <Grid alignItems='center' container justifyContent='center' spacing={3}>
           <Grid
             item
             md={6}
@@ -29,34 +23,30 @@ export const HomeDevelopers: FC = (props) => {
             sx={{
               order: {
                 xs: 2,
-                md: 1
-              }
+                md: 1,
+              },
             }}
           >
             <div>
-              <Typography variant="h3">
-                For Developers
-              </Typography>
+              <Typography variant='h3'>For Developers</Typography>
               <Typography
-                color="textSecondary"
+                color='textSecondary'
                 sx={{ my: 3 }}
-                variant="subtitle1"
+                variant='subtitle1'
               >
-                Not just a set of tools, the package includes ready-to-deploy conceptual
-                applications written in JavaScript & TypeScript.
+                Not just a set of tools, the package includes ready-to-deploy
+                conceptual applications written in JavaScript & TypeScript.
               </Typography>
-              <NextLink
-                href="/browse"
-                passHref
+
+              <Button
+                LinkComponent={NextLink}
+                size='large'
+                component='a'
+                variant='contained'
+                href='/browse'
               >
-                <Button
-                  size="large"
-                  component="a"
-                  variant="contained"
-                >
-                  Browse Components
-                </Button>
-              </NextLink>
+                Browse Components
+              </Button>
             </div>
           </Grid>
           <Grid
@@ -67,8 +57,8 @@ export const HomeDevelopers: FC = (props) => {
             sx={{
               order: {
                 xs: 1,
-                md: 2
-              }
+                md: 2,
+              },
             }}
           >
             <Box
@@ -79,12 +69,12 @@ export const HomeDevelopers: FC = (props) => {
                   height: 'auto',
                   position: 'absolute',
                   top: 0,
-                  width: '100%'
-                }
+                  width: '100%',
+                },
               }}
             >
               <img
-                alt="For developers"
+                alt='For developers'
                 src={`/static/home/developers_${theme.palette.mode}.png`}
               />
             </Box>

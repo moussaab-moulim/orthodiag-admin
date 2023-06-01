@@ -138,11 +138,9 @@ function useQuizColumns() {
       type: 'actions',
       flex: 1,
       renderCell: (row) => (
-        <NextLink href={`quizes/${row.row.id}/edit`} passHref>
-          <IconButton component='a'>
-            <PencilAltIcon fontSize='small' />
-          </IconButton>
-        </NextLink>
+        <IconButton href={`quizes/${row.row.id}/edit`} component={NextLink}>
+          <PencilAltIcon fontSize='small' />
+        </IconButton>
       ),
     },
   ];

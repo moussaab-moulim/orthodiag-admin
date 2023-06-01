@@ -48,15 +48,13 @@ const PasswordReset: NextPage = () => {
                 justifyContent: 'center',
               }}
             >
-              <NextLink href='/' passHref>
-
+              <NextLink href='/'>
                 <Logo
                   sx={{
                     height: 40,
                     width: 40,
                   }}
                 />
-
               </NextLink>
               <Typography variant='h4'>
                 Réinitialiser le mot de passe

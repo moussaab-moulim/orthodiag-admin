@@ -84,7 +84,7 @@ const PasswordRecovery: NextPage = () => {
                 justifyContent: 'center',
               }}
             >
-              <NextLink href='/' passHref>
+              <NextLink href='/' passHref legacyBehavior>
 
                 <Logo
                   sx={{

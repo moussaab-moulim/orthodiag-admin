@@ -9,7 +9,7 @@ import {
   TimelineContent,
   TimelineDot,
   TimelineItem,
-  TimelineSeparator
+  TimelineSeparator,
 } from '@mui/lab';
 import type { Activity } from '../../../types/job';
 import { getInitials } from '../../../utils/get-initials';
@@ -26,33 +26,19 @@ const getActivityContent = (activity: Activity): JSX.Element | null => {
           sx={{
             alignItems: 'center',
             display: 'flex',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
           }}
         >
-          <Typography
-            sx={{ mr: 0.5 }}
-            variant="subtitle2"
-          >
+          <Typography sx={{ mr: 0.5 }} variant='subtitle2'>
             {activity.author}
           </Typography>
-          <Typography
-            sx={{ mr: 0.5 }}
-            variant="body2"
-          >
+          <Typography sx={{ mr: 0.5 }} variant='body2'>
             added a new job
           </Typography>
-          <Typography
-            color="primary"
-            variant="subtitle2"
-          >
-            <NextLink
-              href="/dashboard/jobs"
-              passHref
-            >
-              <Link>
-                {activity.addedJob}
-              </Link>
-            </NextLink>
+          <Typography color='primary' variant='subtitle2'>
+            <Link href='/dashboard/jobs' component={NextLink}>
+              {activity.addedJob}
+            </Link>
           </Typography>
         </Box>
       );
@@ -62,30 +48,19 @@ const getActivityContent = (activity: Activity): JSX.Element | null => {
           sx={{
             alignItems: 'center',
             display: 'flex',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
           }}
         >
-          <Typography
-            sx={{ mr: 0.5 }}
-            variant="subtitle2"
-          >
+          <Typography sx={{ mr: 0.5 }} variant='subtitle2'>
             {activity.author}
           </Typography>
-          <Typography
-            sx={{ mr: 0.5 }}
-            variant="body2"
-          >
+          <Typography sx={{ mr: 0.5 }} variant='body2'>
             added
           </Typography>
-          <Typography
-            sx={{ mr: 0.5 }}
-            variant="subtitle2"
-          >
+          <Typography sx={{ mr: 0.5 }} variant='subtitle2'>
             {activity.addedMember}
           </Typography>
-          <Typography variant="body2">
-            as a team member
-          </Typography>
+          <Typography variant='body2'>as a team member</Typography>
         </Box>
       );
     case 'created':
@@ -94,24 +69,16 @@ const getActivityContent = (activity: Activity): JSX.Element | null => {
           sx={{
             alignItems: 'center',
             display: 'flex',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
           }}
         >
-          <Typography
-            sx={{ mr: 0.5 }}
-            variant="subtitle2"
-          >
+          <Typography sx={{ mr: 0.5 }} variant='subtitle2'>
             {activity.author}
           </Typography>
-          <Typography
-            sx={{ mr: 0.5 }}
-            variant="body2"
-          >
+          <Typography sx={{ mr: 0.5 }} variant='body2'>
             created
           </Typography>
-          <Typography variant="subtitle2">
-            {activity.createdCompany}
-          </Typography>
+          <Typography variant='subtitle2'>{activity.createdCompany}</Typography>
         </Box>
       );
     default:
@@ -125,15 +92,13 @@ export const CompanyActivity: FC<CompanyActivityProps> = (props) => {
   return (
     <div {...other}>
       <div>
-        <Typography variant="h6">
-          Activity
-        </Typography>
+        <Typography variant='h6'>Activity</Typography>
       </div>
       <Timeline
         sx={{
           mb: 0,
           mt: 3,
-          p: 0
+          p: 0,
         }}
       >
         {activities.map((activity, index) => (
@@ -141,15 +106,15 @@ export const CompanyActivity: FC<CompanyActivityProps> = (props) => {
             key={activity.id}
             sx={{
               '&:before': {
-                display: 'none'
-              }
+                display: 'none',
+              },
             }}
           >
             <TimelineSeparator>
               <TimelineDot
                 sx={{
                   border: 0,
-                  p: 0
+                  p: 0,
                 }}
               >
                 <Avatar src={activity.avatar}>
@@ -160,7 +125,7 @@ export const CompanyActivity: FC<CompanyActivityProps> = (props) => {
                 <TimelineConnector
                   sx={{
                     backgroundColor: 'divider',
-                    minHeight: 30
+                    minHeight: 30,
                   }}
                 />
               )}
@@ -168,8 +133,8 @@ export const CompanyActivity: FC<CompanyActivityProps> = (props) => {
             <TimelineContent>
               {getActivityContent(activity)}
               <Typography
-                color="textSecondary"
-                variant="caption"
+                color='textSecondary'
+                variant='caption'
                 sx={{ mt: 1 }}
               >
                 {format(activity.date, 'MMM dd, HH:mm a')}
@@ -179,19 +144,17 @@ export const CompanyActivity: FC<CompanyActivityProps> = (props) => {
         ))}
       </Timeline>
       <Box sx={{ mt: 3 }}>
-        <Button>
-          Load more
-        </Button>
+        <Button>Load more</Button>
       </Box>
     </div>
   );
 };
 
 CompanyActivity.defaultProps = {
-  activities: []
+  activities: [],
 };
 
 CompanyActivity.propTypes = {
   // @ts-ignore
-  activities: PropTypes.array
+  activities: PropTypes.array,
 };

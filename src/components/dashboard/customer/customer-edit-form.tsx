@@ -236,19 +236,21 @@ export const CustomerEditForm: FC<CustomerEditFormProps> = (props) => {
           >
             Update
           </Button>
-          <NextLink href='/dashboard/customers/1' passHref>
-            <Button
-              component='a'
-              disabled={formik.isSubmitting}
-              sx={{
-                m: 1,
-                mr: 'auto',
-              }}
-              variant='outlined'
-            >
-              Cancel
-            </Button>
-          </NextLink>
+
+          <Button
+            href='/dashboard/customers/1'
+            LinkComponent={NextLink}
+            component='a'
+            disabled={formik.isSubmitting}
+            sx={{
+              m: 1,
+              mr: 'auto',
+            }}
+            variant='outlined'
+          >
+            Cancel
+          </Button>
+
           <Button color='error' disabled={formik.isSubmitting}>
             Delete user
           </Button>

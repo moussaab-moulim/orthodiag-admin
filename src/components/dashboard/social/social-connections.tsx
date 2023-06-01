@@ -106,27 +106,31 @@ export const SocialConnections: FC = (props) => {
                       p: 2,
                     }}
                   >
-                    <NextLink href='#' passHref>
-                      <Avatar
-                        component='a'
-                        src={connection.avatar}
-                        sx={{
-                          height: 56,
-                          width: 56,
-                        }}
-                      />
-                    </NextLink>
+                    <Avatar
+                      component={NextLink}
+                      href='#'
+                      src={connection.avatar}
+                      sx={{
+                        height: 56,
+                        width: 56,
+                      }}
+                    />
+
                     <Box
                       sx={{
                         flexGrow: 1,
                         mx: 2,
                       }}
                     >
-                      <NextLink href='#' passHref>
-                        <Link color='textPrimary' variant='subtitle2'>
-                          {connection.name}
-                        </Link>
-                      </NextLink>
+                      <Link
+                        component={NextLink}
+                        color='textPrimary'
+                        variant='subtitle2'
+                        href='#'
+                      >
+                        {connection.name}
+                      </Link>
+
                       <Typography
                         color='textSecondary'
                         gutterBottom

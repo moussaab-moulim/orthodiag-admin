@@ -88,13 +88,12 @@ export const MailDetails: FC<MailDetailsProps> = (props) => {
           p: 2,
         }}
       >
-        <NextLink href={backHref} passHref>
-          <Tooltip title='Back'>
-            <IconButton component='a'>
-              <ArrowLeftIcon fontSize='small' />
-            </IconButton>
-          </Tooltip>
-        </NextLink>
+        <Tooltip title='Back'>
+          <IconButton component={NextLink} href={backHref}>
+            <ArrowLeftIcon fontSize='small' />
+          </IconButton>
+        </Tooltip>
+
         <Box sx={{ flexGrow: 1 }} />
         <TextField
           fullWidth

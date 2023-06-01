@@ -11,7 +11,7 @@ import {
   ImageList,
   ImageListItem,
   Link,
-  Typography
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -23,38 +23,28 @@ interface CompanyOverviewProps {
   company: Company;
 }
 
-const MarkdownWrapper = styled('div')(
-  ({ theme }) => ({
-    color: theme.palette.text.secondary,
-    fontFamily: theme.typography.fontFamily,
-    '& p': {
-      fontSize: theme.typography.body2.fontSize,
-      lineHeight: theme.typography.body1.lineHeight,
-      marginBottom: theme.spacing(2)
-    }
-  })
-);
+const MarkdownWrapper = styled('div')(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  fontFamily: theme.typography.fontFamily,
+  '& p': {
+    fontSize: theme.typography.body2.fontSize,
+    lineHeight: theme.typography.body1.lineHeight,
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
   const { company, ...other } = props;
 
   return (
     <div {...other}>
-      <Typography variant="h5">
-        {company.shortDescription}
-      </Typography>
+      <Typography variant='h5'>{company.shortDescription}</Typography>
       <Box sx={{ mt: 3 }}>
         <MarkdownWrapper>
-          {company.description && (
-            <Markdown children={company.description} />
-          )}
+          {company.description && <Markdown children={company.description} />}
         </MarkdownWrapper>
       </Box>
-      <ImageList
-        cols={3}
-        gap={24}
-        variant="masonry"
-      >
+      <ImageList cols={3} gap={24} variant='masonry'>
         {(company.images || []).map((image) => (
           <ImageListItem key={image}>
             <img
@@ -71,33 +61,26 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
           alignItems: 'center',
           display: 'flex',
           justifyContent: 'space-between',
-          mt: 3
+          mt: 3,
         }}
       >
-        <Typography variant="h6">
-          Jobs
-        </Typography>
-        <NextLink
-          href="dashboard/jobs/companies/1"
-          passHref
+        <Typography variant='h6'>Jobs</Typography>
+
+        <Link
+          href='dashboard/jobs/companies/1'
+          component={NextLink}
+          color='inherit'
+          variant='subtitle2'
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+          }}
         >
-          <Link
-            color="inherit"
-            variant="subtitle2"
-            sx={{
-              alignItems: 'center',
-              display: 'flex'
-            }}
-          >
-            <Typography
-              sx={{ mr: 1 }}
-              variant="subtitle2"
-            >
-              Jobs
-            </Typography>
-            <ArrowForwardIcon fontSize="small" />
-          </Link>
-        </NextLink>
+          <Typography sx={{ mr: 1 }} variant='subtitle2'>
+            Jobs
+          </Typography>
+          <ArrowForwardIcon fontSize='small' />
+        </Link>
       </Box>
       <Box sx={{ mt: 3 }}>
         <CompanyJobs jobs={company.jobs} />
@@ -107,46 +90,31 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
         sx={{
           alignItems: 'center',
           display: 'flex',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
         }}
       >
-        <Typography variant="h6">
-          Members
-        </Typography>
-        <NextLink
-          href="dashboard/jobs/companies/1"
-          passHref
+        <Typography variant='h6'>Members</Typography>
+
+        <Link
+          color='inherit'
+          variant='subtitle2'
+          component={NextLink}
+          href='dashboard/jobs/companies/1'
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+          }}
         >
-          <Link
-            color="inherit"
-            variant="subtitle2"
-            sx={{
-              alignItems: 'center',
-              display: 'flex'
-            }}
-          >
-            <Typography
-              sx={{ mr: 1 }}
-              variant="subtitle2"
-            >
-              Members
-            </Typography>
-            <ArrowForwardIcon fontSize="small" />
-          </Link>
-        </NextLink>
+          <Typography sx={{ mr: 1 }} variant='subtitle2'>
+            Members
+          </Typography>
+          <ArrowForwardIcon fontSize='small' />
+        </Link>
       </Box>
       <Box sx={{ mt: 3 }}>
-        <Grid
-          container
-          spacing={3}
-        >
+        <Grid container spacing={3}>
           {(company.members || []).slice(0, 2).map((member) => (
-            <Grid
-              key={member.id}
-              item
-              sm={6}
-              xs={12}
-            >
+            <Grid key={member.id} item sm={6} xs={12}>
               <Box
                 sx={{
                   borderColor: 'divider',
@@ -154,26 +122,21 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
                   borderStyle: 'solid',
                   borderWidth: 1,
                   px: 3,
-                  py: 4
+                  py: 4,
                 }}
               >
                 <Box
                   sx={{
                     alignItems: 'center',
-                    display: 'flex'
+                    display: 'flex',
                   }}
                 >
                   <Avatar src={member.avatar}>
                     {getInitials(member.name)}
                   </Avatar>
                   <Box sx={{ ml: 2 }}>
-                    <Typography variant="subtitle2">
-                      {member.name}
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      variant="body2"
-                    >
+                    <Typography variant='subtitle2'>{member.name}</Typography>
+                    <Typography color='textSecondary' variant='body2'>
                       {member.role}
                     </Typography>
                   </Box>
@@ -181,15 +144,11 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
                 <Box
                   sx={{
                     m: -1,
-                    mt: 1
+                    mt: 1,
                   }}
                 >
                   {(member.skillSet || []).map((skill) => (
-                    <Chip
-                      sx={{ m: 1 }}
-                      key={skill}
-                      label={skill}
-                    />
+                    <Chip sx={{ m: 1 }} key={skill} label={skill} />
                   ))}
                 </Box>
               </Box>
@@ -203,5 +162,5 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
 
 CompanyOverview.propTypes = {
   // @ts-ignore
-  company: PropTypes.object.isRequired
+  company: PropTypes.object.isRequired,
 };

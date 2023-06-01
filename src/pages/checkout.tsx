@@ -66,8 +66,7 @@ const Checkout: NextPage = () => {
                 justifyContent: 'center',
               }}
             >
-              <NextLink href='/' passHref>
-
+              <NextLink href='/'>
                 <Logo
                   sx={{
                     height: 40,
@@ -75,7 +74,6 @@ const Checkout: NextPage = () => {
                   }}
                   variant='light'
                 />
-
               </NextLink>
               <Typography variant='h4'>Passe OrthoDiag</Typography>
               {/*       <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
