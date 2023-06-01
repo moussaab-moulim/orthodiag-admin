@@ -182,17 +182,18 @@ export const SocialProfile: NextPage = () => {
                   Pending
                 </Button>
               )}
-              <NextLink href='/dashboard/chat' passHref>
-                <Button
-                  component='a'
-                  size='small'
-                  startIcon={<ChatIcon fontSize='small' />}
-                  sx={{ ml: 1 }}
-                  variant='contained'
-                >
-                  Send Message
-                </Button>
-              </NextLink>
+
+              <Button
+                component='a'
+                href='/dashboard/chat'
+                LinkComponent={NextLink}
+                size='small'
+                startIcon={<ChatIcon fontSize='small' />}
+                sx={{ ml: 1 }}
+                variant='contained'
+              >
+                Send Message
+              </Button>
             </Box>
             <Tooltip title='More options'>
               <IconButton sx={{ ml: 1 }}>

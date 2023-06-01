@@ -72,19 +72,22 @@ const InvoiceDetails: NextPage = () => {
         <Container maxWidth='md'>
           <Box sx={{ mb: 3 }}>
             <Box sx={{ mb: 4 }}>
-              <NextLink href='/dashboard/invoices' passHref>
-                <Link color='textPrimary' variant='subtitle2'>
-                  <Box
-                    sx={{
-                      alignItems: 'center',
-                      display: 'flex',
-                    }}
-                  >
-                    <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
-                    <Typography variant='subtitle2'>Invoices</Typography>
-                  </Box>
-                </Link>
-              </NextLink>
+              <Link
+                component={NextLink}
+                href='/dashboard/invoices'
+                color='textPrimary'
+                variant='subtitle2'
+              >
+                <Box
+                  sx={{
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+                  <Typography variant='subtitle2'>Invoices</Typography>
+                </Box>
+              </Link>
             </Box>
             <Grid container justifyContent='space-between' spacing={3}>
               <Grid

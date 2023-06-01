@@ -71,11 +71,14 @@ const AuthorizationRequired: NextPage = () => {
               mt: 6,
             }}
           >
-            <NextLink href='/dashboard' passHref>
-              <Button component='a' variant='outlined'>
-                Back to Dashboard
-              </Button>
-            </NextLink>
+            <Button
+              component='a'
+              href='/dashboard'
+              LinkComponent={NextLink}
+              variant='outlined'
+            >
+              Back to Dashboard
+            </Button>
           </Box>
         </Container>
       </Box>

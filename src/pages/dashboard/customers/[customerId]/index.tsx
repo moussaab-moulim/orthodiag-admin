@@ -89,19 +89,18 @@ const CustomerDetails: NextPage = () => {
         <Container maxWidth='md'>
           <div>
             <Box sx={{ mb: 4 }}>
-              <NextLink href='/dashboard/customers' passHref>
-                <Link
-                  color='textPrimary'
-                  component='a'
-                  sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
-                  <Typography variant='subtitle2'>Customers</Typography>
-                </Link>
-              </NextLink>
+              <Link
+                color='textPrimary'
+                component={NextLink}
+                href='/dashboard/customers'
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                }}
+              >
+                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+                <Typography variant='subtitle2'>Customers</Typography>
+              </Link>
             </Box>
             <Grid container justifyContent='space-between' spacing={3}>
               <Grid
@@ -136,16 +135,17 @@ const CustomerDetails: NextPage = () => {
                 </div>
               </Grid>
               <Grid item sx={{ m: -1 }}>
-                <NextLink href='/dashboard/customers/1/edit' passHref>
-                  <Button
-                    component='a'
-                    endIcon={<PencilAltIcon fontSize='small' />}
-                    sx={{ m: 1 }}
-                    variant='outlined'
-                  >
-                    Edit
-                  </Button>
-                </NextLink>
+                <Button
+                  component='a'
+                  href='/dashboard/customers/1/edit'
+                  LinkComponent={NextLink}
+                  endIcon={<PencilAltIcon fontSize='small' />}
+                  sx={{ m: 1 }}
+                  variant='outlined'
+                >
+                  Edit
+                </Button>
+
                 <Button
                   endIcon={<ChevronDownIcon fontSize='small' />}
                   sx={{ m: 1 }}

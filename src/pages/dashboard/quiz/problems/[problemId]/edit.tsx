@@ -54,19 +54,18 @@ const ProblemEdit: NextPage = () => {
         {!isFetching && problem ? (
           <Container>
             <Box sx={{ mb: 4 }}>
-              <NextLink href='/dashboard/quiz/problems' passHref>
-                <Link
-                  color='textPrimary'
-                  component='a'
-                  sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
-                  <Typography variant='subtitle2'>Problems</Typography>
-                </Link>
-              </NextLink>
+              <Link
+                color='textPrimary'
+                component={NextLink}
+                href='/dashboard/quiz/problems'
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                }}
+              >
+                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+                <Typography variant='subtitle2'>Problems</Typography>
+              </Link>
             </Box>
             <Box
               sx={{

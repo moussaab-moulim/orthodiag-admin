@@ -27,14 +27,19 @@ const ProductCreate: NextPage = () => {
           <Box sx={{ mb: 3 }}>
             <Typography variant='h4'>Create a new product</Typography>
             <Breadcrumbs separator='/' sx={{ mt: 1 }}>
-              <NextLink href='/dashboard' passHref>
-                <Link variant='subtitle2'>Dashboard</Link>
-              </NextLink>
-              <NextLink href='/dashboard' passHref>
-                <Link color='primary' variant='subtitle2'>
-                  Management
-                </Link>
-              </NextLink>
+              <Link component={NextLink} href='/dashboard' variant='subtitle2'>
+                Dashboard
+              </Link>
+
+              <Link
+                href='/dashboard'
+                component={NextLink}
+                color='primary'
+                variant='subtitle2'
+              >
+                Management
+              </Link>
+
               <Typography color='textSecondary' variant='subtitle2'>
                 Products
               </Typography>

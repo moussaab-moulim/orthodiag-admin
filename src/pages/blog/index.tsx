@@ -55,14 +55,15 @@ const BlogPostList: NextPage = () => {
         }}
       >
         <Container maxWidth='md'>
-          <NextLink href='/dashboard' passHref>
-            <Button
-              component='a'
-              startIcon={<ArrowLeftIcon fontSize='small' />}
-            >
-              Dashboard
-            </Button>
-          </NextLink>
+          <Button
+            component='a'
+            startIcon={<ArrowLeftIcon fontSize='small' />}
+            LinkComponent={NextLink}
+            href='/dashboard'
+          >
+            Dashboard
+          </Button>
+
           <Typography variant='h3' sx={{ mt: 3 }}>
             Blog Platform
           </Typography>
@@ -80,11 +81,15 @@ const BlogPostList: NextPage = () => {
             }}
           >
             <Typography variant='subtitle1'>Hello, Admin</Typography>
-            <NextLink href='/blog/new' passHref>
-              <Button component='a' variant='contained'>
-                New Post
-              </Button>
-            </NextLink>
+
+            <Button
+              component='a'
+              variant='contained'
+              LinkComponent={NextLink}
+              href='/blog/new'
+            >
+              New Post
+            </Button>
           </Card>
           <Typography variant='h4'>Recent Articles</Typography>
           <Typography color='textSecondary' variant='subtitle1'>

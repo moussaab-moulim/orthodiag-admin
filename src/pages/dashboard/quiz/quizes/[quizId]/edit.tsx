@@ -54,19 +54,18 @@ const QuizEdit: NextPage = () => {
         {!isFetching ? (
           <Container>
             <Box sx={{ mb: 4 }}>
-              <NextLink href='/dashboard/quiz/quizes' passHref>
-                <Link
-                  color='textPrimary'
-                  component='a'
-                  sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
-                  <Typography variant='subtitle2'>Quizes</Typography>
-                </Link>
-              </NextLink>
+              <Link
+                color='textPrimary'
+                component={NextLink}
+                href='/dashboard/quiz/quizes'
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                }}
+              >
+                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+                <Typography variant='subtitle2'>Quizes</Typography>
+              </Link>
             </Box>
             <Box
               sx={{

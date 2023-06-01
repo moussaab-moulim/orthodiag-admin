@@ -170,61 +170,60 @@ const Browse: NextPage = () => {
               <Grid container item lg={9} spacing={3} xs={12}>
                 {section.items.map((item) => (
                   <Grid item key={`item-${item.title}`} md={4} sm={6} xs={12}>
-                    <NextLink href={item.path} passHref>
-                      <Card
-                        component='a'
-                        // @ts-ignore
-                        target={item.newTab ? '_blank' : '_self'}
-                        sx={{
-                          display: 'block',
-                          textDecoration: 'none',
-                          gridColumn: {
-                            xs: 'span 3',
-                            sm: 'span 1',
-                          },
-                        }}
-                        variant='outlined'
-                      >
-                        <Box sx={{ p: 2 }}>
-                          <Box
-                            sx={{
-                              position: 'relative',
-                              pt: 'calc(300 / 500 * 100%)',
-                              '& img': {
-                                height: 'auto',
-                                position: 'absolute',
-                                top: 0,
-                                width: '100%',
-                              },
-                            }}
-                          >
-                            <img alt='' src={item.image} />
-                          </Box>
-                          <Box
-                            sx={{
-                              alignItems: 'flex-end',
-                              display: 'flex',
-                            }}
-                          >
-                            <Typography sx={{ mt: 2 }} variant='subtitle2'>
-                              {item.title}
-                            </Typography>
-                            {item.newTab && (
-                              <ExternalLinkIcon
-                                sx={{
-                                  color: 'text.secondary',
-                                  ml: 1.5,
-                                }}
-                                fontSize='small'
-                              />
-                            )}
-                          </Box>
-                          <Typography color='textSecondary' variant='body2'>
-                            {item.subtitle}
-                          </Typography>
+                    <Card
+                      // @ts-ignore
+                      target={item.newTab ? '_blank' : '_self'}
+                      component={NextLink}
+                      href='/dashboard'
+                      sx={{
+                        display: 'block',
+                        textDecoration: 'none',
+                        gridColumn: {
+                          xs: 'span 3',
+                          sm: 'span 1',
+                        },
+                      }}
+                      variant='outlined'
+                    >
+                      <Box sx={{ p: 2 }}>
+                        <Box
+                          sx={{
+                            position: 'relative',
+                            pt: 'calc(300 / 500 * 100%)',
+                            '& img': {
+                              height: 'auto',
+                              position: 'absolute',
+                              top: 0,
+                              width: '100%',
+                            },
+                          }}
+                        >
+                          <img alt='' src={item.image} />
                         </Box>
-                      </Card>
-                    </NextLink>
+                        <Box
+                          sx={{
+                            alignItems: 'flex-end',
+                            display: 'flex',
+                          }}
+                        >
+                          <Typography sx={{ mt: 2 }} variant='subtitle2'>
+                            {item.title}
+                          </Typography>
+                          {item.newTab && (
+                            <ExternalLinkIcon
+                              sx={{
+                                color: 'text.secondary',
+                                ml: 1.5,
+                              }}
+                              fontSize='small'
+                            />
+                          )}
+                        </Box>
+                        <Typography color='textSecondary' variant='body2'>
+                          {item.subtitle}
+                        </Typography>
+                      </Box>
+                    </Card>
                   </Grid>
                 ))}
               </Grid>

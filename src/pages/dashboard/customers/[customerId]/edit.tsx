@@ -58,19 +58,18 @@ const CustomerEdit: NextPage = () => {
       >
         <Container maxWidth='md'>
           <Box sx={{ mb: 4 }}>
-            <NextLink href='/dashboard/customers' passHref>
-              <Link
-                color='textPrimary'
-                component='a'
-                sx={{
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
-                <Typography variant='subtitle2'>Customers</Typography>
-              </Link>
-            </NextLink>
+            <Link
+              color='textPrimary'
+              component={NextLink}
+              href='/dashboard/customers'
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+              }}
+            >
+              <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+              <Typography variant='subtitle2'>Customers</Typography>
+            </Link>
           </Box>
           <Box
             sx={{

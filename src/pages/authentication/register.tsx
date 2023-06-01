@@ -91,14 +91,12 @@ const Register: NextPage = () => {
               }}
             >
               <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                </a>
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
               </NextLink>
               <Typography variant='h4'>Register</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
@@ -115,18 +113,18 @@ const Register: NextPage = () => {
             </Box>
             <Divider sx={{ my: 3 }} />
             <div>
-              <NextLink
+              <Link
+                color='textSecondary'
+                variant='body2'
                 href={
                   disableGuard
                     ? `/authentication/login?disableGuard=${disableGuard}`
                     : '/authentication/login'
                 }
-                passHref
+                component={NextLink}
               >
-                <Link color='textSecondary' variant='body2'>
-                  Having an account
-                </Link>
-              </NextLink>
+                Having an account
+              </Link>
             </div>
           </Card>
         </Container>

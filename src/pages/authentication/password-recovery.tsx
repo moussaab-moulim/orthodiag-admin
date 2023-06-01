@@ -85,14 +85,14 @@ const PasswordRecovery: NextPage = () => {
               }}
             >
               <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                </a>
+
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
+
               </NextLink>
               <Typography variant='h4'>Password Recovery</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>

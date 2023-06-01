@@ -62,19 +62,18 @@ const OrderDetails: NextPage = () => {
       >
         <Container maxWidth='md'>
           <Box sx={{ mb: 4 }}>
-            <NextLink href='/dashboard/orders' passHref>
-              <Link
-                color='textPrimary'
-                component='a'
-                sx={{
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
-                <Typography variant='subtitle2'>Orders</Typography>
-              </Link>
-            </NextLink>
+            <Link
+              color='textPrimary'
+              href='/dashboard/orders'
+              component={NextLink}
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+              }}
+            >
+              <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+              <Typography variant='subtitle2'>Orders</Typography>
+            </Link>
           </Box>
           <Box sx={{ mb: 4 }}>
             <Grid container justifyContent='space-between' spacing={3}>

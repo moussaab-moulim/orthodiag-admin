@@ -50,14 +50,15 @@ const BlogPostCreate: NextPage = () => {
         }}
       >
         <Container maxWidth='md'>
-          <NextLink href='/dashboard' passHref>
-            <Button
-              component='a'
-              startIcon={<ArrowLeftIcon fontSize='small' />}
-            >
-              Dashboard
-            </Button>
-          </NextLink>
+          <Button
+            component='a'
+            startIcon={<ArrowLeftIcon fontSize='small' />}
+            LinkComponent={NextLink}
+            href='/dashboard'
+          >
+            Dashboard
+          </Button>
+
           <Typography variant='h3' sx={{ mt: 3 }}>
             Create post
           </Typography>
@@ -76,36 +77,38 @@ const BlogPostCreate: NextPage = () => {
           >
             <Typography variant='subtitle1'>Hello, Admin</Typography>
             <div>
-              <NextLink href='/blog' passHref>
-                <Button
-                  component='a'
-                  sx={{
-                    display: {
-                      xs: 'none',
-                      sm: 'inline-flex',
-                    },
-                    mr: 2,
-                  }}
-                  variant='outlined'
-                >
-                  Cancel
-                </Button>
-              </NextLink>
-              <NextLink href='/blog/1' passHref>
-                <Button
-                  component='a'
-                  sx={{
-                    display: {
-                      xs: 'none',
-                      sm: 'inline-flex',
-                    },
-                    mr: 2,
-                  }}
-                  variant='contained'
-                >
-                  Publish changes
-                </Button>
-              </NextLink>
+              <Button
+                component='a'
+                href='/blog'
+                LinkComponent={NextLink}
+                sx={{
+                  display: {
+                    xs: 'none',
+                    sm: 'inline-flex',
+                  },
+                  mr: 2,
+                }}
+                variant='outlined'
+              >
+                Cancel
+              </Button>
+
+              <Button
+                component='a'
+                href='/blog/1'
+                LinkComponent={NextLink}
+                sx={{
+                  display: {
+                    xs: 'none',
+                    sm: 'inline-flex',
+                  },
+                  mr: 2,
+                }}
+                variant='contained'
+              >
+                Publish changes
+              </Button>
+
               <IconButton>
                 <DotsHorizontalIcon fontSize='small' />
               </IconButton>
@@ -211,11 +214,14 @@ const BlogPostCreate: NextPage = () => {
               mt: 2,
             }}
           >
-            <NextLink href='/blog/1' passHref>
-              <Button component='a' variant='contained'>
-                Publish changes
-              </Button>
-            </NextLink>
+            <Button
+              href='/blog/1'
+              LinkComponent={NextLink}
+              component='a'
+              variant='contained'
+            >
+              Publish changes
+            </Button>
           </Box>
         </Container>
       </Box>

@@ -89,18 +89,18 @@ const CompanyDetails: NextPage = () => {
       >
         <Container maxWidth='lg'>
           <Box sx={{ mb: 4 }}>
-            <NextLink href='/dashboard/jobs' passHref>
-              <Link
-                color='textPrimary'
-                sx={{
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
-                <Typography variant='subtitle2'>Jobs</Typography>
-              </Link>
-            </NextLink>
+            <Link
+              color='textPrimary'
+              href='/dashboard/jobs'
+              component={NextLink}
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+              }}
+            >
+              <ArrowBackIcon fontSize='small' sx={{ mr: 1 }} />
+              <Typography variant='subtitle2'>Jobs</Typography>
+            </Link>
           </Box>
           <Grid container spacing={4}>
             <Grid item xs={12} lg={8}>

@@ -106,14 +106,15 @@ const Checkout: NextPage = () => {
       >
         <Container maxWidth='lg'>
           <form onSubmit={handleSubmit}>
-            <NextLink href='/dashboard' passHref>
-              <Button
-                component='a'
-                startIcon={<ArrowLeftIcon fontSize='small' />}
-              >
-                Dashboard
-              </Button>
-            </NextLink>
+            <Button
+              component='a'
+              startIcon={<ArrowLeftIcon fontSize='small' />}
+              LinkComponent={NextLink}
+              href='/dashboard'
+            >
+              Dashboard
+            </Button>
+
             <Typography variant='h3' sx={{ mt: 3 }}>
               Checkout
             </Typography>

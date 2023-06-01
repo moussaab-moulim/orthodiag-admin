@@ -149,15 +149,15 @@ const ProductList: NextPage = () => {
                 <Typography variant='h4'>Products</Typography>
               </Grid>
               <Grid item>
-                <NextLink href='/dashboard/products/new' passHref>
-                  <Button
-                    component='a'
-                    startIcon={<PlusIcon fontSize='small' />}
-                    variant='contained'
-                  >
-                    Add
-                  </Button>
-                </NextLink>
+                <Button
+                  component='a'
+                  href='/dashboard/products/new'
+                  LinkComponent={NextLink}
+                  startIcon={<PlusIcon fontSize='small' />}
+                  variant='contained'
+                >
+                  Add
+                </Button>
               </Grid>
             </Grid>
             <Box

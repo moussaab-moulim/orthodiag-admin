@@ -127,29 +127,33 @@ const JobBrowse: NextPage = () => {
                       },
                     }}
                   >
-                    <NextLink href='/dashboard/jobs/companies/1' passHref>
-                      <Avatar
-                        component='a'
-                        src={company.logo}
-                        sx={{
-                          background: 'transparent',
-                          mr: 2,
-                          mb: {
-                            xs: 2,
-                            md: 0,
-                          },
-                        }}
-                        variant='rounded'
-                      >
-                        {getInitials(company.name)}
-                      </Avatar>
-                    </NextLink>
+                    <Avatar
+                      component={NextLink}
+                      href='/dashboard/jobs/companies/1'
+                      src={company.logo}
+                      sx={{
+                        background: 'transparent',
+                        mr: 2,
+                        mb: {
+                          xs: 2,
+                          md: 0,
+                        },
+                      }}
+                      variant='rounded'
+                    >
+                      {getInitials(company.name)}
+                    </Avatar>
+
                     <div>
-                      <NextLink href='/dashboard/jobs/companies/1' passHref>
-                        <Link color='textPrimary' variant='h6'>
-                          {company.name}
-                        </Link>
-                      </NextLink>
+                      <Link
+                        href='/dashboard/jobs/companies/1'
+                        component={NextLink}
+                        color='textPrimary'
+                        variant='h6'
+                      >
+                        {company.name}
+                      </Link>
+
                       <Typography variant='body2'>
                         {company.shortDescription}
                       </Typography>

@@ -71,11 +71,14 @@ const ServerError: NextPage = () => {
               mt: 6,
             }}
           >
-            <NextLink href='/dashboard' passHref>
-              <Button component='a' variant='outlined'>
-                Back to Dashboard
-              </Button>
-            </NextLink>
+            <Button
+              component='a'
+              LinkComponent={NextLink}
+              href='/dashboard'
+              variant='outlined'
+            >
+              Back to Dashboard
+            </Button>
           </Box>
         </Container>
       </Box>

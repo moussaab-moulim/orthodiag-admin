@@ -88,15 +88,15 @@ const VerifyCode: NextPage = () => {
               }}
             >
               <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                    variant='light'
-                  />
-                </a>
+
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                  variant='light'
+                />
+
               </NextLink>
               <Typography variant='h4'>Verify Code</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>

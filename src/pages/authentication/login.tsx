@@ -58,14 +58,12 @@ const Login: NextPage = () => {
               }}
             >
               <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                </a>
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
               </NextLink>
               <Typography variant='h4'> {t('Log in')}</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
@@ -97,18 +95,18 @@ const Login: NextPage = () => {
             </div> */}
 
             <Box sx={{ mt: 1 }}>
-              <NextLink
+              <Link
+                color='textSecondary'
                 href={
                   disableGuard
                     ? `/authentication/password-recovery?disableGuard=${disableGuard}`
                     : '/authentication/password-recovery'
                 }
-                passHref
+                variant='body2'
+                component={NextLink}
               >
-                <Link color='textSecondary' variant='body2'>
-                  {t('Forgot password')}
-                </Link>
-              </NextLink>
+                {t('Forgot password')}
+              </Link>
             </Box>
           </Card>
         </Container>
