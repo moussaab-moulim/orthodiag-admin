@@ -12,16 +12,14 @@ interface MainSidebarProps {
   open?: boolean;
 }
 
-const MainSidebarLink = styled(Link)(
-  ({ theme }) => ({
-    borderRadius: theme.shape.borderRadius,
-    display: 'block',
-    padding: theme.spacing(1.5),
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover
-    }
-  })
-);
+const MainSidebarLink = styled(Link)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  display: 'block',
+  padding: theme.spacing(1.5),
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+})) as typeof Link;
 
 export const MainSidebar: FC<MainSidebarProps> = (props) => {
   const { onClose, open } = props;
@@ -42,59 +40,53 @@ export const MainSidebar: FC<MainSidebarProps> = (props) => {
 
   return (
     <Drawer
-      anchor="right"
+      anchor='right'
       onClose={onClose}
       open={!lgUp && open}
       PaperProps={{ sx: { width: 256 } }}
       sx={{
-        zIndex: (theme) => theme.zIndex.appBar + 100
+        zIndex: (theme) => theme.zIndex.appBar + 100,
       }}
-      variant="temporary"
+      variant='temporary'
     >
       <Box sx={{ p: 2 }}>
-        <NextLink
-          href="/dashboard"
-          passHref
+        <MainSidebarLink
+          component={NextLink}
+          color='textSecondary'
+          underline='none'
+          variant='subtitle2'
+          href='/dashboard'
         >
-          <MainSidebarLink
-            color="textSecondary"
-            underline="none"
-            variant="subtitle2"
-          >
-            Live Demo
-          </MainSidebarLink>
-        </NextLink>
-        <NextLink
-          href="/browse"
-          passHref
+          Live Demo
+        </MainSidebarLink>
+
+        <MainSidebarLink
+          href='/browse'
+          component={NextLink}
+          color='textSecondary'
+          underline='none'
+          variant='subtitle2'
         >
-          <MainSidebarLink
-            color="textSecondary"
-            underline="none"
-            variant="subtitle2"
-          >
-            Components
-          </MainSidebarLink>
-        </NextLink>
-        <NextLink
-          href="/docs/welcome"
-          passHref
+          Components
+        </MainSidebarLink>
+
+        <MainSidebarLink
+          href='/docs/welcome'
+          component={NextLink}
+          color='textSecondary'
+          underline='none'
+          variant='subtitle2'
         >
-          <MainSidebarLink
-            color="textSecondary"
-            underline="none"
-            variant="subtitle2"
-          >
-            Documentation
-          </MainSidebarLink>
-        </NextLink>
+          Documentation
+        </MainSidebarLink>
+
         <Button
-          component="a"
+          component='a'
           fullWidth
-          href="https://material-ui.com/store/items/devias-kit-pro"
+          href='https://material-ui.com/store/items/devias-kit-pro'
           sx={{ mt: 1.5 }}
-          target="_blank"
-          variant="contained"
+          target='_blank'
+          variant='contained'
         >
           Buy Now
         </Button>
@@ -105,5 +97,5 @@ export const MainSidebar: FC<MainSidebarProps> = (props) => {
 
 MainSidebar.propTypes = {
   onClose: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool,
 };

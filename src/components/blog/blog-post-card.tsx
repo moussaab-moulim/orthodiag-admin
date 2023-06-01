@@ -2,7 +2,16 @@ import type { FC } from 'react';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
-import { Avatar, Box, Card, CardContent, CardMedia, Chip, Link, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  Link,
+  Typography,
+} from '@mui/material';
 import { getInitials } from '../../utils/get-initials';
 
 interface BlogPostCardProps {
@@ -33,48 +42,43 @@ export const BlogPostCard: FC<BlogPostCardProps> = (props) => {
     <Card
       sx={{
         '& + &': {
-          mt: 6
-        }
+          mt: 6,
+        },
       }}
       {...other}
     >
-      <NextLink
-        href="/blog/1"
-        passHref
-      >
-        <CardMedia
-          component="a"
-          image={cover}
-          sx={{ height: 280 }}
-        />
-      </NextLink>
+      <CardMedia
+        component={NextLink}
+        href='/blog/1'
+        image={cover}
+        sx={{ height: 280 }}
+      />
+
       <CardContent>
         <Box sx={{ mb: 2 }}>
           <Chip label={category} />
         </Box>
-        <NextLink
-          href="/blog/1"
-          passHref
+
+        <Link
+          href='/blog/1'
+          component={NextLink}
+          color='textPrimary'
+          variant='h5'
         >
-          <Link
-            color="textPrimary"
-            component="a"
-            variant="h5"
-          >
-            {title}
-          </Link>
-        </NextLink>
+          {title}
+        </Link>
+
         <Typography
-          color="textSecondary"
+          color='textSecondary'
           sx={{
             height: 48,
             mt: 1,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 2
+            WebkitLineClamp: 2,
           }}
-          variant="body1"
+          variant='body1'
         >
           {shortDescription}
         </Typography>
@@ -83,36 +87,27 @@ export const BlogPostCard: FC<BlogPostCardProps> = (props) => {
             alignItems: 'center',
             display: 'flex',
             flexWrap: 'wrap',
-            mt: 2
+            mt: 2,
           }}
         >
           <Box
             sx={{
               alignItems: 'center',
-              display: 'flex'
+              display: 'flex',
             }}
           >
-            <Avatar
-              src={authorAvatar}
-              sx={{ mr: 2 }}
-            >
+            <Avatar src={authorAvatar} sx={{ mr: 2 }}>
               {getInitials(authorName)}
             </Avatar>
-            <Typography variant="subtitle2">
-              By
-              {' '}
-              {authorName}
-              {' '}
-              •
-              {' '}
-              {format(publishedAt, 'MMM d, yyyy')}
+            <Typography variant='subtitle2'>
+              By {authorName} • {format(publishedAt, 'MMM d, yyyy')}
             </Typography>
           </Box>
           <Typography
-            align="right"
-            color="textSecondary"
+            align='right'
+            color='textSecondary'
             sx={{ flexGrow: 1 }}
-            variant="body2"
+            variant='body2'
           >
             {`${readTime} read`}
           </Typography>
@@ -130,5 +125,5 @@ BlogPostCard.propTypes = {
   publishedAt: PropTypes.number.isRequired,
   readTime: PropTypes.string.isRequired,
   shortDescription: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };

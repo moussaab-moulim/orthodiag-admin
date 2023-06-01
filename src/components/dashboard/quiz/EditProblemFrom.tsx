@@ -22,7 +22,7 @@ import InputText from '@components/widgets/inputs/InputText';
 import { toKebabCase } from '@utils/helpers';
 import { LoadingBackdrop } from '@components/Loading';
 import { Carousel } from 'react-responsive-carousel';
-import Image from "next/image";
+import Image from 'next/image';
 import { usePaginatedState } from '@hooks/usePaginatedState';
 import { PageParams } from '@interfaces/common';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
@@ -334,13 +334,14 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
                     }}
                   >
                     <Image
-                      src={img.icon?.path}
+                      src={img.icon!.path}
                       alt={img.label}
                       fill
-                      sizes="100vw"
+                      sizes='100vw'
                       style={{
-                        objectFit: "contain"
-                      }}></Image>
+                        objectFit: 'contain',
+                      }}
+                    ></Image>
                   </Box>
                 ))
               }
@@ -360,10 +361,11 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
                     src={i.icon!.path}
                     alt={i.label}
                     fill
-                    sizes="100vw"
+                    sizes='100vw'
                     style={{
-                      objectFit: "contain"
-                    }} />
+                      objectFit: 'contain',
+                    }}
+                  />
                 </Box>
               ))}
             </Carousel>

@@ -1,7 +1,15 @@
 import type { FC } from 'react';
 import PropTypes from 'prop-types';
 import NextLink from 'next/link';
-import { AppBar, Box, Button, Container, IconButton, Link, Toolbar } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Link,
+  Toolbar,
+} from '@mui/material';
 import { Menu as MenuIcon } from '../icons/menu';
 import { Logo } from './logo';
 
@@ -20,98 +28,83 @@ export const MainNavbar: FC<MainNavbarProps> = (props) => {
         borderBottomColor: 'divider',
         borderBottomStyle: 'solid',
         borderBottomWidth: 1,
-        color: 'text.secondary'
+        color: 'text.secondary',
       }}
     >
-      <Container maxWidth="lg">
-        <Toolbar
-          disableGutters
-          sx={{ minHeight: 64 }}
-        >
-          <NextLink
-            href="/"
-            passHref
-          >
-            <a>
-              <Logo
-                sx={{
-                  display: {
-                    md: 'inline',
-                    xs: 'none'
-                  },
-                  height: 40,
-                  width: 40
-                }}
-              />
-            </a>
+      <Container maxWidth='lg'>
+        <Toolbar disableGutters sx={{ minHeight: 64 }}>
+          <NextLink href='/'>
+            <Logo
+              sx={{
+                display: {
+                  md: 'inline',
+                  xs: 'none',
+                },
+                height: 40,
+                width: 40,
+              }}
+            />
           </NextLink>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton
-            color="inherit"
+            color='inherit'
             onClick={onOpenSidebar}
             sx={{
               display: {
-                md: 'none'
-              }
+                md: 'none',
+              },
             }}
           >
-            <MenuIcon fontSize="small" />
+            <MenuIcon fontSize='small' />
           </IconButton>
           <Box
             sx={{
               alignItems: 'center',
               display: {
                 md: 'flex',
-                xs: 'none'
-              }
+                xs: 'none',
+              },
             }}
           >
-            <NextLink
-              href="/dashboard"
-              passHref
+            <Link
+              component={NextLink}
+              href='/dashboard'
+              color='textSecondary'
+              underline='none'
+              variant='subtitle2'
             >
-              <Link
-                color="textSecondary"
-                underline="none"
-                variant="subtitle2"
-              >
-                Live Demo
-              </Link>
-            </NextLink>
-            <NextLink
-              href="/browse"
-              passHref
-            >
-              <Link
-                color="textSecondary"
-                sx={{ ml: 2 }}
-                underline="none"
-                variant="subtitle2"
-              >
-                Components
-              </Link>
-            </NextLink>
-            <NextLink
-              href="/docs/welcome"
-              passHref
-            >
-              <Link
-                color="textSecondary"
-                component="a"
-                sx={{ ml: 2 }}
-                underline="none"
-                variant="subtitle2"
-              >
-                Documentation
-              </Link>
-            </NextLink>
-            <Button
-              component="a"
-              href="https://material-ui.com/store/items/devias-kit-pro"
-              size="medium"
+              Live Demo
+            </Link>
+
+            <Link
+              component={NextLink}
+              href='/browse'
+              color='textSecondary'
               sx={{ ml: 2 }}
-              target="_blank"
-              variant="contained"
+              underline='none'
+              variant='subtitle2'
+            >
+              Components
+            </Link>
+
+            <Link
+              href='/docs/welcome'
+              color='textSecondary'
+              component={NextLink}
+              sx={{ ml: 2 }}
+              underline='none'
+              variant='subtitle2'
+            >
+              Documentation
+            </Link>
+
+            <Button
+              component='a'
+              href='https://material-ui.com/store/items/devias-kit-pro'
+              size='medium'
+              sx={{ ml: 2 }}
+              target='_blank'
+              variant='contained'
             >
               Buy Now
             </Button>
@@ -123,5 +116,5 @@ export const MainNavbar: FC<MainNavbarProps> = (props) => {
 };
 
 MainNavbar.propTypes = {
-  onOpenSidebar: PropTypes.func
+  onOpenSidebar: PropTypes.func,
 };
