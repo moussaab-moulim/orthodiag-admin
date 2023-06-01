@@ -22,7 +22,7 @@ import InputText from '@components/widgets/inputs/InputText';
 import { toKebabCase } from '@utils/helpers';
 import { LoadingBackdrop } from '@components/Loading';
 import { Carousel } from 'react-responsive-carousel';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { usePaginatedState } from '@hooks/usePaginatedState';
 import { PageParams } from '@interfaces/common';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';

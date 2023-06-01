@@ -10,7 +10,7 @@ import {
   Popover,
   Typography,
 } from '@mui/material';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 interface LanguagePopoverProps {
   anchorEl: null | Element;

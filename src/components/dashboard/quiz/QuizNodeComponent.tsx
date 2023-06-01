@@ -20,7 +20,7 @@ import { Handle, Node, NodeProps, Position } from 'reactflow';
 import { PencilAlt } from '@icons/pencil-alt';
 import { NodeDataType, QuizListItem, QuizNodeTree } from '@interfaces/quiz';
 import { OpenWith } from '@mui/icons-material';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { Carousel } from 'react-responsive-carousel';
 import {
   useCreateQuizAnswerMutation,

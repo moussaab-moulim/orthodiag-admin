@@ -47,7 +47,7 @@ import State from '@components/State';
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
 import { TableErrorComponent } from '@components/ErroComponents';
 import { useGetQuestionsQuery } from '@slices/questionReduxApi';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 interface QuestionListTableProps {}
 

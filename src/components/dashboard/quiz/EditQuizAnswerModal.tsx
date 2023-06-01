@@ -34,7 +34,7 @@ import {
 import { usePaginatedState } from '@hooks/usePaginatedState';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
 import { Carousel } from 'react-responsive-carousel';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 interface EditQuizAnswerModalProps {
   open: boolean;
   onClose: () => void;

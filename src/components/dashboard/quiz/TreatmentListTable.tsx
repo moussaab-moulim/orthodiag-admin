@@ -49,7 +49,7 @@ import { TableErrorComponent } from '@components/ErroComponents';
 import { useGetTreatmentesQuery } from '@slices/treatmentReduxApi';
 import { Table5 } from '@components/widgets/tables/table-5';
 import { Table3 } from '@components/widgets/tables/table-3';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 interface TreatmentListTableProps {}
 

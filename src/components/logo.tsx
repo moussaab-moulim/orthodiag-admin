@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 type Variant = 'light' | 'primary';
 

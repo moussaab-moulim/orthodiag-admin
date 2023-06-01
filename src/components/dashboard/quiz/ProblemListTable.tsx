@@ -48,7 +48,7 @@ import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
 import { TableErrorComponent } from '@components/ErroComponents';
 import { useGetProblemesQuery } from '@slices/problemReduxApi';
 import { Table5 } from '@components/widgets/tables/table-5';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 interface ProblemListTableProps {}
 
