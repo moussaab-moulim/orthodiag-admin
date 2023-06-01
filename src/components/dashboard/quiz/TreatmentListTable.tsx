@@ -49,7 +49,7 @@ import { TableErrorComponent } from '@components/ErroComponents';
 import { useGetTreatmentesQuery } from '@slices/treatmentReduxApi';
 import { Table5 } from '@components/widgets/tables/table-5';
 import { Table3 } from '@components/widgets/tables/table-3';
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 interface TreatmentListTableProps {}
 
@@ -171,7 +171,10 @@ function useTreatmentColumns() {
               height={250}
               alt='Image of the treatment'
               src={row.row.images[0].path}
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
             <Popover
               id={`mouse-over-popover-${row.row.id}`}
               sx={{
@@ -196,7 +199,10 @@ function useTreatmentColumns() {
                 height={250}
                 alt='Image of the treatment'
                 src={row.row.images[0].path}
-              />
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }} />
             </Popover>
           </Box>
         ) : (

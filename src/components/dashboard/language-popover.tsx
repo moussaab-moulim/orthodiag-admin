@@ -10,7 +10,7 @@ import {
   Popover,
   Typography,
 } from '@mui/material';
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 interface LanguagePopoverProps {
   anchorEl: null | Element;
@@ -88,7 +88,10 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
                 height={20}
                 alt={languageOptions[language]?.label ?? ''}
                 src={languageOptions[language]?.icon ?? ''}
-              />
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }} />
             </Box>
           </ListItemIcon>
           <ListItemText

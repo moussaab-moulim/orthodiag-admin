@@ -34,7 +34,7 @@ import {
 import { usePaginatedState } from '@hooks/usePaginatedState';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
 import { Carousel } from 'react-responsive-carousel';
-import Image from "next/legacy/image";
+import Image from "next/image";
 interface EditQuizAnswerModalProps {
   open: boolean;
   onClose: () => void;
@@ -241,9 +241,11 @@ export const EditQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
                   <Image
                     src={selectedIcon.icon.path}
                     alt={selectedIcon.icon.id}
-                    layout='fill'
-                    objectFit='contain'
-                  />
+                    fill
+                    sizes="100vw"
+                    style={{
+                      objectFit: "contain"
+                    }} />
                 </Box>
               </Box>
             )}

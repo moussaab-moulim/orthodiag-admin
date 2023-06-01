@@ -47,7 +47,7 @@ import State from '@components/State';
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
 import { TableErrorComponent } from '@components/ErroComponents';
 import { useGetQuestionsQuery } from '@slices/questionReduxApi';
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 interface QuestionListTableProps {}
 
@@ -169,7 +169,10 @@ function useQuestionColumns() {
               height={250}
               alt='Image of the treatment'
               src={row.row.images[0].path}
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
             <Popover
               id={`mouse-over-popover-${row.row.id}`}
               sx={{
@@ -194,7 +197,10 @@ function useQuestionColumns() {
                 height={250}
                 alt='Image of the treatment'
                 src={row.row.images[0].path}
-              />
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }} />
             </Popover>
           </Box>
         ) : (

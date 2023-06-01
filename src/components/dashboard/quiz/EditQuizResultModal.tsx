@@ -37,7 +37,7 @@ import {
 import { usePaginatedState } from '@hooks/usePaginatedState';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
 import { Carousel } from 'react-responsive-carousel';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { Remove } from '@mui/icons-material';
 import { Trash } from '@icons/trash';
 interface EditQuizResultModalProps {
