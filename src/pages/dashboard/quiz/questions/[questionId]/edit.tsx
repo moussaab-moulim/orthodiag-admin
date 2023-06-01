@@ -38,7 +38,11 @@ const QuestionEdit: NextPage = () => {
 
   useErrorHandler(error);
   useEffect(() => {
+    console.log('mount');
     gtm.push({ event: 'page_view' });
+    return () => {
+      console.log('unmout', question);
+    };
   }, []);
 
   return (

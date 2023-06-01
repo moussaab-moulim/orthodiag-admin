@@ -22,7 +22,7 @@ import InputText from '@components/widgets/inputs/InputText';
 import { toKebabCase } from '@utils/helpers';
 import { LoadingBackdrop } from '@components/Loading';
 import { Carousel } from 'react-responsive-carousel';
-import Image from "next/image";
+import Image from 'next/image';
 import { usePaginatedState } from '@hooks/usePaginatedState';
 import { PageParams } from '@interfaces/common';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
@@ -321,15 +321,14 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
                     }}
                   >
                     <Image
-                      src={
-                        'https://uc2e4d818cec287bd048895c1179.dl.dropboxusercontent.com/cd/0/get/B9I6gpqfraIZBY-wq73Xg3LoAlqVPZVC5o46zbHYL4rmGIMPunJgQGRP1USeVfxEOrweKpYY4TmI_Veu3fyDSd4skIVT5flKJFZi0xLbTZbfALt16CDubUdk0me3LQmSaWV3XEuht5gubxvmqlpk0ovCpAGaHqXhVr4vQaFqBieiLSEFesLOi0Jr7reOUqSP_IU/file&w=3840&q=75'
-                      }
+                      src={img.icon!.path}
                       alt={img.label}
                       fill
-                      sizes="100vw"
+                      sizes='100vw'
                       style={{
-                        objectFit: "contain"
-                      }}></Image>
+                        objectFit: 'contain',
+                      }}
+                    ></Image>
                   </Box>
                 ))
               }
@@ -349,10 +348,11 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
                     src={i.icon!.path}
                     alt={i.label}
                     fill
-                    sizes="100vw"
+                    sizes='100vw'
                     style={{
-                      objectFit: "contain"
-                    }} />
+                      objectFit: 'contain',
+                    }}
+                  />
                 </Box>
               ))}
             </Carousel>
