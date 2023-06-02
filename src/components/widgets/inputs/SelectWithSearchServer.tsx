@@ -30,6 +30,7 @@ import { useTranslation } from 'react-i18next';
 import { FileEntity } from '@interfaces/quiz';
 import { WithTooltip } from '@components/Tooltip';
 import State from '@components/State';
+import Image from 'next/image';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -277,7 +278,12 @@ export const SelectWithSearchServer = <
                       },
                     }}
                   >
-                    <img alt={icon.id} src={icon.path} />
+                    <Image
+                      alt={icon.id}
+                      src={icon.path}
+                      width={100}
+                      height={100}
+                    />
                   </Box>
                 </ListItemAvatar>
               )}
@@ -319,7 +325,12 @@ export const SelectWithSearchServer = <
                         },
                       }}
                     >
-                      <img alt={icon.id} src={icon.path} />
+                      <Image
+                        alt={icon.id}
+                        src={icon.path}
+                        width={100}
+                        height={100}
+                      />
                     </Box>
                   </ListItemAvatar>
                 )}
