@@ -340,7 +340,6 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
                       src={img.icon!.path}
                       alt={img.label}
                       fill
-                      sizes='100vw'
                       style={{
                         objectFit: 'contain',
                       }}
@@ -363,7 +362,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
                     key={index}
                     src={i.icon!.path}
                     alt={i.label}
-                    sizes='100vw'
+                    fill
                     style={{
                       objectFit: 'contain',
                     }}

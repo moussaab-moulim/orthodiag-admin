@@ -324,7 +324,6 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
                       src={img.icon!.path}
                       alt={img.label}
                       fill
-                      sizes='100vw'
                       style={{
                         objectFit: 'contain',
                       }}
@@ -348,7 +347,6 @@ export const EditQuestionForm: FC<EditQuestionFormProps> = ({
                     src={i.icon!.path}
                     alt={i.label}
                     fill
-                    sizes='100vw'
                     style={{
                       objectFit: 'contain',
                     }}
