@@ -20,7 +20,7 @@ import { Handle, Node, NodeProps, Position } from 'reactflow';
 import { PencilAlt } from '@icons/pencil-alt';
 import { NodeDataType, QuizListItem, QuizNodeTree } from '@interfaces/quiz';
 import { OpenWith } from '@mui/icons-material';
-import Image from "next/image";
+import Image from 'next/image';
 import { Carousel } from 'react-responsive-carousel';
 import {
   useCreateQuizAnswerMutation,
@@ -81,6 +81,10 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
 
   const handleDeleteClick = async () => {
     setDeleteQuizNodeOpen(true);
+  };
+
+  const handleDeleteClose = async () => {
+    setDeleteQuizNodeOpen(false);
   };
 
   return (
@@ -180,10 +184,11 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
                     src={i.path}
                     alt={i.path}
                     fill
-                    sizes="100vw"
+                    sizes='100vw'
                     style={{
-                      objectFit: "contain"
-                    }} />
+                      objectFit: 'contain',
+                    }}
+                  />
                 </Box>
               ))}
             </Carousel>
@@ -225,7 +230,7 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
       {deleteQuizNodeOpen && (
         <DeleteQuizNodeModal
           open={deleteQuizNodeOpen}
-          onClose={handleDeleteClick}
+          onClose={handleDeleteClose}
           quizNode={data}
         />
       )}

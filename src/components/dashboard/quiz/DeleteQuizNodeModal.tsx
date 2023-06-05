@@ -46,7 +46,7 @@ export const DeleteQuizNodeModal: FC<EditQuizNodeModalProps> = ({
           },
         }
       );
-      //onClose();
+      onClose();
     } catch (err) {
       console.error(err);
     }
