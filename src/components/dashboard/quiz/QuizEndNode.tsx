@@ -49,11 +49,8 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant='h6'>Fin</Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton>
-            <ContentCopy
-              onClick={() => setIsCloneQuizNodeModalOpen(true)}
-              fontSize='small'
-            />
+          <IconButton onClick={() => setIsCloneQuizNodeModalOpen(true)}>
+            <ContentCopy fontSize='small' />
           </IconButton>
           <IconButton>
             <OpenWith className='nodeHandle' fontSize='small' />
