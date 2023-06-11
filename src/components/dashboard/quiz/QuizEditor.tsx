@@ -210,6 +210,8 @@ export const QuizEditor: FC<QuizEditorProps> = (props) => {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           fitView
+          minZoom={0.2}
+          maxZoom={1}
         >
           <Background />
           <Controls />
