@@ -59,6 +59,10 @@ interface UpdateResult {
 interface CreateQuizNode {
   previousNode: { id: number };
 }
+interface CloneQuizNode {
+  id: number;
+  previousNode: { id: number };
+}
 
 export const quizApi = createApi({
   reducerPath: 'quizApi',
@@ -162,6 +166,16 @@ export const quizApi = createApi({
         return {
           url: `/quizNode/${id}`,
           method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['quiz/quizNode'],
+    }),
+    cloneQuizNode: build.mutation<void, CloneQuizNode>({
+      query: ({ id, ...body }) => {
+        return {
+          url: `/quizNode/clone/${id}`,
+          method: 'POST',
+          body: body,
         };
       },
       invalidatesTags: ['quiz/quizNode'],
@@ -333,4 +347,5 @@ export const {
   useGetQuizResultQuery,
   useDeleteAnswerMutation,
   useDeleteQuizNodeMutation,
+  useCloneQuizNodeMutation,
 } = quizApi;

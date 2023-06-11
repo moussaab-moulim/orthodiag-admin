@@ -2,10 +2,11 @@ import { FC, useState } from 'react';
 import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { NodeDataType } from '@interfaces/quiz';
-import { OpenWith } from '@mui/icons-material';
+import { ContentCopy, OpenWith } from '@mui/icons-material';
 
 import { EditQuizQuestionModal } from './EditQuizQuestionModal';
 import { EditQuizResultModal } from './EditQuizResultModal';
+import { CloneQuizNodeModal } from './CloneQuizNodeModal';
 export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
   data,
   xPos,
@@ -14,6 +15,12 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
 }) => {
   const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(false);
   const [isEditResultModalOpen, setIsEditResultModalOpen] = useState(false);
+  const [isCloneQuizNodeModalOpen, setIsCloneQuizNodeModalOpen] =
+    useState(false);
+
+  const handleCloneQuizNodeModalOpen = () => {
+    setIsCloneQuizNodeModalOpen(false);
+  };
 
   const handleEditQuestionModalClose = () => {
     setIsEditQuestionModalOpen(false);
@@ -43,6 +50,12 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
           <Typography variant='h6'>Fin</Typography>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton>
+            <ContentCopy
+              onClick={() => setIsCloneQuizNodeModalOpen(true)}
+              fontSize='small'
+            />
+          </IconButton>
+          <IconButton>
             <OpenWith className='nodeHandle' fontSize='small' />
           </IconButton>
         </Box>
@@ -64,6 +77,13 @@ export const QuizEndComponent: FC<NodeProps<NodeDataType>> = ({
           </Button>
         </Box>
       </Paper>
+      {isCloneQuizNodeModalOpen && (
+        <CloneQuizNodeModal
+          parentNodeId={data.id}
+          open={isCloneQuizNodeModalOpen}
+          onClose={handleCloneQuizNodeModalOpen}
+        />
+      )}
       {isEditResultModalOpen && (
         <EditQuizResultModal
           open={isEditResultModalOpen}
