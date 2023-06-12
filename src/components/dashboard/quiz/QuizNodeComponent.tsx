@@ -180,6 +180,7 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
                   }}
                 >
                   <Image
+                    unoptimized
                     key={index}
                     src={i.path}
                     alt={i.path}

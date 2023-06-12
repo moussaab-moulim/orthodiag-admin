@@ -337,6 +337,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
                     }}
                   >
                     <Image
+                      unoptimized
                       src={img.icon!.path}
                       alt={img.label}
                       fill
@@ -359,6 +360,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
                   }}
                 >
                   <Image
+                    unoptimized
                     key={index}
                     src={i.icon!.path}
                     alt={i.label}

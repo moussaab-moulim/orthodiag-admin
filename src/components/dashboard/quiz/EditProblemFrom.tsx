@@ -334,6 +334,7 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
                     }}
                   >
                     <Image
+                      unoptimized
                       src={img.icon!.path}
                       alt={img.label}
                       fill
@@ -356,6 +357,7 @@ export const EditProblemForm: FC<EditProblemFormProps> = ({
                   }}
                 >
                   <Image
+                    unoptimized
                     key={index}
                     src={i.icon!.path}
                     alt={i.label}

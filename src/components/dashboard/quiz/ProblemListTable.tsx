@@ -166,6 +166,7 @@ function useProblemColumns() {
             onMouseLeave={handlePopoverClose}
           >
             <Image
+              unoptimized
               width={250}
               height={250}
               alt='Image of the treatment'
@@ -195,6 +196,7 @@ function useProblemColumns() {
             >
               {/* row.row.images[0].path */}
               <Image
+                unoptimized
                 width={250}
                 height={250}
                 alt='Image of the treatment'

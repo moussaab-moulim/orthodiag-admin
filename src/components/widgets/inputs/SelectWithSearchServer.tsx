@@ -279,6 +279,7 @@ export const SelectWithSearchServer = <
                     }}
                   >
                     <Image
+                      unoptimized
                       alt={icon.id}
                       src={icon.path}
                       width={100}
@@ -326,6 +327,7 @@ export const SelectWithSearchServer = <
                       }}
                     >
                       <Image
+                        unoptimized
                         alt={icon.id}
                         src={icon.path}
                         width={100}
