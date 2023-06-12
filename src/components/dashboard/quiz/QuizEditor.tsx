@@ -148,7 +148,7 @@ export const QuizEditor: FC<QuizEditorProps> = (props) => {
   const [nodes, setNodes] = useState<Node<NodeDataType>[]>([]);
   const [edges, setEdges] = useState<Edge<Answer>[]>([]);
 
-  const [displayMode, setDisplayMode] = useState<string>('LR');
+  const [displayMode, setDisplayMode] = useState<string>('TB');
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     return setNodes((nds) => applyNodeChanges(changes, nds));
