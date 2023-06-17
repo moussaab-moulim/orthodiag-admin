@@ -37,7 +37,7 @@ import {
 import { usePaginatedState } from '@hooks/usePaginatedState';
 import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
 import { Carousel } from 'react-responsive-carousel';
-import Image from "next/image";
+import Image from 'next/image';
 import { Remove } from '@mui/icons-material';
 import { Trash } from '@icons/trash';
 interface EditQuizResultModalProps {
@@ -55,10 +55,11 @@ const initialValues = (result?: Result) => {
         icon: prb.images[0],
       })) as SelectOption[],
 
-      treatments: result.groupedTreatment.map((trGroup) =>
-        trGroup.map((trt) => {
+      treatments: result.treatmentGroups.map((trGroup) =>
+        trGroup.map((g) => {
+          const trt = result.treatments.find((t) => t.id.toString() === g);
           return {
-            value: trt.id.toString(),
+            value: trt?.id.toString(),
             label: `${trt?.code ?? ''}-${trt?.name ?? ''}`,
             icon: trt?.images?.[0],
           };

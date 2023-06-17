@@ -88,7 +88,8 @@ export interface Answer {
 export interface Result {
   id: number;
   problem: Problem[];
-  groupedTreatment: Treatment[][];
+  treatmentGroups: string[][];
+  treatments: Treatment[];
 }
 export interface Problem {
   id: number;
