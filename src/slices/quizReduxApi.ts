@@ -11,9 +11,11 @@ import {
   Question,
   Quiz,
   QuizListItem,
+  QuizNodeApiItem,
   QuizNodeTree,
   Result,
   Treatment,
+  mapQuizNodeTreeApiItem,
 } from '@interfaces/quiz';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { globalHeaders, toQueryParams } from '@utils/helpers';
@@ -132,11 +134,12 @@ export const quizApi = createApi({
         { type: 'quiz/quizNode', id },
         'quiz/quizNode',
       ],
-      transformResponse: (returnValue: QuizNodeTree) => {
-        return {
-          ...returnValue,
-          isRoot: true,
-        };
+      transformResponse: (returnValue: QuizNodeApiItem) => {
+        console.log(
+          'mapQuizNodeTreeApiItem(returnValue)',
+          mapQuizNodeTreeApiItem(returnValue)
+        );
+        return mapQuizNodeTreeApiItem(returnValue);
       },
     }),
     createQuizNode: build.mutation<void, CreateQuizNode>({

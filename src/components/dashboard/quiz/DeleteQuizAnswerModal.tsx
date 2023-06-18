@@ -77,7 +77,7 @@ export const DeleteQuizAnswerModal: FC<EditQuizAnswerModalProps> = ({
             suivants, êtes-vous sûr de vouloir continuer ?`}
           </Typography>
           <Typography color='textSecondary' sx={{ mt: 1 }} variant='body2'>
-            {`\u2022 Reponse (id:"${answer.id},"label:"${answer.label}") de la question "${answer.parentQuizNode?.question?.code}"`}
+            {`\u2022 Reponse (id:"${answer.id},"label:"${answer.label}")`}
           </Typography>
         </div>
       </Box>

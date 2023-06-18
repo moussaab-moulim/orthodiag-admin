@@ -48,6 +48,53 @@ export interface QuizNodeTree {
 
   previousNode?: QuizNodeTree;
 }
+export interface QuizNodeApiItem {
+  id: number;
+  isInlineAnswers: boolean;
+  question: Question | null;
+  parentAnswer: {
+    id: number;
+    label: string;
+    icon?: FileEntity;
+    result: {
+      id: number;
+      treatmentGroups: string[][];
+    };
+  } | null;
+
+  nextNodes: QuizNodeApiItem[];
+}
+
+export const mapQuizNodeTreeApiItem = (
+  node: QuizNodeApiItem,
+  previousNode?: QuizNodeTree
+): QuizNodeTree => {
+  console.log('mqping', node);
+  const nodeObject: QuizNodeTree = {
+    id: node.id,
+    isInlineAnswers: node.isInlineAnswers,
+    isRoot: !previousNode,
+    question: node.question,
+    parentAnswer: node.parentAnswer
+      ? {
+          ...node.parentAnswer,
+
+          result: { id: node.parentAnswer.result.id },
+        }
+      : null,
+    answers: node.nextNodes
+      .filter((_node) => _node.parentAnswer !== null)
+      .map((_node) => _node.parentAnswer as Answer),
+    nextNodes: [],
+  };
+  return {
+    ...nodeObject,
+    previousNode: previousNode,
+    nextNodes: node.nextNodes.map((_node) =>
+      mapQuizNodeTreeApiItem(_node, nodeObject)
+    ),
+  };
+};
 export interface NodeDataType extends QuizNodeTree {
   level: number;
   parent: number | null;
@@ -75,10 +122,7 @@ export interface Answer {
 
   label: string;
 
-  nextQuizNode: QuizNodeTree | null;
-  parentQuizNode: QuizNodeTree | null;
-
-  result: Result;
+  result: { id: number };
 
   icon?: FileEntity;
 

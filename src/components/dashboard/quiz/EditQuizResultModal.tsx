@@ -40,6 +40,7 @@ import { Carousel } from 'react-responsive-carousel';
 import Image from 'next/image';
 import { Remove } from '@mui/icons-material';
 import { Trash } from '@icons/trash';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 interface EditQuizResultModalProps {
   open: boolean;
   onClose: () => void;
@@ -85,7 +86,7 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
   const { t } = useTranslation();
 
   const { data: result, isFetching: resultFetching } = useGetQuizResultQuery(
-    answer.result.id
+    answer.result.id ?? skipToken
   );
 
   const {
@@ -157,7 +158,7 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
     try {
       const apiAnswer = await showApiCallNotification(
         updateResult({
-          id: answer.result.id,
+          id: answer.result.id!,
           answer: { id: answer.id },
           treatments: dataForm.treatments.map((grp) =>
             grp.map((trt) => ({ id: Number(trt.value) }))

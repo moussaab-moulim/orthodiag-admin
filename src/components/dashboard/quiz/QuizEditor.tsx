@@ -311,15 +311,16 @@ function edgesGenerator(nodes: Node<NodeDataType>[]) {
 
   nodes.forEach((node) => {
     node.data.answers.forEach((a) => {
+      const nextQuizNode =
+        node.data.nextNodes.find((n) => n.parentAnswer?.id === a.id) ?? null;
+
       edges.push({
         id: `${node.id}-${
-          a.nextQuizNode
-            ? a.nextQuizNode!.id.toString()
-            : `end-${node.id}-${a.id}`
+          nextQuizNode ? nextQuizNode.id?.toString() : `end-${node.id}-${a.id}`
         }`,
         source: node.id.toString(),
-        target: a.nextQuizNode
-          ? a.nextQuizNode.id.toString()
+        target: nextQuizNode
+          ? `${nextQuizNode.id?.toString()}`
           : `end-${node.id}-${a.id}`,
         label: a.label,
         data: { ...a, hasSiblings: node.data.answers.length > 1 },

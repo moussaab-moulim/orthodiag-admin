@@ -25,10 +25,6 @@ interface UpdateQuizNode {
   };
 }
 
-interface CreateQuizNode {
-  previousNode: { id: number };
-}
-
 export const fileApi = createApi({
   reducerPath: 'fileApi',
   baseQuery: fetchBaseQuery({

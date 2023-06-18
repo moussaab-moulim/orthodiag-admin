@@ -1,4 +1,4 @@
-import type { VoidFunctionComponent } from 'react';
+import { VoidFunctionComponent, useMemo } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { styled } from '@mui/material/styles';
@@ -23,11 +23,6 @@ interface QuillEditorProps {
   type?: 'html' | 'markdown';
   field?: any;
 }
-
-const Quill = dynamic(() => import('react-quill'), {
-  ssr: false,
-  loading: () => <LoadingSkeleton />,
-});
 
 const QuillEditorRoot = styled('div')(({ theme }) => ({
   border: 1,
@@ -139,12 +134,21 @@ const markdownToHtml = (markdownText: string) => {
     .process('# Hello, Neptune!'); */
 
   //console.log('markdownToHtml ', file.value);
-  return String(String(converter.makeHtml(markdownText)));
+  return String(converter.makeHtml(markdownText));
 };
 
 export const QuillEditor: VoidFunctionComponent<QuillEditorProps> = (props) => {
   const { sx, onChange, placeholder, value, type, field } = props;
   const refInput = useRef<HTMLDivElement | null>(null);
+
+  const Quill = useMemo(
+    () =>
+      dynamic(() => import('react-quill'), {
+        ssr: false,
+        loading: () => <LoadingSkeleton />,
+      }),
+    []
+  );
 
   return (
     <QuillEditorRoot sx={sx} ref={refInput}>

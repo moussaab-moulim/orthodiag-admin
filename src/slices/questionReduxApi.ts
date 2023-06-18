@@ -30,10 +30,6 @@ interface UpdateQuestion {
   images?: FileEntity[];
 }
 
-//   interface CreateProblemNode {
-//     previousNode: { id: number };
-//   }
-
 export const questionApi = createApi({
   reducerPath: 'questionApi',
   baseQuery: fetchBaseQuery({
