@@ -126,6 +126,23 @@ export const quizApi = createApi({
       // causing the `listPosts` query to re-fetch if a component is subscribed to the query.
       invalidatesTags: [{ type: 'quiz/quizes', id: 'PARTIAL-LIST' }],
     }),
+    publishQuiz: build.mutation<QuizListItem, number>({
+      query(id) {
+        return {
+          url: `/publish/${id}`,
+          method: 'PATCH',
+        };
+      },
+      // Invalidates the tag for this Post `id`, as well as the `PARTIAL-LIST` tag,
+      // causing the `listPosts` query to re-fetch if a component is subscribed to the query.
+      invalidatesTags: (result, error, arg) => {
+        return [
+          { type: 'quiz/quizes', id: 'PARTIAL-LIST' },
+          'quiz/quizes',
+          { type: 'quiz/quizes', id: arg },
+        ];
+      },
+    }),
 
     getQuizNodeTree: build.query<QuizNodeTree, number>({
       query: (id) => `/quizNode/tree/${id}`,
