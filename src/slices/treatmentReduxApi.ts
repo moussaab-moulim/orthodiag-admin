@@ -25,6 +25,9 @@ interface UpdateTreatment {
 
   name: string;
 
+  cost?: string;
+  duration?: string;
+
   description?: string | null;
 
   images?: FileEntity[];

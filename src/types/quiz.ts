@@ -154,6 +154,9 @@ export interface Treatment {
 
   name: string;
 
+  cost: string;
+  duration: string;
+
   description: string;
 
   images: FileEntity[];

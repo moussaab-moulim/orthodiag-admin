@@ -51,6 +51,8 @@ const initialTreatment = (treatment?: Treatment) => {
       code: treatment.code,
       name: treatment.name,
       description: treatment.description,
+      cost: treatment.cost,
+      duration: treatment.duration,
       images: treatment.images.map((i) => ({
         label: i.id,
         value: i.id,
@@ -62,6 +64,8 @@ const initialTreatment = (treatment?: Treatment) => {
   return {
     code: '',
     name: '',
+    cost: '',
+    duration: '',
     description: '',
     images: [],
   };
@@ -102,7 +106,8 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
       object().shape({
         code: string().required(t('Code is required')),
         name: string().required(t('Name is required')),
-
+        cost: string(),
+        duration: string(),
         description: string(),
         images: array(),
       })
@@ -299,6 +304,51 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
                   //   console.log("field is changing");
                   //   // field.onChange((field.value = htmlToMarkdown(value))); // do not do this infinite loop !!!!!!!!!!
                   // }}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={10}>
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
+              Cout
+            </Typography>
+            <Controller
+              name={'cost'}
+              control={control}
+              // {...register(`prices.${index}.price`)}
+              render={({ field, fieldState: { error } }) => (
+                <InputText
+                  field={field}
+                  sx={{ width: '100%' }}
+                  error={!!error}
+                  helperText={
+                    error?.message
+                      ? t<string>(error.message as unknown as string)
+                      : ''
+                  }
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={10}>
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
+              durée
+            </Typography>
+            <Controller
+              name={'duration'}
+              control={control}
+              // {...register(`prices.${index}.price`)}
+              render={({ field, fieldState: { error } }) => (
+                <InputText
+                  field={field}
+                  sx={{ width: '100%' }}
+                  error={!!error}
+                  helperText={
+                    error?.message
+                      ? t<string>(error.message as unknown as string)
+                      : ''
+                  }
                 />
               )}
             />
