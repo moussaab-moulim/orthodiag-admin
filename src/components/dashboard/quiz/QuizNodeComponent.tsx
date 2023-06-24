@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import {
   Box,
   Button,
@@ -26,6 +26,7 @@ import {
   useCreateQuizAnswerMutation,
   useCreateQuizNodeMutation,
   useDeleteQuizNodeMutation,
+  useUpdateQuizNodeMutation,
 } from '@slices/quizReduxApi';
 import { useCommon } from '@hooks/useCommon';
 import { t } from 'i18next';
@@ -41,7 +42,7 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
   const [createQuizNode] = useCreateQuizNodeMutation();
   const { showApiCallNotification } = useCommon();
   const [deleteQuizNodeOpen, setDeleteQuizNodeOpen] = useState<boolean>(false);
-
+  const [updateQuizNode] = useUpdateQuizNodeMutation();
   const [isEditQuestionModalOpen, setIsEditQuestionModalOpen] = useState(false);
   const handleEditQuestionModalClose = () => {
     setIsEditQuestionModalOpen(false);
@@ -86,6 +87,41 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
   const handleDeleteClose = async () => {
     setDeleteQuizNodeOpen(false);
   };
+
+  async function handleInlineAnswersChange(
+    event: ChangeEvent<HTMLInputElement>
+  ): Promise<void> {
+    try {
+      const answer = await showApiCallNotification(
+        updateQuizNode({
+          id: data.id,
+          isInlineAnswers: event.target.checked,
+        }).unwrap(),
+        {
+          success: 'Update operation Succesful',
+          pending: 'Update operation pending',
+
+          error: {
+            render(err) {
+              console.log('toast err', err);
+              return (
+                <Grid container>
+                  <Grid item xs={12}>
+                    {t<string>(`Update operation failed`)}: {err.data.status}
+                  </Grid>
+                  <Grid item xs={12}>
+                    {t<string>(err?.data?.data?.message ?? `${err}`)}
+                  </Grid>
+                </Grid>
+              );
+            },
+          },
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <Box
@@ -204,8 +240,14 @@ export const QuizNodeComponent: FC<NodeProps<NodeDataType>> = ({
         >
           <FormControlLabel
             defaultChecked={false}
-            control={<Switch edge='start' checked={!data.isInlineAnswers} />}
-            label='Reponses vertical'
+            control={
+              <Switch
+                edge='start'
+                checked={data.isInlineAnswers}
+                onChange={handleInlineAnswersChange}
+              />
+            }
+            label='Reponses horisontale'
           />
         </Box>
 

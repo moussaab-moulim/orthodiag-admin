@@ -135,21 +135,8 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
       label: `${prb.code}-${prb.name}`,
       icon: prb.images[0],
     })) ?? [];
-  const [treatmentsSelectParams, treatmentsSelectActions] = usePaginatedState({
-    page: 1,
-    limit: 10,
-    merge: true,
-  });
 
-  const { data: treatments, isFetching: treatmentsFetching } =
-    useGetTreatmentsInfiniteScrollQuery(treatmentsSelectParams);
   const [updateResult] = useUpdateQuizResultMutation();
-  const mappedTreatments: SelectOption[] =
-    treatments?.data?.map((trt) => ({
-      value: trt.id.toString(),
-      label: `${trt.code}-${trt.name}`,
-      icon: trt.images[0],
-    })) ?? [];
 
   const { showApiCallNotification } = useCommon();
 
@@ -281,30 +268,18 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
                           name={`treatments.${trtIndex}`}
                           control={control}
                           render={({ field, fieldState: { error } }) => (
-                            <SelectWithSearchServer
+                            <TreatmentSearchWrapper
                               label={t(
                                 `Selectionner les traitemens ${trtIndex + 1}`
                               )}
-                              field={field}
+                              field={field as any}
                               value={field.value}
-                              options={mappedTreatments}
                               multiple
                               defaultValue={field.value}
                               error={!!error}
                               helperText={
                                 error?.message ? t<string>(error.message) : ''
                               }
-                              hasMore={!!treatments && treatments.hasNextPage}
-                              onLaodMore={() => {
-                                treatmentsSelectActions.onSelectLoadMore();
-                              }}
-                              loading={treatmentsFetching}
-                              onSearch={(text) => {
-                                treatmentsSelectActions.onSelectSearch(
-                                  text,
-                                  'search'
-                                );
-                              }}
                             />
                           )}
                         />
@@ -363,5 +338,41 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
         </Box>
       </form>
     </Modal>
+  );
+};
+
+export const TreatmentSearchWrapper = ({
+  ...rest
+}: Omit<
+  Parameters<typeof SelectWithSearchServer>[0],
+  'options' | 'hasMore' | 'onLaodMore' | 'loading' | 'onSearch'
+>) => {
+  const [treatmentsSelectParams, treatmentsSelectActions] = usePaginatedState({
+    page: 1,
+    limit: 10,
+    merge: true,
+  });
+
+  const { data: treatments, isFetching: treatmentsFetching } =
+    useGetTreatmentsInfiniteScrollQuery(treatmentsSelectParams);
+  const mappedTreatments: SelectOption[] =
+    treatments?.data?.map((trt) => ({
+      value: trt.id.toString(),
+      label: `${trt.code}-${trt.name}`,
+      icon: trt.images[0],
+    })) ?? [];
+  return (
+    <SelectWithSearchServer
+      {...rest}
+      options={mappedTreatments}
+      hasMore={!!treatments && treatments.hasNextPage}
+      onLaodMore={() => {
+        treatmentsSelectActions.onSelectLoadMore();
+      }}
+      loading={treatmentsFetching}
+      onSearch={(text) => {
+        treatmentsSelectActions.onSelectSearch(text, 'search');
+      }}
+    />
   );
 };
