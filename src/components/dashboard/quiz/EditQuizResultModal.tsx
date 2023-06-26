@@ -130,11 +130,20 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
   const { data: problems, isFetching: problemsFetching } =
     useGetProblemsInfiniteScrollQuery(problemsSelectParams);
   const mappedProblems: SelectOption[] =
-    problems?.data?.map((prb) => ({
-      value: prb.id.toString(),
-      label: `${prb.code}-${prb.name}`,
-      icon: prb.images[0],
-    })) ?? [];
+    problems?.data
+      ?.map(
+        (prb) =>
+          ({
+            value: prb.id.toString(),
+            label: `${prb.code}-${prb.name}`,
+            icon: prb.images[0],
+          } as SelectOption)
+      )
+      .filter(
+        (p) =>
+          !initialValues(result).problem.some((prb) => prb.value === p.value)
+      )
+      .concat(initialValues(result).problem) ?? [];
 
   const [updateResult] = useUpdateQuizResultMutation();
 
@@ -356,11 +365,17 @@ export const TreatmentSearchWrapper = ({
   const { data: treatments, isFetching: treatmentsFetching } =
     useGetTreatmentsInfiniteScrollQuery(treatmentsSelectParams);
   const mappedTreatments: SelectOption[] =
-    treatments?.data?.map((trt) => ({
-      value: trt.id.toString(),
-      label: `${trt.code}-${trt.name}`,
-      icon: trt.images[0],
-    })) ?? [];
+    treatments?.data
+      ?.map((trt) => ({
+        value: trt.id.toString(),
+        label: `${trt.code}-${trt.name}`,
+        icon: trt.images[0],
+      }))
+      .filter(
+        (t) =>
+          !rest.field.value.some((trt: SelectOption) => trt.value === t.value)
+      )
+      .concat(rest.field.value) ?? [];
   return (
     <SelectWithSearchServer
       {...rest}
