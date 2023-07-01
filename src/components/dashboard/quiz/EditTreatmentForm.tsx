@@ -309,7 +309,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
             />
           </Grid>
 
-          <Grid item xs={10}>
+          <Grid item xs={12}>
             <Typography sx={{ mb: 1 }} variant='subtitle2'>
               Cout
             </Typography>
@@ -331,7 +331,7 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
               )}
             />
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={12} sx={{ mb: 3 }}>
             <Typography sx={{ mb: 1 }} variant='subtitle2'>
               durée
             </Typography>
