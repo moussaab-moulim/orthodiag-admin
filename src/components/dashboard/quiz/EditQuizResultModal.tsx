@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, Fragment, useEffect, useMemo } from 'react';
 import {
   Box,
   Button,
@@ -41,6 +41,7 @@ import Image from 'next/image';
 import { Remove } from '@mui/icons-material';
 import { Trash } from '@icons/trash';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { LoadingSkeleton } from '@components/Loading';
 interface EditQuizResultModalProps {
   open: boolean;
   onClose: () => void;
@@ -231,98 +232,114 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
                 <XIcon fontSize='small' />
               </IconButton>
             </Box>
-            <Grid item xs={12} sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1 }} variant='subtitle2'>
-                Probleme
-              </Typography>
-              <Controller
-                name='problem'
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <SelectWithSearchServer
-                    label={t('Selectionner les problemes')}
-                    field={field}
-                    value={field.value}
-                    options={mappedProblems}
-                    multiple
-                    defaultValue={field.value}
-                    error={!!error}
-                    helperText={error?.message ? t<string>(error.message) : ''}
-                    hasMore={!!problems && problems.hasNextPage}
-                    onLaodMore={() => {
-                      problemsSelectActions.onSelectLoadMore();
-                    }}
-                    loading={problemsFetching}
-                    onSearch={(text) => {
-                      problemsSelectActions.onSelectSearch(text, 'search');
-                    }}
+            {resultFetching ? (
+              <ResultLoadingSkeleton />
+            ) : (
+              <Fragment>
+                <Grid item xs={12} sx={{ mb: 3 }}>
+                  <Typography sx={{ mb: 1 }} variant='subtitle2'>
+                    Probleme
+                  </Typography>
+                  <Controller
+                    name='problem'
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <SelectWithSearchServer
+                        label={t('Selectionner les problemes')}
+                        field={field}
+                        value={field.value}
+                        options={mappedProblems}
+                        multiple
+                        defaultValue={field.value}
+                        error={!!error}
+                        helperText={
+                          error?.message ? t<string>(error.message) : ''
+                        }
+                        hasMore={!!problems && problems.hasNextPage}
+                        onLaodMore={() => {
+                          problemsSelectActions.onSelectLoadMore();
+                        }}
+                        loading={problemsFetching}
+                        onSearch={(text) => {
+                          problemsSelectActions.onSelectSearch(text, 'search');
+                        }}
+                      />
+                    )}
                   />
-                )}
-              />
-            </Grid>
+                </Grid>
 
-            <Grid item xs={12} sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1 }} variant='subtitle2'>
-                Traitements
-              </Typography>
-              <Grid container>
-                <Grid item sm={12}>
-                  {treatmentGroups.map((trtGroup, trtIndex) => {
-                    return (
-                      <Box
-                        key={trtGroup.id}
-                        sx={{ display: 'flex', flexWrap: 'nowrap', gap: 2 }}
-                      >
-                        <Controller
-                          name={`treatments.${trtIndex}`}
-                          control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <TreatmentSearchWrapper
-                              label={t(
-                                `Selectionner les traitemens ${trtIndex + 1}`
+                <Grid item xs={12} sx={{ mb: 3 }}>
+                  <Typography sx={{ mb: 1 }} variant='subtitle2'>
+                    Traitements
+                  </Typography>
+                  <Grid container>
+                    <Grid item sm={12}>
+                      {treatmentGroups.map((trtGroup, trtIndex) => {
+                        return (
+                          <Box
+                            key={trtGroup.id}
+                            sx={{ display: 'flex', flexWrap: 'nowrap', gap: 2 }}
+                          >
+                            <Controller
+                              name={`treatments.${trtIndex}`}
+                              control={control}
+                              render={({ field, fieldState: { error } }) => (
+                                <TreatmentSearchWrapper
+                                  label={t(
+                                    `Selectionner les traitemens ${
+                                      trtIndex + 1
+                                    }`
+                                  )}
+                                  field={field as any}
+                                  value={field.value}
+                                  multiple
+                                  defaultValue={field.value}
+                                  error={!!error}
+                                  helperText={
+                                    error?.message
+                                      ? t<string>(error.message)
+                                      : ''
+                                  }
+                                />
                               )}
-                              field={field as any}
-                              value={field.value}
-                              multiple
-                              defaultValue={field.value}
-                              error={!!error}
-                              helperText={
-                                error?.message ? t<string>(error.message) : ''
-                              }
                             />
-                          )}
-                        />
 
-                        <IconButton
-                          disabled={treatmentGroups.length <= 1}
-                          onClick={() => {
-                            remove(trtIndex);
-                          }}
-                        >
-                          <Trash />
-                        </IconButton>
-                      </Box>
-                    );
-                  })}
+                            <IconButton
+                              disabled={treatmentGroups.length <= 1}
+                              onClick={() => {
+                                remove(trtIndex);
+                              }}
+                            >
+                              <Trash />
+                            </IconButton>
+                          </Box>
+                        );
+                      })}
+                    </Grid>
+                    <Grid
+                      item
+                      sm={12}
+                      sx={{
+                        mt: 2,
+                        justifyContent: 'flex-end',
+                        display: 'flex',
+                      }}
+                    >
+                      <Button
+                        color='primary'
+                        size='small'
+                        variant='outlined'
+                        onClick={() => {
+                          append([[]]);
+                        }}
+                      >
+                        Ajouter group de traitment
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </Grid>
-                <Grid
-                  item
-                  sm={12}
-                  sx={{ mt: 2, justifyContent: 'flex-end', display: 'flex' }}
-                >
-                  <Button
-                    color='primary'
-                    size='small'
-                    variant='outlined'
-                    onClick={() => {
-                      append([[]]);
-                    }}
-                  >
-                    Ajouter group de traitment
-                  </Button>
-                </Grid>
-              </Grid>
-            </Grid>
+              </Fragment>
+            )}
 
             <Box
               sx={{
@@ -339,6 +356,7 @@ export const EditQuizResultModal: FC<EditQuizResultModalProps> = ({
                 fullWidth
                 size='large'
                 variant='contained'
+                disabled={resultFetching}
               >
                 Sauvgarder
               </Button>
@@ -389,5 +407,22 @@ export const TreatmentSearchWrapper = ({
         treatmentsSelectActions.onSelectSearch(text, 'search');
       }}
     />
+  );
+};
+
+const ResultLoadingSkeleton = () => {
+  return (
+    <Grid container>
+      <Grid item xs={12} sx={{ mb: 4 }}>
+        <LoadingSkeleton height={21} width={100} sx={{ mb: 1 }} />
+        <LoadingSkeleton height={57} />
+      </Grid>
+
+      <Grid item xs={12}>
+        <LoadingSkeleton height={21} width={100} sx={{ mb: 1 }} />
+        <LoadingSkeleton height={57} sx={{ mb: 1 }} />
+        <LoadingSkeleton height={57} sx={{ mb: 1 }} />
+      </Grid>
+    </Grid>
   );
 };
