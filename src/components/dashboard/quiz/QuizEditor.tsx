@@ -310,23 +310,27 @@ function edgesGenerator(nodes: Node<NodeDataType>[]) {
   const edges: Edge<Answer>[] = [];
 
   nodes.forEach((node) => {
-    node.data.answers.forEach((a) => {
-      const nextQuizNode =
-        node.data.nextNodes.find((n) => n.parentAnswer?.id === a.id) ?? null;
+    [...node.data.answers]
+      .sort((a, b) => (a.label > b.label ? -1 : 1))
+      .forEach((a) => {
+        const nextQuizNode =
+          node.data.nextNodes.find((n) => n.parentAnswer?.id === a.id) ?? null;
 
-      edges.push({
-        id: `${node.id}-${
-          nextQuizNode ? nextQuizNode.id?.toString() : `end-${node.id}-${a.id}`
-        }`,
-        source: node.id.toString(),
-        target: nextQuizNode
-          ? `${nextQuizNode.id?.toString()}`
-          : `end-${node.id}-${a.id}`,
-        label: a.label,
-        data: { ...a, hasSiblings: node.data.answers.length > 1 },
-        type: 'answerEdge',
+        edges.push({
+          id: `${node.id}-${
+            nextQuizNode
+              ? nextQuizNode.id?.toString()
+              : `end-${node.id}-${a.id}`
+          }`,
+          source: node.id.toString(),
+          target: nextQuizNode
+            ? `${nextQuizNode.id?.toString()}`
+            : `end-${node.id}-${a.id}`,
+          label: a.label,
+          data: { ...a, hasSiblings: node.data.answers.length > 1 },
+          type: 'answerEdge',
+        });
       });
-    });
   });
   return edges;
 }
