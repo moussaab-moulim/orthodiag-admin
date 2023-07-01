@@ -269,7 +269,7 @@ function useProblemColumns() {
       headerName: t('Name'),
       hideable: true,
       renderCell: (row) => <TableCellWithTooltip value={row.row.name} />,
-      flex: 1,
+      flex: 2,
       filterOperators: defaultFilterOperators,
       // sortable: false,
     },

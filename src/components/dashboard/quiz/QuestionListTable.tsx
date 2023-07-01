@@ -268,7 +268,7 @@ function useQuestionColumns() {
       headerName: t('Question'),
       hideable: true,
       renderCell: (row) => <TableCellWithTooltip value={row.row.question} />,
-      flex: 1,
+      flex: 2,
       filterOperators: defaultFilterOperators,
       // sortable: false,
     },
