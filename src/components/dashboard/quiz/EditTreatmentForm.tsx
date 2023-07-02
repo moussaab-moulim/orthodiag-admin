@@ -106,9 +106,9 @@ export const EditTreatmentForm: FC<EditTreatmentFormProps> = ({
       object().shape({
         code: string().required(t('Code is required')),
         name: string().required(t('Name is required')),
-        cost: string(),
-        duration: string(),
-        description: string(),
+        cost: string().nullable(),
+        duration: string().nullable(),
+        description: string().nullable(),
         images: array(),
       })
     ),
