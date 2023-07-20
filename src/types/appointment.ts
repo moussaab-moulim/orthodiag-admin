@@ -1,4 +1,4 @@
-import { Practice } from "./Practice";
+import { Practice } from './Practice';
 
 interface AppointmentCustomer {
   address1?: string;
@@ -37,9 +37,9 @@ export interface Appointment {
   promotionCode?: string;
   status: AppointmentStatus;
   totalAmount?: number;
-  requestedDate:string;
-  email:string;
-  fullName:string;
-  phoneNumber:string;
-  practice:Practice;
+  requestedDate: string;
+  email: string;
+  fullName: string;
+  phoneNumber: string;
+  practice: Practice;
 }
