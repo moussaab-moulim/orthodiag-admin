@@ -18,6 +18,7 @@ import { fileApi } from '@slices/fileReduxApi';
 import { problemApi } from '@slices/problemReduxApi';
 import { questionApi } from '@slices/questionReduxApi';
 import { treatmentApi } from '@slices/treatmentReduxApi';
+import { practiceApi } from '@slices/practiceReduxApi';
 
 export const store = () =>
   configureStore({
@@ -33,6 +34,7 @@ export const store = () =>
       [problemApi.reducerPath]: problemApi.reducer,
       [questionApi.reducerPath]: questionApi.reducer,
       [treatmentApi.reducerPath]: treatmentApi.reducer,
+      [practiceApi.reducerPath]: practiceApi.reducer,
     },
     devTools: process.env.NEXT_PUBLIC_ENABLE_REDUX_DEV_TOOLS === 'true',
     middleware: (getDefaultMiddleware) =>
@@ -43,7 +45,8 @@ export const store = () =>
         fileApi.middleware,
         problemApi.middleware,
         questionApi.middleware,
-        treatmentApi.middleware
+        treatmentApi.middleware,
+        practiceApi.middleware
       ),
   });
 export type AppStore = ReturnType<typeof store>;

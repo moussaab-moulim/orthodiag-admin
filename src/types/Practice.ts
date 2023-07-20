@@ -1,11 +1,12 @@
+import { FileEntity } from "./quiz";
 
 export interface Practice {
-    id: string;
-    address:string;
-    city:string;
-    image:string;
-    latitude:number;
-    longtitude:number;
-    name:string;
-    rating:number;
-  }
+  id: number;
+  address: string;
+  city: string;
+  image: FileEntity;
+  latitude: number;
+  longitude: number;
+  name: string;
+  rating: number;
+}

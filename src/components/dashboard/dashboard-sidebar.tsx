@@ -41,7 +41,13 @@ import { Logo } from '../logo';
 import { Scrollbar } from '../scrollbar';
 import { DashboardSidebarSection } from './dashboard-sidebar-section';
 import { OrganizationPopover } from './organization-popover';
-import { ContentPaste, Medication, Quiz, Sick } from '@mui/icons-material';
+import {
+  Apartment,
+  ContentPaste,
+  Medication,
+  Quiz,
+  Sick,
+} from '@mui/icons-material';
 
 interface DashboardSidebarProps {
   onClose?: () => void;
@@ -90,6 +96,11 @@ const getSections = (t: TFunction): Section[] => [
   {
     title: t('Management'),
     items: [
+      {
+        title: t('Practices'),
+        icon: <Apartment fontSize='small' />,
+        path: '/dashboard/practices',
+      },
       {
         title: t('dashboard-sidebar-appointments'),
         icon: <CalendarIcon fontSize='small' />,
