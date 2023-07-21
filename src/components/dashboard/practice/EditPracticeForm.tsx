@@ -17,7 +17,7 @@ import {
   useUpdatePracticeMutation,
 } from '@slices/practiceReduxApi';
 import { useRouter } from 'next/router';
-import { Practice } from '@interfaces/Practices';
+import { Practice } from '@interfaces/practice';
 import * as yup from 'yup';
 import Image from 'next/image';
 

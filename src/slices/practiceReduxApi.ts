@@ -10,7 +10,7 @@ import { globalHeaders, toQueryParams } from '@utils/helpers';
 import { HYDRATE } from 'next-redux-wrapper';
 import { apiConfig } from 'src/config';
 import deepEqual from 'deep-equal';
-import { Practice } from '@interfaces/Practices';
+import { Practice } from '@interfaces/practice';
 
 interface UpdatePractice {
   id: number;

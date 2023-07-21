@@ -13,7 +13,7 @@ import { defaultFilterOperators } from '@utils/constants';
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
 import { useGetPracticesQuery } from '@slices/practiceReduxApi';
 import Image from 'next/image';
-import { Practice } from '@interfaces/Practices';
+import { Practice } from '@interfaces/practice';
 
 interface PracticeListTableProps {}
 
