@@ -3,14 +3,14 @@ import {
   PageParams,
   Paginated,
   paginatedDto,
-} from "@interfaces/common";
-import { Answer, FileEntity, Question } from "@interfaces/quiz";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { globalHeaders, toQueryParams } from "@utils/helpers";
-import { HYDRATE } from "next-redux-wrapper";
-import { apiConfig } from "src/config";
-import deepEqual from "deep-equal";
-import { Practice } from "@interfaces/practice";
+} from '@interfaces/common';
+import { Answer, FileEntity, Question } from '@interfaces/quiz';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { globalHeaders, toQueryParams } from '@utils/helpers';
+import { HYDRATE } from 'next-redux-wrapper';
+import { apiConfig } from 'src/config';
+import deepEqual from 'deep-equal';
+import { Practice } from '@interfaces/Practices';
 
 interface UpdatePractice {
   id: number;
@@ -24,9 +24,9 @@ interface UpdatePractice {
 }
 
 export const practiceApi = createApi({
-  reducerPath: "practiceApi",
+  reducerPath: 'practiceApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: apiConfig.apiUrl + "",
+    baseUrl: apiConfig.apiUrl + '',
     prepareHeaders: globalHeaders,
   }),
 
@@ -35,7 +35,7 @@ export const practiceApi = createApi({
       return action.payload[reducerPath];
     }
   },
-  tagTypes: ["practice/practices", "practice", "practice/infinite-scroll"],
+  tagTypes: ['practice/practices', 'practice', 'practice/infinite-scroll'],
   endpoints: (build) => ({
     getPractices: build.query<Paginated<Practice>, PageParams>({
       query: (params: PageParams) =>
@@ -51,41 +51,41 @@ export const practiceApi = createApi({
               // Provides a tag for each post in the current page,
               // as well as the 'PARTIAL-LIST' tag.
               ...result.data.map(({ id }) => ({
-                type: "practice/practices" as const,
+                type: 'practice/practices' as const,
                 id,
               })),
-              { type: "practice/practices", id: "PARTIAL-LIST" },
+              { type: 'practice/practices', id: 'PARTIAL-LIST' },
             ]
-          : [{ type: "practice/practices", id: "PARTIAL-LIST" }];
+          : [{ type: 'practice/practices', id: 'PARTIAL-LIST' }];
       },
     }),
     getPractice: build.query<Practice, number>({
       query: (id) => `/practices/${id}`,
       keepUnusedDataFor: 30,
       providesTags: (result, err, id) => [
-        { type: "practice/practices", id: id },
+        { type: 'practice/practices', id: id },
       ],
     }),
     updatePractice: build.mutation<void, UpdatePractice>({
       query: ({ id, ...body }) => {
         return {
           url: `/practices/${id}`,
-          method: "PATCH",
+          method: 'PATCH',
           body,
         };
       },
-      invalidatesTags: ["practice", "practice/infinite-scroll"],
+      invalidatesTags: ['practice', 'practice/infinite-scroll'],
     }),
 
-    createPractice: build.mutation<Practice, Omit<UpdatePractice, "id">>({
+    createPractice: build.mutation<Practice, Omit<UpdatePractice, 'id'>>({
       query: ({ ...body }) => {
         return {
           url: `/practices`,
-          method: "POST",
+          method: 'POST',
           body,
         };
       },
-      invalidatesTags: ["practice", "practice/infinite-scroll"],
+      invalidatesTags: ['practice', 'practice/infinite-scroll'],
     }),
   }),
 });

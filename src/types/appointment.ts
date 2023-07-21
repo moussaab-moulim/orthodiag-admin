@@ -1,4 +1,4 @@
-import { Practice } from './Practice';
+import { Practice } from './Practices';
 
 interface AppointmentCustomer {
   address1?: string;
