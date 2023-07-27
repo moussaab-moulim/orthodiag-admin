@@ -1,25 +1,25 @@
-import { FC, useEffect, useMemo } from "react";
-import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
+import { FC, useEffect, useMemo } from 'react';
+import { Backdrop, Box, Button, Grid, Typography } from '@mui/material';
 import {
   SelectOption,
   SelectWithSearchServer,
-} from "@components/widgets/inputs/SelectWithSearchServer";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useTranslation } from "react-i18next";
-import InputText from "@components/widgets/inputs/InputText";
-import { toKebabCase } from "@utils/helpers";
-import { usePaginatedState } from "@hooks/usePaginatedState";
-import { useGetFilesInfiniteScrollQuery } from "@slices/fileReduxApi";
-import { useCommon } from "@hooks/useCommon";
+} from '@components/widgets/inputs/SelectWithSearchServer';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
+import InputText from '@components/widgets/inputs/InputText';
+import { toKebabCase } from '@utils/helpers';
+import { usePaginatedState } from '@hooks/usePaginatedState';
+import { useGetFilesInfiniteScrollQuery } from '@slices/fileReduxApi';
+import { useCommon } from '@hooks/useCommon';
 import {
   useCreatePracticeMutation,
   useUpdatePracticeMutation,
-} from "@slices/practiceReduxApi";
-import { useRouter } from "next/router";
-import { Practice } from "@interfaces/practice";
-import * as yup from "yup";
-import Image from "next/image";
+} from '@slices/practiceReduxApi';
+import { useRouter } from 'next/router';
+import { Practice } from '@interfaces/practice';
+import * as yup from 'yup';
+import Image from 'next/image';
 
 interface EditPracticeFormProps {
   practice?: Practice;
@@ -44,12 +44,12 @@ const initialPractice = (practice?: Practice) => {
   }
 
   return {
-    address: "",
-    city: "",
+    address: '',
+    city: '',
     image: null,
     latitude: 0,
     longitude: 0,
-    name: "",
+    name: '',
     rating: 0,
   };
 };
@@ -85,17 +85,17 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
     watch,
     reset,
   } = useForm<IFormInputs>({
-    mode: "all",
+    mode: 'all',
     defaultValues: initialPractice(practice),
     resolver: yupResolver(
       yup.object().shape({
-        image: yup.object().required("image is required"),
-        address: yup.string().required("address is required"),
-        city: yup.string().required("city is required"),
-        latitude: yup.number().required("latitude is required"),
-        longitude: yup.number().required("longitude is required"),
-        name: yup.string().required("name is required"),
-        rating: yup.number().required("rating is required"),
+        image: yup.object().required('image is required'),
+        address: yup.string().required('address is required'),
+        city: yup.string().required('city is required'),
+        latitude: yup.number().required('latitude is required'),
+        longitude: yup.number().required('longitude is required'),
+        name: yup.string().required('name is required'),
+        rating: yup.number().required('rating is required'),
       })
     ),
   });
@@ -127,11 +127,11 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
   }, [practice, images]);
 
   const onSubmit = (data: IFormInputs) => {
-    console.log("in onsubmit"), onSubmitHandler(data);
+    console.log('in onsubmit'), onSubmitHandler(data);
   };
-  console.log("watch", watch());
+  console.log('watch', watch());
   const onSubmitHandler = async (dataForm: IFormInputs) => {
-    console.log("dataForm in handler", dataForm);
+    console.log('dataForm in handler', dataForm);
     try {
       if (!practice) {
         //create
@@ -141,16 +141,16 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
             image: dataForm.image?.icon,
           }).unwrap(),
           {
-            success: "Creation operation Succesful",
-            pending: "Creation operation pending",
+            success: 'Creation operation Succesful',
+            pending: 'Creation operation pending',
 
             error: {
               render(err) {
-                console.log("toast err", err);
+                console.log('toast err', err);
                 return (
                   <Grid container>
                     <Grid item xs={12}>
-                      {t<string>(`Creation operation failed`)}:{" "}
+                      {t<string>(`Creation operation failed`)}:{' '}
                       {err.data.status}
                     </Grid>
                     <Grid item xs={12}>
@@ -162,7 +162,7 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
             },
           }
         );
-        router.push(`${router.route.replace("/new", `/${answer.id}/edit`)}`);
+        router.push(`${router.route.replace('/new', `/${answer.id}/edit`)}`);
       } else {
         const answer = await showApiCallNotification(
           updatePractice({
@@ -171,12 +171,12 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
             image: dataForm.image?.icon,
           }).unwrap(),
           {
-            success: "Update operation Succesful",
-            pending: "Update operation pending",
+            success: 'Update operation Succesful',
+            pending: 'Update operation pending',
 
             error: {
               render(err) {
-                console.log("toast err", err);
+                console.log('toast err', err);
                 return (
                   <Grid container>
                     <Grid item xs={12}>
@@ -200,47 +200,47 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
   return (
     <Box
       sx={{
-        backgroundColor: "background.paper",
-        minHeight: "100%",
+        backgroundColor: 'background.paper',
+        minHeight: '100%',
         p: 3,
-        position: "relative",
-        overflow: "hidden",
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid item xs={12} sx={{ mb: 3 }}>
-            <Typography sx={{ mb: 1 }} variant="subtitle2">
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
               Name
             </Typography>
             <Controller
-              name={"name"}
+              name={'name'}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <InputText
                   field={field}
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                   error={!!error}
                   helperText={
                     error?.message
                       ? t<string>(error.message as unknown as string)
-                      : ""
+                      : ''
                   }
                 />
               )}
             />
           </Grid>
           <Grid item xs={12} sx={{ mb: 3 }}>
-            <Typography sx={{ mb: 1 }} variant="subtitle2">
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
               Address
             </Typography>
             <Controller
-              name={"address"}
+              name={'address'}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <InputText
                   field={field}
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                   error={!!error}
                   onChange={({ target }) => {
                     field.onChange(
@@ -250,28 +250,28 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
                   helperText={
                     error?.message
                       ? t<string>(error.message as unknown as string)
-                      : ""
+                      : ''
                   }
                 />
               )}
             />
           </Grid>
           <Grid item xs={12} sx={{ mb: 3 }}>
-            <Typography sx={{ mb: 1 }} variant="subtitle2">
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
               City
             </Typography>
             <Controller
-              name={"city"}
+              name={'city'}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <InputText
                   field={field}
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                   error={!!error}
                   helperText={
                     error?.message
                       ? t<string>(error.message as unknown as string)
-                      : ""
+                      : ''
                   }
                 />
               )}
@@ -279,63 +279,63 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
           </Grid>
 
           <Grid item xs={12}>
-            <Typography sx={{ mb: 1 }} variant="subtitle2">
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
               Latitude
             </Typography>
             <Controller
-              name={"latitude"}
+              name={'latitude'}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <InputText
                   field={field}
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                   error={!!error}
                   helperText={
                     error?.message
                       ? t<string>(error.message as unknown as string)
-                      : ""
+                      : ''
                   }
                 />
               )}
             />
           </Grid>
           <Grid item xs={12} sx={{ mb: 3 }}>
-            <Typography sx={{ mb: 1 }} variant="subtitle2">
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
               Longitude
             </Typography>
             <Controller
-              name={"longitude"}
+              name={'longitude'}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <InputText
                   field={field}
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                   error={!!error}
                   helperText={
                     error?.message
                       ? t<string>(error.message as unknown as string)
-                      : ""
+                      : ''
                   }
                 />
               )}
             />
           </Grid>
           <Grid item xs={12} sx={{ mb: 3 }}>
-            <Typography sx={{ mb: 1 }} variant="subtitle2">
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
               Rating
             </Typography>
             <Controller
-              name={"rating"}
+              name={'rating'}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <InputText
                   field={field}
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                   error={!!error}
                   helperText={
                     error?.message
                       ? t<string>(error.message as unknown as string)
-                      : ""
+                      : ''
                   }
                 />
               )}
@@ -343,22 +343,22 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
           </Grid>
         </Grid>
 
-        {watch("image") && (
+        {watch('image') && (
           <Box
             sx={{
-              width: "400px",
-              height: "400px",
-              position: "relative",
+              width: '400px',
+              height: '400px',
+              position: 'relative',
               borderRadius: 2,
               boxShadow: 1,
-              overflow: "hidden",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              "& .carousel-root": {
+              overflow: 'hidden',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              '& .carousel-root': {
                 flex: 1,
               },
-              m: "auto",
+              m: 'auto',
             }}
           >
             {/* <Carousel
@@ -387,21 +387,21 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
               showIndicators={false}
             > */}
             <Box
-              key={watch("image")?.value}
+              key={watch('image')?.value}
               sx={{
-                width: "100%",
-                height: "200px",
-                position: "relative",
+                width: '100%',
+                height: '200px',
+                position: 'relative',
               }}
             >
               <Image
                 unoptimized
-                key={watch("image")?.value}
-                src={watch("image")?.icon?.path || ""}
-                alt={watch("image")?.label || ""}
+                key={watch('image')?.value}
+                src={watch('image')?.icon?.path || ''}
+                alt={watch('image')?.label || ''}
                 fill
                 style={{
-                  objectFit: "contain",
+                  objectFit: 'contain',
                 }}
               />
             </Box>
@@ -411,24 +411,24 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
 
         <Box sx={{ px: 2 }}>
           <Controller
-            name="image"
+            name='image'
             control={control}
             render={({ field, fieldState: { error } }) => (
               <SelectWithSearchServer
-                label={t("Selectionner une image de Practice")}
+                label={t('Selectionner une image de Practice')}
                 field={field}
                 value={field.value}
                 options={mappedImages}
                 defaultValue={field.value}
                 error={!!error}
-                helperText={error?.message ? t<string>(error.message) : ""}
+                helperText={error?.message ? t<string>(error.message) : ''}
                 hasMore={!!images && images.hasNextPage}
                 onLaodMore={() => {
                   imagesSelectActions.onSelectLoadMore();
                 }}
                 loading={false}
                 onSearch={(text) => {
-                  imagesSelectActions.onSelectSearch(text, "search");
+                  imagesSelectActions.onSelectSearch(text, 'search');
                 }}
               />
             )}
@@ -436,17 +436,17 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
         </Box>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "center",
+            display: 'flex',
+            justifyContent: 'center',
             mt: 3,
           }}
         >
           <Button
-            color="primary"
-            type="submit"
+            color='primary'
+            type='submit'
             fullWidth
-            size="large"
-            variant="contained"
+            size='large'
+            variant='contained'
           >
             Sauvegarder
           </Button>
@@ -456,10 +456,10 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
         <Backdrop
           open
           sx={{
-            bgcolor: "background.default",
-            color: "#fff",
-            opacity: "0.7!important",
-            position: "absolute",
+            bgcolor: 'background.default',
+            color: '#fff',
+            opacity: '0.7!important',
+            position: 'absolute',
             zIndex: (theme) => theme.zIndex.drawer + 1,
           }}
         />
