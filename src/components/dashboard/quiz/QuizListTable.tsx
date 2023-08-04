@@ -27,7 +27,10 @@ import { getInitials } from '../../../utils/get-initials';
 import { Scrollbar } from '../../scrollbar';
 import { Quiz, QuizListItem } from '@interfaces/quiz';
 import TableComponentServerPagination from '@components/TableComponentServerPagination';
-import { useGetQuizesQuery } from '@slices/quizReduxApi';
+import {
+  useGetQuizesQuery,
+  usePublishQuizMutation,
+} from '@slices/quizReduxApi';
 import { usePaginatedState } from '@hooks/usePaginatedState';
 import { useTranslation } from 'react-i18next';
 import { useCommon } from '@hooks/useCommon';
@@ -45,6 +48,8 @@ import {
 import State from '@components/State';
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary';
 import { TableErrorComponent } from '@components/ErroComponents';
+import { Publish } from '@mui/icons-material';
+import { WithTooltip } from '@components/Tooltip';
 
 interface QuizListTableProps {}
 
@@ -87,7 +92,30 @@ export const QuizListTable: FC<QuizListTableProps> = (props) => {
 
 function useQuizColumns() {
   const { t } = useTranslation();
+  const { showApiCallNotification } = useCommon();
+  const [publishQuiz] = usePublishQuizMutation();
+  const handlePublish = async (id: number) => {
+    await showApiCallNotification(publishQuiz(id).unwrap(), {
+      success: 'Publication operation Succesful',
+      pending: 'Publication operation pending',
 
+      error: {
+        render(err) {
+          console.log('toast err', err);
+          return (
+            <Grid container>
+              <Grid item xs={12}>
+                {t<string>(`Publication operation failed`)}: {err.data.status}
+              </Grid>
+              <Grid item xs={12}>
+                {t<string>(err?.data?.data?.message ?? `${err}`)}
+              </Grid>
+            </Grid>
+          );
+        },
+      },
+    });
+  };
   const quizColumns: GridColDef<QuizListItem>[] = [
     {
       field: 'id',
@@ -138,9 +166,25 @@ function useQuizColumns() {
       type: 'actions',
       flex: 1,
       renderCell: (row) => (
-        <IconButton href={`quizes/${row.row.id}/edit`} component={NextLink}>
-          <PencilAltIcon fontSize='small' />
-        </IconButton>
+        <Fragment>
+          <WithTooltip disable={false} title={'modifier'}>
+            <IconButton
+              href={`quizes/${row.row.id}/edit`}
+              component={NextLink}
+              aria-label='modifier'
+            >
+              <PencilAltIcon fontSize='small' />
+            </IconButton>
+          </WithTooltip>
+          <WithTooltip disable={false} title={'publier'}>
+            <IconButton
+              onClick={() => handlePublish(row.row.id)}
+              aria-label='publier'
+            >
+              <Publish fontSize='small' />
+            </IconButton>
+          </WithTooltip>
+        </Fragment>
       ),
     },
   ];

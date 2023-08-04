@@ -129,7 +129,7 @@ export const quizApi = createApi({
     publishQuiz: build.mutation<QuizListItem, number>({
       query(id) {
         return {
-          url: `/publish/${id}`,
+          url: `quiz/publish/${id}`,
           method: 'PATCH',
         };
       },
@@ -368,4 +368,5 @@ export const {
   useDeleteAnswerMutation,
   useDeleteQuizNodeMutation,
   useCloneQuizNodeMutation,
+  usePublishQuizMutation,
 } = quizApi;
