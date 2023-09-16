@@ -37,6 +37,7 @@ export const checkoutSession = async (params: {
     cancel_url: `${origin}${toQueryParams({ canceled: true })}`,
     automatic_tax: { enabled: true },
     customer_update: { address: 'auto' },
+    allow_promotion_codes:true
   });
 
   return session;
