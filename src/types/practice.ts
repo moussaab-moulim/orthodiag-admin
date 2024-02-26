@@ -8,5 +8,6 @@ export interface Practice {
   latitude: number;
   longitude: number;
   name: string;
+  email: string;
   rating: number;
 }

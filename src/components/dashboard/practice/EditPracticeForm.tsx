@@ -39,6 +39,7 @@ const initialPractice = (practice?: Practice) => {
       latitude: practice.latitude,
       longitude: practice.longitude,
       name: practice.name,
+      email: practice.email,
       rating: practice.rating,
     };
   }
@@ -50,6 +51,7 @@ const initialPractice = (practice?: Practice) => {
     latitude: 0,
     longitude: 0,
     name: '',
+    email: '',
     rating: 0,
   };
 };
@@ -95,6 +97,7 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
         latitude: yup.number().required('latitude is required'),
         longitude: yup.number().required('longitude is required'),
         name: yup.string().required('name is required'),
+        email: yup.string().email('must be an email').required('email is required'),
         rating: yup.number().required('rating is required'),
       })
     ),
@@ -127,7 +130,8 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
   }, [practice, images]);
 
   const onSubmit = (data: IFormInputs) => {
-    console.log('in onsubmit'), onSubmitHandler(data);
+    console.log('in onsubmit');
+     onSubmitHandler(data);
   };
   console.log('watch', watch());
   const onSubmitHandler = async (dataForm: IFormInputs) => {
@@ -215,6 +219,27 @@ export const EditPracticeForm: FC<EditPracticeFormProps> = ({
             </Typography>
             <Controller
               name={'name'}
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <InputText
+                  field={field}
+                  sx={{ width: '100%' }}
+                  error={!!error}
+                  helperText={
+                    error?.message
+                      ? t<string>(error.message as unknown as string)
+                      : ''
+                  }
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sx={{ mb: 3 }}>
+            <Typography sx={{ mb: 1 }} variant='subtitle2'>
+              Email
+            </Typography>
+            <Controller
+              name={'email'}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <InputText

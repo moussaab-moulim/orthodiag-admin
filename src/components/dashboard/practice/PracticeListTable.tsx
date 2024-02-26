@@ -228,6 +228,16 @@ function usePracticeColumns() {
     },
 
     {
+      field: 'email',
+      headerName: t('Email'),
+      hideable: true,
+      renderCell: (row) => <TableCellWithTooltip value={row.row.email} />,
+      flex: 2,
+      filterOperators: defaultFilterOperators,
+      // sortable: false,
+    },
+
+    {
       field: 'city',
       headerName: t('City'),
       hideable: true,

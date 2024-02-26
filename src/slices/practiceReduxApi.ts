@@ -20,6 +20,7 @@ interface UpdatePractice {
   latitude?: number;
   longitude?: number;
   name: string;
+  email: string;
   rating?: number;
 }
 
